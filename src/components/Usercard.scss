@@ -1,0 +1,60 @@
+@use "../styles/variables" as *;
+
+.profile {
+  width: 33%;
+
+  &-content-wrapper {
+    display:flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    padding: 1.6rem;
+    border: 3px solid $color-gray;
+    border-top: 0;
+    border-radius: 0 0 1.6rem 1.6rem;
+  }
+
+  &-picture {
+    height: 27.2rem;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
+    border-radius: 1.6rem 1.6rem 0 0;
+  }
+
+  &-grade {
+    display: flex;
+    gap: 0.8rem;
+
+    &-stars {
+      display: flex;
+    }
+
+    &-nbreviews {
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &-skills, &-interests {
+    &-title {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg;
+      margin-bottom: 0.8rem;
+    }
+
+    &-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+  }
+
+  &-buttons {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.6rem;
+
+    button:first-of-type {
+      flex-grow: 1;
+    }
+  }
+}

@@ -15,10 +15,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  background: hsl(from $color-primary h s 80);
+  color: hsl(from $color-primary h s 15);
+  text-shadow: none;
+}
+
 body {
   font-size: 1.6rem;
   min-height: 100vh;
-  padding: 0 1.6rem;
 }
 
 h1, h2, h3 {
@@ -53,20 +58,76 @@ h3 {
   display: flex;
   gap: 0.8rem;
   align-items: center;
+  justify-content: center;
+
+  &-icon {
+    padding: 1.2rem 1.6rem;
+  }
 
   &-default {
     background-color: $color-primary;
     color: $color-black;
 
     &:hover {
-      background-color: $color-white;
+      background-color: $color-primary-dark;
+      color: $color-white;
+    }
+  }
+
+  &-secondary {
+    background-color: $color-black;
+    color: $color-white;
+
+    &:hover {
+      background-color: hsl(from $color-black h s 30);
+      color: $color-white;
+    }
+  }
+
+  &-reversed {
+    background-color: $color-white;
+    color: $color-black;
+
+    &:hover {
+      background-color: $color-primary;
+      color: $color-black;
+    }
+  }
+
+  &-alt {
+    background-color: $color-gray;
+    color: $color-black;
+
+    &:hover {
+      background-color: $color-secondary;
       color: $color-black;
     }
   }
 }
 
-.wrapper {
+.container {
   max-width: 113.2rem;
   margin: 0 auto;
-  padding: 0 1.6rem;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+.tag {
+  border-radius: 1.6rem;
+  font-size: $font-size-sm;
+  background-color: $color-gray;
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+}
+
+.star {
+  stroke: none;
+  fill: $color-gray;
+
+  &-active {
+    fill: $color-secondary;
+  }
 }

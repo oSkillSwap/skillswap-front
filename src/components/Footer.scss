@@ -1,0 +1,51 @@
+@use "../styles/variables" as *;
+
+.footer {
+  width: 100%;
+  background-color: $color-black;
+  color: $color-white;
+  padding-top: 4rem;
+  margin-top: 4.8rem;
+
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: $font-size-xs;
+    line-height: $line-height-tight;
+
+    &-logo {
+      width: 18.5rem;
+      color: $color-white;
+    }
+
+    &-nav {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      list-style: none;
+      gap: 3.2rem;
+      
+      &-element-link {
+        color: $color-white;
+        text-decoration: none;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+
+    &-copy {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-top: 1px solid $color-white;
+      padding-top: 1.6rem;
+      margin-top: 4rem;
+      margin-bottom: 7.8rem;
+    }
+  }
+}
