@@ -1,0 +1,41 @@
+@use "../styles/variables" as *;
+
+.header {
+  background-color: $color-black;
+  color: $color-white;
+  border-radius: 1.6rem;
+  padding: 1.6rem;
+  margin-top: 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-logo {
+    width: 14.9rem;
+    color: inherit;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  &-nav {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 3.2rem;
+
+    &-element {
+      font-weight: $font-weight-bold;
+
+      &-link {
+        color: $color-white;
+        text-decoration: none;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}

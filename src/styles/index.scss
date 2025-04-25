@@ -1,0 +1,72 @@
+@use "variables" as *;
+
+:root {
+  font-family: $font-family-base;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 62.5%;
+
+  color: $color-text;
+  background-color: $color-background;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: 1.6rem;
+  min-height: 100vh;
+  padding: 0 1.6rem;
+}
+
+h1, h2, h3 {
+  font-family: $font-family-heading;
+}
+
+h1 {
+  font-size: $h1-font-size;
+  font-weight: $h1-font-weight;
+  line-height: $h1-line-height;
+}
+
+h2 {
+  font-size: $h2-font-size;
+  font-weight: $h2-font-weight;
+  line-height: $h2-line-height;
+}
+
+h3 {
+  font-size: $h3-font-size;
+  font-weight: $h3-font-weight;
+  line-height: $h3-line-height;
+}
+
+.btn {
+  font-weight: $font-weight-bold;
+  font-size: $font-size-md;
+  line-height: $line-height-tight;
+  text-decoration: none;
+  padding: 1.2rem 3.6rem;
+  border-radius: 0.8rem;
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+
+  &-default {
+    background-color: $color-primary;
+    color: $color-black;
+
+    &:hover {
+      background-color: $color-white;
+      color: $color-black;
+    }
+  }
+}
+
+.wrapper {
+  max-width: 113.2rem;
+  margin: 0 auto;
+  padding: 0 1.6rem;
+}

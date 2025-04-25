@@ -11,6 +11,7 @@
     "format": "npx @biomejs/biome format ./src --write"
   },
   "dependencies": {
+    "lucide-react": "^0.503.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sass": "^1.87.0"

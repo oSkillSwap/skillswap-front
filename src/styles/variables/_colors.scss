@@ -1,0 +1,27 @@
+// Primary colors
+$color-primary: hsl(157, 96%, 62%);
+$color-primary-light: hsl(157, 96%, 82%);
+$color-primary-dark: hsl(157, 96%, 12%);
+
+// Secondary colors
+$color-secondary: hsl(32, 85%, 71%);
+$color-secondary-light: hsl(32, 85%, 81%);
+$color-secondary-dark: hsl(32, 85%, 11%);
+
+// Neutral colors
+$color-black: hsl(60, 4%, 11%);
+$color-white: hsl(0, 0%, 100%);
+$color-gray: hsl(0, 0%, 93%);
+
+
+
+// Semantic colors
+$color-success: hsl(134, 61%, 41%);
+$color-info: hsl(188, 78%, 41%);
+$color-warning: hsl(45, 100%, 51%);
+$color-danger: hsl(354, 70%, 54%);
+
+// UI specific colors
+$color-background: $color-white;
+$color-text: $color-black;
+$color-border: $color-gray;

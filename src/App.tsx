@@ -1,7 +1,9 @@
+import Homepage from './pages/Homepage';
+
 function App() {
   return (
     <>
-      <h1>SKILLSWAP - Front</h1>
+      <Homepage />
     </>
   );
 }
