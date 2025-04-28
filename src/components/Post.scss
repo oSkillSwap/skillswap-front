@@ -1,0 +1,61 @@
+@use "../styles/variables" as *;
+
+.post {
+  display: flex;
+  flex-direction: column;
+  padding: 3.2rem;
+  border: 3px solid $color-gray;
+  border-radius: 1.6rem;
+  gap: 1.6rem;
+
+  &-title {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+  }
+
+  &-info {
+    font-size: $font-size-xs;
+  }
+
+  &-btns {
+    display:flex;
+    gap: 1.6rem;
+    justify-content: flex-end;
+  }
+
+  &-offer {
+    display: flex;
+    justify-content: space-between;
+    background-color: $color-gray;
+    padding: 1.6rem 3.2rem;
+    border-radius: 0.8rem;
+    align-items: center;
+
+    &-userinfo {
+      display: flex;
+      gap: 1.6rem;
+
+      & .star:not(.star-active) {
+        fill: white;
+      }
+
+      &-picture {
+        width: 8rem;
+        height: 8rem;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+
+    &-date {
+      margin-top: 0.8rem;
+      font-size: $font-size-xs;
+    }
+
+    &-btns {
+      display: flex;
+      gap: 0.8rem;
+    }
+  }
+}

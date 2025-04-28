@@ -21,19 +21,6 @@
     border-radius: 1.6rem 1.6rem 0 0;
   }
 
-  &-grade {
-    display: flex;
-    gap: 0.8rem;
-
-    &-stars {
-      display: flex;
-    }
-
-    &-nbreviews {
-      font-weight: $font-weight-bold;
-    }
-  }
-
   &-skills, &-interests {
     &-title {
       font-weight: $font-weight-bold;

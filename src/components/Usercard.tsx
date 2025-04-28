@@ -1,5 +1,6 @@
-import { Heart, MessageSquare, Star } from 'lucide-react';
+import { Heart, MessageSquare } from 'lucide-react';
 import './Usercard.scss';
+import Grade from './Grade';
 
 function UserCard() {
   return (
@@ -12,16 +13,7 @@ function UserCard() {
       <div className="profile-card-content-wrapper">
         <div>
           <h3 className="profile-card-username">Username</h3>
-          <div className="profile-card-grade">
-            <div className="profile-card-grade-stars">
-              <Star className="star star-active" />
-              <Star className="star star-active" />
-              <Star className="star star-active" />
-              <Star className="star star-active" />
-              <Star className="star" />
-            </div>
-            <p className="profile-card-grade-nbreviews">(3 avis)</p>
-          </div>
+          <Grade rating={4} nbReviews={3} />
         </div>
         <p className="profile-card-bio">
           J'aide volontiers à réparer vos appareils du quotidien. En échange, je
@@ -47,11 +39,11 @@ function UserCard() {
           </div>
         </div>
         <div className="profile-card-buttons">
-          <button className="btn btn-default">
+          <button className="btn btn-default" type="button">
             <MessageSquare />
             Contacter
           </button>
-          <button className="btn btn-alt btn-icon">
+          <button className="btn btn-alt btn-icon" type="button">
             <Heart />
           </button>
         </div>

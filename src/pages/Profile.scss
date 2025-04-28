@@ -28,19 +28,6 @@
         gap: 1.6rem;
       }
 
-      &-grade {
-        display: flex;
-        gap: 0.8rem;
-
-        &-stars {
-          display: flex;
-        }
-
-        &-nbreviews {
-          font-weight: $font-weight-bold;
-        }
-      }
-
       &-btns {
         display: flex;
         gap: 1.6rem;
@@ -126,58 +113,10 @@
 .testimonials {
   display: flex;
   gap: 3.2rem;
-
-  &-card {
-    width: calc(100% / 2);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.6rem;
-    align-items: center;
-
-    &-picture {
-      width: 8rem;
-      height: 8rem;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-
-    &-grade {
-      display: flex;
-    }
-
-    &-info {
-      font-size: $font-size-xs;
-    }
-  }
 }
 
 .posts-container {
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-
-  .post {
-    display: flex;
-    flex-direction: column;
-    padding: 3.2rem;
-    border: 3px solid $color-gray;
-    border-radius: 1.6rem;
-    gap: 1.6rem;
-  
-    &-title {
-      display: flex;
-      gap: 1.6rem;
-      align-items: center;
-    }
-  
-    &-info {
-      font-size: $font-size-xs;
-    }
-  
-    &-btns {
-      display:flex;
-      gap: 1.6rem;
-      justify-content: flex-end;
-    }
-  }
 }

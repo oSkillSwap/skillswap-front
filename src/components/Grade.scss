@@ -1,0 +1,14 @@
+@use "../styles/variables" as *;
+
+.grade {
+  display: flex;
+  gap: 0.8rem;
+
+  &-stars {
+    display: flex;
+  }
+
+  &-nbreviews {
+    font-weight: $font-weight-bold;
+  }
+}

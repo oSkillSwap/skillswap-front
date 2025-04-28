@@ -33,22 +33,22 @@ function Header() {
       <nav>
         <ul className="header-nav">
           <li className="header-nav-element">
-            <a className="header-nav-element-link" href="#">
+            <a className="header-nav-element-link" href="/">
               Accueil
             </a>
           </li>
           <li className="header-nav-element">
-            <a className="header-nav-element-link" href="#">
+            <a className="header-nav-element-link" href="/">
               Explorer
             </a>
           </li>
           <li className="header-nav-element">
-            <a className="header-nav-element-link" href="#">
+            <a className="header-nav-element-link" href="/">
               Annonces
             </a>
           </li>
           <li className="header-nav-element">
-            <a className="btn btn-reversed" href="#">
+            <a className="btn btn-reversed" href="/">
               <LogIn />
               S'identifier
             </a>

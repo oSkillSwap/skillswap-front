@@ -1,49 +1,29 @@
 @use "../styles/variables" as *;
 
-.homepage {
-  &-hero-section {
-    display: flex;
-    align-items: center;
-    margin: 3.2rem 0;
-    min-height: 40rem;
-    background: no-repeat center right url('img/hero-image.jpg');
-  
-    &-text {
-      width: 65%;
-  
-      & p {
-        width: 80%;
-        font-size: $font-size-xl;
-      }
-    }
-  }
-
-  &-section {
-    margin-top: 10rem;
-
-    &-title {
-      margin-bottom: 4.85rem;
-      text-align: center;
-    }
-    
-    &-textleft {
-      display: flex;
-      align-items: center;
-      gap: 3.2rem;
-    
-      &-content {
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 1;
-        gap: 1.6rem;
-      }
-    }
-  }
+.explore {
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
 }
 
-.profile-cards {
+.content {
   display: flex;
-  gap: 3.2rem;
+  flex-direction: column;
+  gap: 1.6rem;
+
+  & h1 {
+    text-align: center;
+  }
+
+  &-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3.2rem;
+
+    & > article.profile-card {
+      width: calc((100% - 6.4rem) / 3);
+    }
+  }
 }
 
 .search {
@@ -118,7 +98,27 @@
   }
 }
 
-.testimonials {
+.post {
   display: flex;
-  gap: 3.2rem;
+  flex-direction: column;
+  padding: 3.2rem;
+  border: 3px solid $color-gray;
+  border-radius: 1.6rem;
+  gap: 1.6rem;
+
+  &-title {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+  }
+
+  &-info {
+    font-size: $font-size-xs;
+  }
+
+  &-btns {
+    display:flex;
+    gap: 1.6rem;
+    justify-content: flex-end;
+  }
 }
