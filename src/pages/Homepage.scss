@@ -22,16 +22,23 @@
     margin-top: 10rem;
 
     &-title {
-      margin-bottom: 3.2rem;
+      margin-bottom: 4.85rem;
       text-align: center;
     }
+    
+    &-textleft {
+      display: flex;
+      align-items: center;
+      gap: 3.2rem;
+    
+      &-content {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 1;
+        gap: 1.6rem;
+      }
+    }
   }
-}
-
-.section1 {
-  display: flex;
-  align-items: center;
-  gap: 3.2rem;
 }
 
 .profile-cards {
@@ -75,6 +82,66 @@
     &:focus {
       outline: 0;
       border: 0.3rem solid $color-primary;
+    }
+  }
+}
+
+.categories {
+  display: flex;
+  gap: 3.2rem;
+
+  &-card {
+    width: calc(100% / 6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.6rem;
+    border: 3px solid $color-gray;
+    border-radius: 1.6rem;
+    padding: 1.6rem;
+
+    &-img {
+      width: 3.8rem;
+      stroke: 1px;
+    }
+
+    &-title {
+      text-align: center;
+      font-weight: $font-weight-bold;
+    }
+
+    &:hover {
+      border-color: $color-black;
+      cursor: pointer;
+    }
+  }
+}
+
+.testimonials {
+  display: flex;
+  gap: 3.2rem;
+
+  &-card {
+    width: calc(100% / 3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+    align-items: center;
+
+    &-picture {
+      width: 8rem;
+      height: 8rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    &-grade {
+      display: flex;
+    }
+
+    &-info {
+      font-size: $font-size-xs;
     }
   }
 }
