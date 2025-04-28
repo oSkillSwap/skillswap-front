@@ -1,12 +1,12 @@
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Profile from './pages/Profile';
+import Explore from './pages/Explore';
 
 function App() {
   return (
     <>
       <Header />
-      <Profile />
+      <Explore />
       <Footer />
     </>
   );

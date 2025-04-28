@@ -97,28 +97,3 @@
     }
   }
 }
-
-.post {
-  display: flex;
-  flex-direction: column;
-  padding: 3.2rem;
-  border: 3px solid $color-gray;
-  border-radius: 1.6rem;
-  gap: 1.6rem;
-
-  &-title {
-    display: flex;
-    gap: 1.6rem;
-    align-items: center;
-  }
-
-  &-info {
-    font-size: $font-size-xs;
-  }
-
-  &-btns {
-    display:flex;
-    gap: 1.6rem;
-    justify-content: flex-end;
-  }
-}

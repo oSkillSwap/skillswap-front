@@ -1,12 +1,12 @@
 import { Star } from 'lucide-react';
 import './Grade.scss';
 
-type IProps = {
+type GradeProps = {
   rating: number;
   nbReviews?: number;
 };
 
-function Grade({ rating, nbReviews }: IProps) {
+function Grade({ rating, nbReviews }: GradeProps) {
   const renderStars = () => {
     const stars = [];
     for (let i = 0; i < 5; i++) {

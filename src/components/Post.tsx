@@ -9,14 +9,14 @@ import {
 import './Post.scss';
 import Grade from './Grade';
 
-type IProps = {
+type PostProps = {
   variant: 'post' | 'offer' | 'trade';
-  origin: 'profile' | 'search';
-  author?: boolean | undefined;
-  offers?: [] | undefined;
+  origin: 'profile' | 'explore';
+  author?: boolean;
+  offers?: { username: string }[];
 };
 
-function Post({ variant, origin, offers, author = false }: IProps) {
+function Post({ variant, origin, offers, author = false }: PostProps) {
   return (
     <article className="post">
       <div>
@@ -114,6 +114,34 @@ function Post({ variant, origin, offers, author = false }: IProps) {
           </div>
         );
       })}
+      {origin === 'explore' && (
+        <div className="post-author">
+          <div>
+            <div className="post-author-userinfo">
+              <img
+                className="post-author-userinfo-picture"
+                src="img/avatars/robot1.jpg"
+                alt=""
+              />
+              <div>
+                <h3>Author</h3>
+                <Grade rating={4} nbReviews={3} />
+              </div>
+            </div>
+          </div>
+
+          <div className="post-author-btns">
+            <button className="btn btn-reversed" type="button">
+              <MessageSquare />
+              Contacter
+            </button>
+            <button className="btn btn-default" type="button">
+              <Send />
+              Proposer
+            </button>
+          </div>
+        </div>
+      )}
     </article>
   );
 }

@@ -38,7 +38,7 @@ function UserCard() {
             <p className="tag">Angular</p>
           </div>
         </div>
-        <div className="profile-card-buttons">
+        <div className="profile-card-btns">
           <button className="btn btn-default" type="button">
             <MessageSquare />
             Contacter

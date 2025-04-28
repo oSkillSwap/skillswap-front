@@ -1,5 +1,6 @@
-import { Search, Send } from 'lucide-react';
+import { Search } from 'lucide-react';
 import './Explore.scss';
+import Post from '../components/Post';
 import UserCard from '../components/Usercard';
 
 function Explore() {
@@ -84,54 +85,8 @@ function Explore() {
       <section className="content">
         <h1 className="content-title">Résultats : Annonces trouvés</h1>
         <div className="content-results">
-          <article className="post">
-            <div>
-              <div className="post-title">
-                <h3>Titre de l'annonce</h3>
-                <p className="tag">Next.js</p>
-              </div>
-              <p className="post-info">Posté le 24 avril 2025</p>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-              molestias perferendis quisquam omnis quaerat cum harum ullam!
-              Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit
-              quasi ipsam incidunt esse.
-            </p>
-            <div className="post-btns">
-              <button className="btn btn-default" type="button">
-                <Send />
-                Proposer
-              </button>
-              <button className="btn btn-alt" type="button">
-                Voir l'annonce
-              </button>
-            </div>
-          </article>
-          <article className="post">
-            <div>
-              <div className="post-title">
-                <h3>Titre de l'annonce</h3>
-                <p className="tag">Next.js</p>
-              </div>
-              <p className="post-info">Posté le 24 avril 2025</p>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-              molestias perferendis quisquam omnis quaerat cum harum ullam!
-              Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit
-              quasi ipsam incidunt esse.
-            </p>
-            <div className="post-btns">
-              <button className="btn btn-default" type="button">
-                <Send />
-                Proposer
-              </button>
-              <button className="btn btn-alt" type="button">
-                Voir l'annonce
-              </button>
-            </div>
-          </article>
+          <Post variant={'post'} origin={'explore'} />
+          <Post variant={'post'} origin={'explore'} />
         </div>
       </section>
     </main>
