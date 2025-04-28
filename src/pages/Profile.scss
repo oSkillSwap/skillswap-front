@@ -1,0 +1,183 @@
+@use "../styles/variables" as *;
+
+.profile {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3.2rem;
+
+  &-header {
+    grid-column: 1/13;
+    display: flex;
+    gap: 3.2rem;
+
+    &-picture {
+      width: 25.8rem;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+
+      &-title {
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+      }
+
+      &-grade {
+        display: flex;
+        gap: 0.8rem;
+
+        &-stars {
+          display: flex;
+        }
+
+        &-nbreviews {
+          font-weight: $font-weight-bold;
+        }
+      }
+
+      &-btns {
+        display: flex;
+        gap: 1.6rem;
+      }
+    }
+  }
+
+  &-col1, &-col2 {
+    display: flex;
+    flex-direction: column;
+    gap: 4.8rem;
+
+    & h2 {
+      width: 100%;
+      margin-bottom: 1.6rem;
+    }
+  }
+
+  &-col1 {
+    grid-column: 1/4;
+  }
+
+  &-col2 {
+    grid-column: 4/13;
+  }
+
+  &-skills, &-interests, &-fav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  &-fav {
+    gap: 1.6rem;
+
+    &-picture {
+      width: calc((100% - 3.2rem) / 3);
+      border-radius: 50%;
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+  }
+
+  &-availability {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+  
+    &-day, &-slot {
+      font-size: $font-size-xs;
+      background-color: $color-black;
+      color: $color-white;
+      border-radius: 1.6rem;
+      padding: 0.4rem;
+      text-align: center;
+    }
+  
+    &-check {
+      width: 2.4rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background-color: $color-gray;
+      margin: auto;
+  
+      &.active {
+        background-color: $color-primary;
+        position: relative;
+
+        &::after{
+          content: '';
+          position: absolute;
+          background: no-repeat center center url('img/icons/check.svg');
+          background-size: 50%;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.testimonials {
+  display: flex;
+  gap: 3.2rem;
+
+  &-card {
+    width: calc(100% / 2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+    align-items: center;
+
+    &-picture {
+      width: 8rem;
+      height: 8rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    &-grade {
+      display: flex;
+    }
+
+    &-info {
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+
+  .post {
+    display: flex;
+    flex-direction: column;
+    padding: 3.2rem;
+    border: 3px solid $color-gray;
+    border-radius: 1.6rem;
+    gap: 1.6rem;
+  
+    &-title {
+      display: flex;
+      gap: 1.6rem;
+      align-items: center;
+    }
+  
+    &-info {
+      font-size: $font-size-xs;
+    }
+  
+    &-btns {
+      display:flex;
+      gap: 1.6rem;
+      justify-content: flex-end;
+    }
+  }
+}

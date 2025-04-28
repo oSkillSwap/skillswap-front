@@ -108,7 +108,7 @@ h3 {
 
 .container {
   max-width: 113.2rem;
-  margin: 0 auto;
+  margin: 3.2rem auto 0 auto;
 }
 
 button {
@@ -118,10 +118,14 @@ button {
 
 .tag {
   border-radius: 1.6rem;
-  font-size: $font-size-sm;
+  font-size: $font-size-xs;
   background-color: $color-gray;
   display: inline-block;
   padding: 0.4rem 1.2rem;
+
+  &-primary {
+    background-color: $color-primary;
+  }
 }
 
 .star {
