@@ -10,6 +10,7 @@
   margin-top: $spacing-md;
   position: sticky;
   top: $spacing-md;
+  z-index: 100;
   
   &-wrapper {
     display: flex;
@@ -22,6 +23,7 @@
   &-logo {
     max-width: 14.9rem;
     color: inherit;
+    z-index: 100;
     
     &:hover {
       color: $color-primary;

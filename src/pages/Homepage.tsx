@@ -1,4 +1,7 @@
 import { LogIn, Search } from 'lucide-react';
+import { Autoplay } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/scss';
 import './Homepage.scss';
 import Testimonial from '../components/Testimonial';
 import UserCard from '../components/Usercard';
@@ -28,56 +31,81 @@ function Homepage() {
 
       <section className="homepage-section">
         <h1 className="homepage-section-title">Catégories</h1>
-        <div className="categories">
-          <div className="categories-card">
+
+        <Swiper
+          className="categories"
+          spaceBetween={32}
+          slidesPerView={2}
+          loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          breakpoints={{
+            640: {
+              slidesPerView: 3,
+              spaceBetween: 32,
+            },
+            768: {
+              slidesPerView: 4,
+              spaceBetween: 32,
+            },
+            1024: {
+              slidesPerView: 5,
+              spaceBetween: 32,
+            },
+          }}
+          modules={[Autoplay]}
+        >
+          <SwiperSlide className="categories-card">
             <img
               className="categories-card-img"
               src="img/icons/graduation-cap.svg"
               alt="Soutien scolaire"
             />
             <p className="categories-card-title">Soutien scolaire</p>
-          </div>
-          <div className="categories-card">
+          </SwiperSlide>
+          <SwiperSlide className="categories-card">
             <img
               className="categories-card-img"
               src="img/icons/mouse-pointer-click.svg"
               alt="Stratégie digitales"
             />
             <p className="categories-card-title">Stratégie digitales</p>
-          </div>
-          <div className="categories-card">
+          </SwiperSlide>
+          <SwiperSlide className="categories-card">
             <img
               className="categories-card-img"
               src="img/icons/shirt.svg"
               alt="Couture et retouches"
             />
             <p className="categories-card-title">Couture et retouches</p>
-          </div>
-          <div className="categories-card">
+          </SwiperSlide>
+          <SwiperSlide className="categories-card">
             <img
               className="categories-card-img"
               src="img/icons/scan-face.svg"
               alt="Beauté et style"
             />
             <p className="categories-card-title">Beauté et style</p>
-          </div>
-          <div className="categories-card">
+          </SwiperSlide>
+          <SwiperSlide className="categories-card">
             <img
               className="categories-card-img"
               src="img/icons/gauge.svg"
               alt="Coaching de vie"
             />
             <p className="categories-card-title">Coaching de vie</p>
-          </div>
-          <div className="categories-card">
+          </SwiperSlide>
+          <SwiperSlide className="categories-card">
             <img
               className="categories-card-img"
               src="img/icons/code-xml.svg"
               alt="Dev-pro"
             />
             <p className="categories-card-title">Dev-pro</p>
-          </div>
-        </div>
+          </SwiperSlide>
+        </Swiper>
       </section>
 
       <section className="homepage-section">
@@ -101,20 +129,88 @@ function Homepage() {
 
       <section className="homepage-section">
         <h1 className="homepage-section-title">Ils apprennent déjà</h1>
-        <div className="profile-cards">
-          <UserCard />
-          <UserCard />
-          <UserCard />
-        </div>
+        <Swiper
+          className="profile-cards"
+          spaceBetween={32}
+          slidesPerView={1}
+          loop={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 32,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 32,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 32,
+            },
+          }}
+        >
+          <SwiperSlide>
+            <UserCard />
+          </SwiperSlide>
+          <SwiperSlide>
+            <UserCard />
+          </SwiperSlide>
+          <SwiperSlide>
+            <UserCard />
+          </SwiperSlide>
+          <SwiperSlide>
+            <UserCard />
+          </SwiperSlide>
+          <SwiperSlide>
+            <UserCard />
+          </SwiperSlide>
+          <SwiperSlide>
+            <UserCard />
+          </SwiperSlide>
+        </Swiper>
       </section>
 
       <section className="homepage-section">
         <h1 className="homepage-section-title">Ce qu'ils en pensent</h1>
-        <div className="testimonials">
-          <Testimonial />
-          <Testimonial />
-          <Testimonial />
-        </div>
+        <Swiper
+          className="testimonials"
+          spaceBetween={32}
+          slidesPerView={1}
+          loop={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 32,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 32,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 32,
+            },
+          }}
+        >
+          <SwiperSlide>
+            <Testimonial />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Testimonial />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Testimonial />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Testimonial />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Testimonial />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Testimonial />
+          </SwiperSlide>
+        </Swiper>
       </section>
     </main>
   );

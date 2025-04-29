@@ -1,7 +1,7 @@
 @use "../styles/variables" as *;
 
 .profile-card {
-  width: 33%;
+  width: calc((100% - 6.4rem) / 3);
 
   &-content-wrapper {
     display:flex;
