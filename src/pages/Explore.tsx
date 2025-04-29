@@ -1,7 +1,6 @@
 import { Search } from 'lucide-react';
 import './Explore.scss';
 import Post from '../components/Post';
-import UserCard from '../components/Usercard';
 
 function Explore() {
   return (
@@ -17,7 +16,7 @@ function Explore() {
         </button>
       </form>
 
-      <section className="content">
+      {/* <section className="content">
         <h1 className="content-title">Catégories</h1>
         <div className="categories">
           <div className="categories-card">
@@ -69,9 +68,9 @@ function Explore() {
             <p className="categories-card-title">Dev-pro</p>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className="content">
+      {/* <section className="content">
         <h1 className="content-title">Résultats : Profils trouvés</h1>
         <div className="content-results">
           <UserCard />
@@ -80,13 +79,35 @@ function Explore() {
           <UserCard />
           <UserCard />
         </div>
-      </section>
+      </section> */}
 
       <section className="content">
         <h1 className="content-title">Résultats : Annonces trouvés</h1>
         <div className="content-results">
+          <Post variant={'post'} origin={'profile'} />
+          <Post variant={'post'} origin={'profile'} author={true} />
+          <Post
+            variant={'post'}
+            origin={'profile'}
+            author={true}
+            offers={[{ username: 'AnotherUser' }, { username: 'OtherUser' }]}
+          />
           <Post variant={'post'} origin={'explore'} />
-          <Post variant={'post'} origin={'explore'} />
+          <Post variant={'offer'} origin={'profile'} />
+          <Post variant={'trade'} origin={'profile'} />
+          <Post variant={'trade'} origin={'profile'} isFinished={true} />
+          <Post
+            variant={'trade'}
+            origin={'profile'}
+            isFinished={true}
+            author={true}
+          />
+          <Post
+            variant={'trade'}
+            origin={'profile'}
+            isFinished={true}
+            reviewed={true}
+          />
         </div>
       </section>
     </main>

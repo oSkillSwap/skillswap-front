@@ -1,9 +1,13 @@
 import {
+  ArrowLeft,
+  ArrowRight,
+  HandHelping,
+  Handshake,
   MessageSquare,
-  Send,
-  SquareCheck,
+  SquareCheckBig,
   SquarePen,
   SquareX,
+  Star,
   Trash,
 } from 'lucide-react';
 import './Post.scss';
@@ -14,18 +18,41 @@ type PostProps = {
   origin: 'profile' | 'explore';
   author?: boolean;
   offers?: { username: string }[];
+  isFinished?: boolean;
+  reviewed?: boolean;
 };
 
-function Post({ variant, origin, offers, author = false }: PostProps) {
+function Post({
+  variant,
+  origin,
+  offers,
+  author,
+  isFinished,
+  reviewed,
+}: PostProps) {
   return (
     <article className="post">
-      <div>
-        <div className="post-title">
-          <h3>Titre de l'annonce</h3>
-          <p className="tag">Next.js</p>
+      <div className="post-header">
+        {variant === 'trade' &&
+          (author ? (
+            <p className="post-header-arrow">
+              <ArrowLeft />
+            </p>
+          ) : (
+            <p className="post-header-arrow arrow-alt">
+              <ArrowRight />
+            </p>
+          ))}
+
+        <div>
+          <div className="post-header-title">
+            <h3>Titre de l'annonce</h3>
+            <p className="tag">Next.js</p>
+          </div>
+          <p className="post-header-date">Posté le 24 avril 2025</p>
         </div>
-        <p className="post-info">Posté le 24 avril 2025</p>
       </div>
+
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
         molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia
@@ -33,53 +60,123 @@ function Post({ variant, origin, offers, author = false }: PostProps) {
         incidunt esse.
       </p>
       {origin === 'profile' && (
-        <div className="post-btns">
-          {variant === 'post' &&
-            (author ? (
-              <>
-                <button className="btn btn-alt" type="button">
-                  <SquarePen />
-                  Modifier
-                </button>
-                <button className="btn btn-alt btn-icon" type="button">
-                  <Trash />
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="btn btn-default" type="button">
-                  <Send />
-                  Proposer
-                </button>
-                <button className="btn btn-alt" type="button">
-                  Voir l'annonce
-                </button>
-              </>
-            ))}
+        <>
+          <div className="post-btns">
+            {variant === 'post' &&
+              (author ? (
+                <>
+                  <button className="btn btn-alt" type="button">
+                    <SquarePen />
+                    Modifier
+                  </button>
+                  <button className="btn btn-alt btn-icon" type="button">
+                    <Trash />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="btn btn-default" type="button">
+                    <HandHelping />
+                    Proposer
+                  </button>
+                  <button className="btn btn-alt" type="button">
+                    Voir l'annonce
+                  </button>
+                </>
+              ))}
+          </div>
+
           {variant === 'offer' && (
-            <>
-              <button className="btn btn-default" type="button">
-                <Send />
-                Proposer
-              </button>
-              <button className="btn btn-alt" type="button">
-                Voir l'annonce
-              </button>
-            </>
+            <div className="post-author">
+              <div>
+                <div className="post-author-userinfo">
+                  <img
+                    className="post-author-userinfo-picture"
+                    src="img/avatars/robot1.jpg"
+                    alt=""
+                  />
+                  <div>
+                    <h3>Author</h3>
+                    <Grade rating={4} nbReviews={3} />
+                  </div>
+                </div>
+                <p className="post-offer-date">
+                  Envoyé le 24 avril 2025 à 11h52
+                </p>
+              </div>
+
+              <div className="post-author-btns">
+                <button className="btn btn-reversed" type="button">
+                  <MessageSquare />
+                  Contacter
+                </button>
+                <button className="btn btn-secondary" type="button">
+                  <SquareX />
+                  Annuler
+                </button>
+              </div>
+            </div>
           )}
+
           {variant === 'trade' && (
-            <>
-              <button className="btn btn-default" type="button">
-                <Send />
-                Proposer
-              </button>
-              <button className="btn btn-alt" type="button">
-                Voir l'annonce
-              </button>
-            </>
+            <div className="post-author">
+              <div>
+                <div className="post-author-userinfo">
+                  <img
+                    className="post-author-userinfo-picture"
+                    src="img/avatars/robot1.jpg"
+                    alt=""
+                  />
+                  <div>
+                    <h3>Author</h3>
+                    <Grade rating={4} nbReviews={3} />
+                  </div>
+                </div>
+                <p className="post-offer-date">
+                  {isFinished ? 'Terminé' : 'Accepté'} le 24 avril 2025 à 11h52
+                </p>
+              </div>
+
+              <div className="post-author-btns">
+                {isFinished ? (
+                  author ? (
+                    <button className="btn btn-secondary" type="button">
+                      <Star />
+                      Voir l'avis
+                    </button>
+                  ) : reviewed ? (
+                    <button className="btn btn-secondary" type="button">
+                      <Star />
+                      Modifier l'avis
+                    </button>
+                  ) : (
+                    <button className="btn btn-default" type="button">
+                      <Star />
+                      Laisser un avis
+                    </button>
+                  )
+                ) : (
+                  <>
+                    <button className="btn btn-reversed" type="button">
+                      <MessageSquare />
+                      Contacter
+                    </button>
+                    <button className="btn btn-default" type="button">
+                      <SquareCheckBig />
+                      Terminer
+                    </button>
+                    <button className="btn btn-secondary" type="button">
+                      <SquareX />
+                      Annuler
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
           )}
-        </div>
+        </>
       )}
+
       {offers?.map((el) => {
         return (
           <div key={el.username} className="post-offer">
@@ -103,7 +200,7 @@ function Post({ variant, origin, offers, author = false }: PostProps) {
                 <MessageSquare />
               </button>
               <button className="btn btn-default" type="button">
-                <SquareCheck />
+                <Handshake />
                 Accepter
               </button>
               <button className="btn btn-secondary" type="button">
@@ -114,6 +211,7 @@ function Post({ variant, origin, offers, author = false }: PostProps) {
           </div>
         );
       })}
+
       {origin === 'explore' && (
         <div className="post-author">
           <div>
@@ -136,7 +234,7 @@ function Post({ variant, origin, offers, author = false }: PostProps) {
               Contacter
             </button>
             <button className="btn btn-default" type="button">
-              <Send />
+              <HandHelping />
               Proposer
             </button>
           </div>
