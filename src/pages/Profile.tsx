@@ -142,13 +142,7 @@ function Profile() {
           <h2>Annonces</h2>
           <div className="posts-container">
             <Post variant={'post'} origin={'profile'} />
-            <Post variant={'post'} origin={'profile'} author={true} />
-            <Post
-              variant={'post'}
-              origin={'profile'}
-              author={true}
-              offers={[{ username: 'AnotherUser' }, { username: 'OtherUser' }]}
-            />
+            <Post variant={'post'} origin={'profile'} />
           </div>
         </section>
 

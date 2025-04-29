@@ -4,7 +4,7 @@
   &-hero-section {
     display: flex;
     align-items: center;
-    margin: 3.2rem 0;
+    margin: $spacing-xl 0;
     min-height: 40rem;
     background: no-repeat center right url('img/hero-image.jpg');
   
@@ -22,20 +22,20 @@
     margin-top: 10rem;
 
     &-title {
-      margin-bottom: 4.85rem;
+      margin-bottom: $spacing-2xl;
       text-align: center;
     }
     
     &-textleft {
       display: flex;
       align-items: center;
-      gap: 3.2rem;
+      gap: $spacing-xl;
     
       &-content {
         display: flex;
         flex-direction: column;
         flex-shrink: 1;
-        gap: 1.6rem;
+        gap: $spacing-md;
       }
     }
   }
@@ -43,7 +43,7 @@
 
 .profile-cards {
   display: flex;
-  gap: 3.2rem;
+  gap: $spacing-xl;
 }
 
 .search {
@@ -63,7 +63,7 @@
     border-radius: 1.6rem 0 0 1.6rem;
     border: 0.3rem solid $color-gray;
     border-right: none;
-    padding: 1.6rem 3.2rem;
+    padding: $spacing-md $spacing-xl;
     display: flex;
 
     &:focus {
@@ -77,7 +77,7 @@
     border-radius: 0 1.6rem 1.6rem 0;
     border-left: none;
     height: fit-content;
-    padding: 1.6rem 1.6rem;
+    padding: $spacing-md;
 
     &:focus {
       outline: 0;
@@ -88,7 +88,7 @@
 
 .categories {
   display: flex;
-  gap: 3.2rem;
+  gap: $spacing-xl;
 
   &-card {
     width: calc(100% / 6);
@@ -96,10 +96,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.6rem;
+    gap: $spacing-md;
     border: 3px solid $color-gray;
     border-radius: 1.6rem;
-    padding: 1.6rem;
+    padding: $spacing-md;
 
     &-img {
       width: 3.8rem;
@@ -120,5 +120,5 @@
 
 .testimonials {
   display: flex;
-  gap: 3.2rem;
+  gap: $spacing-xl;
 }

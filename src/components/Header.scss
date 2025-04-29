@@ -1,11 +1,13 @@
 @use "../styles/variables" as *;
 
 .header {
+  width: calc(100% - $spacing-xl * 2);
+  max-width: 113.2rem;
   background-color: $color-black;
   color: $color-white;
   border-radius: 1.6rem;
-  padding: 1.6rem;
-  margin-top: 1.6rem;
+  padding: $spacing-md;
+  margin-top: $spacing-md;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,7 +25,7 @@
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 3.2rem;
+    gap: $spacing-xl;
 
     &-element {
       font-weight: $font-weight-bold;

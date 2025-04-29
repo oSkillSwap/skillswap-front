@@ -6,8 +6,8 @@
   &-content-wrapper {
     display:flex;
     flex-direction: column;
-    gap: 2.4rem;
-    padding: 1.6rem;
+    gap: $spacing-lg;
+    padding: $spacing-md;
     border: 3px solid $color-gray;
     border-top: 0;
     border-radius: 0 0 1.6rem 1.6rem;
@@ -25,20 +25,20 @@
     &-title {
       font-weight: $font-weight-bold;
       font-size: $font-size-lg;
-      margin-bottom: 0.8rem;
+      margin-bottom: $spacing-sm;
     }
 
     &-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.8rem;
+      gap: $spacing-sm;
     }
   }
 
   &-btns {
     display: flex;
-    gap: 0.8rem;
-    margin-top: 1.6rem;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
 
     button:first-of-type {
       flex-grow: 1;

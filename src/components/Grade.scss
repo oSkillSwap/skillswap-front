@@ -2,7 +2,7 @@
 
 .grade {
   display: flex;
-  gap: 0.8rem;
+  gap: $spacing-sm;
 
   &-stars {
     display: flex;

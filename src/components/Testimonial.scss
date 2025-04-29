@@ -3,7 +3,7 @@
 .testimonials-card {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.6rem;
+  gap: $spacing-md;
   align-items: center;
 
   &-picture {

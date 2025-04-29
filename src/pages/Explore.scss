@@ -3,13 +3,13 @@
 .explore {
   display: flex;
   flex-direction: column;
-  gap: 4.8rem;
+  gap: $spacing-2xl;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: $spacing-md;
 
   & h1 {
     text-align: center;
@@ -18,10 +18,10 @@
   &-results {
     display: flex;
     flex-wrap: wrap;
-    gap: 3.2rem;
+    gap: $spacing-xl;
 
     & > article.profile-card {
-      width: calc((100% - 6.4rem) / 3);
+      width: calc((100% - $spacing-xl * 2) / 3);
     }
   }
 }
@@ -43,7 +43,7 @@
     border-radius: 1.6rem 0 0 1.6rem;
     border: 0.3rem solid $color-gray;
     border-right: none;
-    padding: 1.6rem 3.2rem;
+    padding: $spacing-md $spacing-xl;
     display: flex;
 
     &:focus {
@@ -57,7 +57,7 @@
     border-radius: 0 1.6rem 1.6rem 0;
     border-left: none;
     height: fit-content;
-    padding: 1.6rem 1.6rem;
+    padding: $spacing-md;
 
     &:focus {
       outline: 0;
@@ -68,7 +68,7 @@
 
 .categories {
   display: flex;
-  gap: 3.2rem;
+  gap: $spacing-xl;
 
   &-card {
     width: calc(100% / 6);
@@ -76,10 +76,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.6rem;
+    gap: $spacing-md;
     border: 3px solid $color-gray;
     border-radius: 1.6rem;
-    padding: 1.6rem;
+    padding: $spacing-md;
 
     &-img {
       width: 3.8rem;

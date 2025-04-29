@@ -3,12 +3,12 @@
 .profile {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 3.2rem;
+  gap: $spacing-xl;
 
   &-header {
     grid-column: 1/13;
     display: flex;
-    gap: 3.2rem;
+    gap: $spacing-xl;
 
     &-picture {
       width: 25.8rem;
@@ -20,17 +20,17 @@
     &-content {
       display: flex;
       flex-direction: column;
-      gap: 1.6rem;
+      gap: $spacing-md;
 
       &-title {
         display: flex;
         align-items: center;
-        gap: 1.6rem;
+        gap: $spacing-md;
       }
 
       &-btns {
         display: flex;
-        gap: 0.8rem;
+        gap: $spacing-sm;
       }
     }
   }
@@ -38,11 +38,11 @@
   &-col1, &-col2 {
     display: flex;
     flex-direction: column;
-    gap: 4.8rem;
+    gap: $spacing-2xl;
 
     & h2 {
       width: 100%;
-      margin-bottom: 1.6rem;
+      margin-bottom: $spacing-md;
     }
   }
 
@@ -57,14 +57,14 @@
   &-skills, &-interests, &-fav {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8rem;
+    gap: $spacing-sm;
   }
 
   &-fav {
-    gap: 1.6rem;
+    gap: $spacing-md;
 
     &-picture {
-      width: calc((100% - 3.2rem) / 3);
+      width: calc((100% - $spacing-xl) / 3);
       border-radius: 50%;
       object-fit: cover;
       aspect-ratio: 1;
@@ -74,7 +74,7 @@
   &-availability {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    gap: 0.5rem;
+    gap: $spacing-xs;
     align-items: center;
   
     &-day, &-slot {
@@ -82,7 +82,7 @@
       background-color: $color-black;
       color: $color-white;
       border-radius: 1.6rem;
-      padding: 0.4rem;
+      padding: $spacing-xs;
       text-align: center;
     }
   
@@ -112,11 +112,11 @@
 
 .testimonials {
   display: flex;
-  gap: 3.2rem;
+  gap: $spacing-xl;
 }
 
 .posts-container {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: $spacing-md;
 }

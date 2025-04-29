@@ -3,14 +3,14 @@
 .post {
   display: flex;
   flex-direction: column;
-  padding: 3.2rem;
+  padding: $spacing-xl;
   border: 3px solid $color-gray;
   border-radius: 1.6rem;
-  gap: 1.6rem;
+  gap: $spacing-md;
 
   &-header {
     display: flex;
-    gap: 1.6rem;
+    gap: $spacing-md;
     
     &-arrow {
       background-color: $color-primary;
@@ -26,7 +26,7 @@
 
     &-title {
       display: flex;
-      gap: 1.6rem;
+      gap: $spacing-md;
       align-items: center;
     }
 
@@ -39,7 +39,7 @@
 
   &-btns {
     display:flex;
-    gap: 0.8rem;
+    gap: $spacing-sm;
     justify-content: flex-end;
   }
 
@@ -48,13 +48,13 @@
     display: flex;
     justify-content: space-between;
     background-color: $color-gray;
-    padding: 1.6rem 3.2rem;
+    padding: $spacing-md $spacing-xl;
     border-radius: 0.8rem;
     align-items: center;
 
     &-userinfo {
       display: flex;
-      gap: 1.6rem;
+      gap: $spacing-md;
 
       & .star:not(.star-active) {
         fill: white;
@@ -69,13 +69,13 @@
     }
 
     &-date {
-      margin-top: 0.8rem;
+      margin-top: $spacing-sm;
       font-size: $font-size-xs;
     }
 
     &-btns {
       display: flex;
-      gap: 0.8rem;
+      gap: $spacing-sm;
     }
   }
 }
