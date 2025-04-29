@@ -49,3 +49,28 @@
     }
   }
 }
+
+@media (max-width: $breakpoints-xl) {
+  .footer {
+    &-container {
+      flex-direction: column;
+      align-items: center;
+      gap: $spacing-xl;
+
+      &-nav {
+        align-items: center;
+        gap: $spacing-md;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoints-md) {
+  .footer {
+    &-container {
+      &-nav {
+        flex-direction: column;
+      }
+    }
+  }
+}
