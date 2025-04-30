@@ -1,14 +1,17 @@
 import './Testimonial.scss';
+import { Link } from 'react-router';
 import Grade from './Grade';
 
 function Testimonial() {
   return (
     <article className="testimonials-card">
-      <img
-        className="testimonials-card-picture"
-        src="img/avatars/robot1.jpg"
-        alt=""
-      />
+      <Link to={'/profile'}>
+        <img
+          className="testimonials-card-picture"
+          src="img/avatars/robot1.jpg"
+          alt=""
+        />
+      </Link>
       <div className="testimonials-card-title">
         <h3>Vraiment génial !</h3>
         <Grade rating={3} />

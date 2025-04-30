@@ -1,10 +1,11 @@
+import { Link } from 'react-router';
 import './Footer.scss';
 
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container container">
-        <a href="/" className="footer-container-logo">
+        <Link to="/" className="footer-container-logo">
           <svg
             viewBox="0 0 361 78"
             fill="none"
@@ -29,38 +30,38 @@ function Footer() {
               fill="currentColor"
             />
           </svg>
-        </a>
+        </Link>
         <nav>
           <ul className="footer-container-nav">
             <li className="footer-container-nav-element">
-              <a className="footer-container-nav-element-link" href="/">
+              <Link className="footer-container-nav-element-link" to="/">
                 Qui sommes-nous ?
-              </a>
+              </Link>
             </li>
             <li className="footer-container-nav-element">
-              <a className="footer-container-nav-element-link" href="/">
+              <Link className="footer-container-nav-element-link" to="/">
                 FAQ
-              </a>
+              </Link>
             </li>
             <li className="footer-container-nav-element">
-              <a className="footer-container-nav-element-link" href="/">
+              <Link className="footer-container-nav-element-link" to="/">
                 Données personnelles
-              </a>
+              </Link>
             </li>
             <li className="footer-container-nav-element">
-              <a className="footer-container-nav-element-link" href="/">
+              <Link className="footer-container-nav-element-link" to="/">
                 Conditions d'utilisations
-              </a>
+              </Link>
             </li>
             <li className="footer-container-nav-element">
-              <a className="footer-container-nav-element-link" href="/">
+              <Link className="footer-container-nav-element-link" to="/">
                 Mentions légales
-              </a>
+              </Link>
             </li>
             <li className="footer-container-nav-element">
-              <a className="footer-container-nav-element-link" href="/">
+              <Link className="footer-container-nav-element-link" to="/">
                 Nous contacter
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

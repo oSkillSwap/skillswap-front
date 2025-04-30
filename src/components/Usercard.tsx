@@ -1,15 +1,18 @@
 import { Heart, MessageSquare } from 'lucide-react';
 import './Usercard.scss';
+import { Link } from 'react-router';
 import Grade from './Grade';
 
 function UserCard() {
   return (
     <article className="profile-card">
-      <img
-        className="profile-card-picture"
-        src="img/avatars/robot1.jpg"
-        alt=""
-      />
+      <Link to={'/profile'}>
+        <img
+          className="profile-card-picture"
+          src="img/avatars/robot1.jpg"
+          alt=""
+        />
+      </Link>
       <div className="profile-card-content-wrapper">
         <div>
           <h3 className="profile-card-username">Username</h3>

@@ -1,6 +1,7 @@
 import { LogIn, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import './Header.scss';
+import { Link } from 'react-router';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +34,7 @@ function Header() {
   return (
     <header className="header container">
       <div className="header-wrapper">
-        <a href="/" className="header-logo">
+        <Link className="header-logo" to="/">
           <svg
             viewBox="0 0 361 78"
             fill="none"
@@ -58,7 +59,7 @@ function Header() {
               fill="currentColor"
             />
           </svg>
-        </a>
+        </Link>
 
         {isMobile && (
           <button
@@ -77,19 +78,19 @@ function Header() {
         >
           <ul className="header-nav">
             <li className="header-nav-element">
-              <a className="header-nav-element-link" href="/">
+              <Link className="header-nav-element-link" to="/">
                 Accueil
-              </a>
+              </Link>
             </li>
             <li className="header-nav-element">
-              <a className="header-nav-element-link" href="/">
+              <Link className="header-nav-element-link" to="/explore">
                 Explorer
-              </a>
+              </Link>
             </li>
             <li className="header-nav-element">
-              <a className="header-nav-element-link" href="/">
+              <Link className="header-nav-element-link" to="/explore">
                 Annonces
-              </a>
+              </Link>
             </li>
             <li className="header-nav-element">
               <a className="btn btn-reversed" href="/">
