@@ -40,6 +40,7 @@ function Homepage() {
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }}
           breakpoints={{
             640: {
@@ -134,6 +135,11 @@ function Homepage() {
           spaceBetween={32}
           slidesPerView={1}
           loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
           breakpoints={{
             640: {
               slidesPerView: 2,
@@ -148,6 +154,7 @@ function Homepage() {
               spaceBetween: 32,
             },
           }}
+          modules={[Autoplay]}
         >
           <SwiperSlide>
             <UserCard />
@@ -177,6 +184,11 @@ function Homepage() {
           spaceBetween={32}
           slidesPerView={1}
           loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
           breakpoints={{
             640: {
               slidesPerView: 2,
@@ -191,6 +203,7 @@ function Homepage() {
               spaceBetween: 32,
             },
           }}
+          modules={[Autoplay]}
         >
           <SwiperSlide>
             <Testimonial />
@@ -211,6 +224,11 @@ function Homepage() {
             <Testimonial />
           </SwiperSlide>
         </Swiper>
+      </section>
+      <section className="homepage-section">
+        <button className="btn btn-default btn-centered" type="button">
+          <LogIn /> Je m'identifie
+        </button>
       </section>
     </main>
   );

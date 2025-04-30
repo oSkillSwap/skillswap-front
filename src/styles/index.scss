@@ -61,6 +61,10 @@ h3 {
   justify-content: center;
   width: max-content;
 
+  &-centered {
+    margin: 0 auto;
+  }
+
   &-icon {
     padding: 1.2rem 1.6rem;
   }
