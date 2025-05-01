@@ -1,0 +1,30 @@
+@use "../styles/variables" as *;
+
+.categories {
+  &-card {
+    height: 15rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-md;
+    border: 3px solid $color-gray;
+    border-radius: 1.6rem;
+    padding: $spacing-md;
+
+    &-img {
+      width: 3.8rem;
+      stroke: 1px;
+    }
+
+    &-title {
+      text-align: center;
+      font-weight: $font-weight-bold;
+    }
+
+    &:hover {
+      border-color: $color-black;
+      cursor: pointer;
+    }
+  }
+}

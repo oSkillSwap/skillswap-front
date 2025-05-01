@@ -1,7 +1,7 @@
 @use "../styles/variables" as *;
 
 .homepage {
-  &-hero-section {
+  &-hero {
     display: flex;
     align-items: center;
     margin: $spacing-xl 0;
@@ -23,153 +23,67 @@
     }
   }
 
-  &-section {
-    margin-top: 10rem;
-
-    &-title {
-      margin-bottom: $spacing-2xl;
-      text-align: center;
-    }
-    
-    &-textleft {
-      display: flex;
-      align-items: center;
-      gap: $spacing-xl;
-    
-      &-content {
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 1;
-        gap: $spacing-md;
-
-        & p {
-          font-size: $font-size-xl;
-        }
-      }
-
-      & img {
-        width: 20%;
-      }
-    }
-  }
-}
-
-
-article.profile-card {
-  width: 100%;
-}
-
-.search {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & * {
-    border: none;
-    background-color: transparent;
-    font-weight: $font-weight-bold;
-  }
-
-  &-input {
-    width: 65%;
-    border-radius: 1.6rem 0 0 1.6rem;
-    border: 0.3rem solid $color-gray;
-    border-right: none;
-    padding: $spacing-md $spacing-xl;
-    display: flex;
-
-    &:focus {
-      outline: 0;
-      border: 0.3rem solid $color-primary;
-    }
-  }
-
-  &-button {
-    border: 0.3rem solid $color-gray;
-    border-radius: 0 1.6rem 1.6rem 0;
-    border-left: none;
-    height: fit-content;
-    padding: $spacing-md;
-
-    &:focus {
-      outline: 0;
-      border: 0.3rem solid $color-primary;
-    }
-  }
-}
-
-.categories {
-  &-card {
-    height: 15rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  &-content-imgleft {
+    flex-wrap: nowrap;
     align-items: center;
-    gap: $spacing-md;
-    border: 3px solid $color-gray;
-    border-radius: 1.6rem;
-    padding: $spacing-md;
 
-    &-img {
-      width: 3.8rem;
-      stroke: 1px;
+    & h1 {
+      text-align:left;
+    }
+    
+    & img {
+      float: right;
     }
 
-    &-title {
-      text-align: center;
-      font-weight: $font-weight-bold;
-    }
-
-    &:hover {
-      border-color: $color-black;
-      cursor: pointer;
+    & p {
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-xl;
     }
   }
-}
-
-.testimonials {
-  display: flex;
-  gap: $spacing-xl;
 }
 
 @media (max-width: $breakpoints-md) {
-  .homepage-hero-section {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .homepage {
+    &-hero {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
 
-    & img {
-      order: 1;
-      margin-left: 0;
-      max-width: 100%;
-      margin-bottom: $spacing-xl;
+      & img {
+        order: 1;
+        margin-left: 0;
+        max-width: 100%;
+        margin-bottom: $spacing-xl;
+      }
+
+      &-text {
+        order: 2;
+
+        & p {
+          width: 100%;
+        }
+      }
     }
 
-    &-text {
-      order: 2;
-      width: 100%;
+    &-content-imgleft {
+      flex-direction: column;
+      align-items: center;
+      
+      & p, & h1 {
+        text-align: center;
+      }
+  
+      & img {
+        width: 22rem;
+        object-fit: none;
+        object-position: top center;
+        aspect-ratio: 1;
+      }
 
-      & p {
-        width: 100%;
+      & button {
+        margin: 0 auto;
       }
     }
   }
 
-  .homepage-section-textleft {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-
-    &-content {
-      align-items: center;
-    }
-
-    & img {
-      width: 22rem;
-      object-fit: none;
-      object-position: top center;
-      aspect-ratio: 1;
-    }
-  }
 }

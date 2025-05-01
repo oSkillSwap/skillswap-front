@@ -116,6 +116,28 @@ h3 {
   padding: 0 $spacing-xl;
 }
 
+.content {
+  margin: 10rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+
+  & h1 {
+    text-align: center;
+    width: 100%;
+  }
+
+  &-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xl;
+
+    & > article.profile-card {
+      width: calc((100% - $spacing-xl * 2) / 3);
+    }
+  }
+}
+
 button {
   cursor: pointer;
   border: none;

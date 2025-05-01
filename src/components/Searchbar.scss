@@ -1,0 +1,41 @@
+@use "../styles/variables" as *;
+
+.search {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & * {
+    border: none;
+    background-color: transparent;
+    font-weight: $font-weight-bold;
+  }
+
+  &-input {
+    width: 65%;
+    border-radius: 1.6rem 0 0 1.6rem;
+    border: 0.3rem solid $color-gray;
+    border-right: none;
+    padding: $spacing-md $spacing-xl;
+    display: flex;
+
+    &:focus {
+      outline: 0;
+      border: 0.3rem solid $color-primary;
+    }
+  }
+
+  &-button {
+    border: 0.3rem solid $color-gray;
+    border-radius: 0 1.6rem 1.6rem 0;
+    border-left: none;
+    height: fit-content;
+    padding: $spacing-md;
+
+    &:focus {
+      outline: 0;
+      border: 0.3rem solid $color-primary;
+    }
+  }
+}

@@ -79,9 +79,6 @@ function Post({
                     <HandHelping />
                     Proposer
                   </button>
-                  <button className="btn btn-alt" type="button">
-                    Voir l'annonce
-                  </button>
                 </>
               ))}
           </div>
