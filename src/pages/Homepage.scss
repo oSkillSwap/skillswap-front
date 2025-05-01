@@ -5,11 +5,16 @@
     display: flex;
     align-items: center;
     margin: $spacing-xl 0;
-    min-height: 40rem;
-    background: no-repeat center right url('img/hero-image.jpg');
-  
+    
+    & img {
+      order: 2;
+      margin-left: -200px;
+      z-index: 1;
+      max-width: 50%;
+    }
+
     &-text {
-      width: 65%;
+      z-index: 2;
   
       & p {
         width: 80%;
@@ -36,6 +41,10 @@
         flex-direction: column;
         flex-shrink: 1;
         gap: $spacing-md;
+
+        & p {
+          font-size: $font-size-xl;
+        }
       }
 
       & img {
@@ -122,4 +131,45 @@ article.profile-card {
 .testimonials {
   display: flex;
   gap: $spacing-xl;
+}
+
+@media (max-width: $breakpoints-md) {
+  .homepage-hero-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    & img {
+      order: 1;
+      margin-left: 0;
+      max-width: 100%;
+      margin-bottom: $spacing-xl;
+    }
+
+    &-text {
+      order: 2;
+      width: 100%;
+
+      & p {
+        width: 100%;
+      }
+    }
+  }
+
+  .homepage-section-textleft {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    &-content {
+      align-items: center;
+    }
+
+    & img {
+      width: 22rem;
+      object-fit: none;
+      object-position: top center;
+      aspect-ratio: 1;
+    }
+  }
 }

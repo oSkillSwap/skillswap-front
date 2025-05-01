@@ -10,6 +10,7 @@ function Homepage() {
   return (
     <main className="homepage container">
       <section className="homepage-hero-section">
+        <img src="img/hero-image.jpg" alt="" />
         <div className="homepage-hero-section-text">
           <h1>Échangez vos compétences, enrichissez vos savoirs.</h1>
           <p>

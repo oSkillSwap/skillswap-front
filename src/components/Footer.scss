@@ -26,6 +26,7 @@
       justify-content: space-between;
       list-style: none;
       gap: $spacing-xl;
+      padding: 0;
       
       &-element-link {
         color: $color-white;
@@ -59,7 +60,7 @@
 
       &-nav {
         align-items: center;
-        gap: $spacing-md;
+        gap: $spacing-lg;
       }
     }
   }
