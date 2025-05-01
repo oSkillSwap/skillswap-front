@@ -1,5 +1,5 @@
 import { Heart, MessageSquare } from 'lucide-react';
-import './Usercard.scss';
+import './UserCard.scss';
 import { Link } from 'react-router';
 import Grade from './Grade';
 

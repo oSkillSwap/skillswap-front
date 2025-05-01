@@ -1,9 +1,9 @@
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/scss';
-import './Categories.scss';
+import './CategoryCarousel.scss';
 
-function Categories() {
+function CategoryCarousel() {
   return (
     <Swiper
       className="categories"
@@ -83,4 +83,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default CategoryCarousel;

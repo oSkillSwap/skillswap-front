@@ -1,7 +1,6 @@
 @use "../styles/variables" as *;
 
 .profile-card {
-  width: calc((100% - 6.4rem) / 3);
 
   &-content-wrapper {
     display:flex;
@@ -43,5 +42,17 @@
     button:first-of-type {
       flex-grow: 1;
     }
+  }
+}
+
+@media (min-width: $breakpoints-sm) {
+  .profile-card {
+    width: calc((100% - 6.4rem) / 2);
+  }
+}
+
+@media (min-width: $breakpoints-lg) {
+  .profile-card {
+    width: calc((100% - 6.4rem) / 3);
   }
 }

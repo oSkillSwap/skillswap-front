@@ -131,10 +131,6 @@ h3 {
     display: flex;
     flex-wrap: wrap;
     gap: $spacing-xl;
-
-    & > article.profile-card {
-      width: calc((100% - $spacing-xl * 2) / 3);
-    }
   }
 }
 
@@ -157,9 +153,22 @@ button {
 
 .star {
   stroke: none;
+  width: 2rem;
+  height: 2rem;
   fill: $color-gray;
 
   &-active {
     fill: $color-secondary;
   }
+}
+
+.lucide {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+@media screen and (max-width: $breakpoints-sm) {
+  :root {
+    font-size: 50%;
+  }  
 }

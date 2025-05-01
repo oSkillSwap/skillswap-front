@@ -7,7 +7,7 @@ import Testimonial from './Testimonial';
 function TestimonialCarousel() {
   return (
     <Swiper
-      className="testimonials"
+      className="testimonial-carousel"
       spaceBetween={32}
       slidesPerView={1}
       loop={true}

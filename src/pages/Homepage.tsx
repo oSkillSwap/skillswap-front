@@ -1,6 +1,6 @@
 import { LogIn } from 'lucide-react';
 import './Homepage.scss';
-import Categories from '../components/Categories';
+import CategoryCarousel from '../components/CategoryCarousel';
 import Searchbar from '../components/Searchbar';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import UserCarousel from '../components/UserCarousel';
@@ -18,11 +18,13 @@ function Homepage() {
         </div>
       </section>
 
-      <Searchbar />
+      <section className="content">
+        <Searchbar />
+      </section>
 
       <section className="content">
         <h1>Catégories</h1>
-        <Categories />
+        <CategoryCarousel />
       </section>
 
       <section className="content homepage-content-imgleft">

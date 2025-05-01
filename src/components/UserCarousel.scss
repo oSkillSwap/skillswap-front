@@ -1,5 +1,7 @@
 @use "../styles/variables" as *;
 
-article.profile-card {
-  width: 100%;
+.profile-carousel {
+  .profile-card {
+    width: 100%;
+  }
 }

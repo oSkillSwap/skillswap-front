@@ -2,12 +2,12 @@ import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/scss';
 import './UserCarousel.scss';
-import UserCard from './Usercard';
+import UserCard from './UserCard';
 
 function UserCarousel() {
   return (
     <Swiper
-      className="profile-cards"
+      className="profile-carousel"
       spaceBetween={32}
       slidesPerView={1}
       loop={true}
@@ -18,10 +18,6 @@ function UserCarousel() {
       }}
       breakpoints={{
         640: {
-          slidesPerView: 2,
-          spaceBetween: 32,
-        },
-        768: {
           slidesPerView: 2,
           spaceBetween: 32,
         },
