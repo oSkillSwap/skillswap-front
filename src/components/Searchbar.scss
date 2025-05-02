@@ -5,6 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 
   & * {
     border: none;
@@ -12,30 +13,40 @@
     font-weight: $font-weight-bold;
   }
 
-  &-input {
-    width: 65%;
-    border-radius: 1.6rem 0 0 1.6rem;
-    border: 0.3rem solid $color-gray;
-    border-right: none;
-    padding: $spacing-md $spacing-xl;
+  &-wrapper {
     display: flex;
+    width: 65%;
+    border-radius: 1.6rem;
+    border: 3px solid $color-gray;
+    @include transition-border;
+  }
 
+  &:focus-within .search-wrapper {
+    border-color: $color-primary;
+  }
+
+  &-input {
+    width: 100%;
+    padding: $spacing-md $spacing-xl;
+    border-radius: 1.6rem 0 0 1.6rem;
+    
     &:focus {
       outline: 0;
-      border: 0.3rem solid $color-primary;
     }
   }
 
   &-button {
-    border: 0.3rem solid $color-gray;
-    border-radius: 0 1.6rem 1.6rem 0;
-    border-left: none;
     height: fit-content;
     padding: $spacing-md;
-
+    border-radius: 0 1.6rem 1.6rem 0;
+    
     &:focus {
       outline: 0;
-      border: 0.3rem solid $color-primary;
+    }
+
+    & svg {
+      width: 2.4rem;
+      height: auto;
     }
   }
 }

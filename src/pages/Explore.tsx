@@ -1,10 +1,13 @@
+import CategoryCarousel from '../components/CategoryCarousel';
 import Post from '../components/Post';
+import Searchbar from '../components/Searchbar';
+import UserCard from '../components/UserCard';
 import './Explore.scss';
 
 function Explore() {
   return (
     <main className="explore container">
-      {/* <section className="content">
+      <section className="content">
         <Searchbar />
       </section>
 
@@ -22,12 +25,12 @@ function Explore() {
           <UserCard />
           <UserCard />
         </div>
-      </section> */}
+      </section>
 
       <section className="content">
         <h1>Résultats : Annonces trouvés</h1>
         <div className="content-results">
-          {/* <Post variant={'post'} origin={'profile'} /> */}
+          <Post variant={'post'} origin={'profile'} />
           <Post variant={'post'} origin={'profile'} author={true} />
           <Post
             variant={'post'}

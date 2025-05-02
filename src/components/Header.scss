@@ -24,6 +24,7 @@
     max-width: 14.9rem;
     color: inherit;
     z-index: 100;
+    @include transition-color;
     
     &:hover {
       color: $color-primary;
@@ -36,19 +37,68 @@
   }
   
   &-nav {
-    display: flex;
+    display: none;
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-sm;
+  z-index: 100;
+  color: $color-white;
+  @include transition-color;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  & svg {
+    width: 3.2rem;
+    height: auto;
+  }
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: $color-black;
+  transition: right 0.3s ease;
+  z-index: 90;
+  
+  &.open {
+    right: 0;
+  }
+  
+  .header-nav {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: $spacing-xl;
     
     &-element {
+      width: 100%;
+      font-size: $font-size-xl;
       font-weight: $font-weight-bold;
       
       &-link {
         color: $color-white;
         text-decoration: none;
+        @include transition-color;
         
         &:hover {
           color: $color-primary;
@@ -58,54 +108,33 @@
   }
 }
 
-// Mobile nav styles
-.hamburger-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: none;
-  padding: $spacing-sm;
-  z-index: 100;
-  color: $color-white;
-  
-  &:hover {
-    color: $color-primary;
-  }
-}
-
-@media (max-width: $breakpoints-md) {
+@media screen and (min-width: $breakpoints-md) {
   .hamburger-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
   }
   
   .mobile-nav {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    background-color: $color-black;
-    transition: right 0.3s ease;
-    z-index: 90;
-    
-    &.open {
-      right: 0;
-    }
-    
-    .header-nav {
-      flex-direction: column;
+    display: none;
+  }
+  
+  .header {
+    &-nav {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      text-align: center;
       gap: $spacing-xl;
       
       &-element {
-        width: 100%;
-        font-size: $font-size-xl;
+        font-weight: $font-weight-bold;
+        
+        &-link {
+          color: $color-white;
+          text-decoration: none;
+          @include transition-color;
+          
+          &:hover {
+            color: $color-primary;
+          }
+        }
       }
     }
   }

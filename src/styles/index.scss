@@ -60,6 +60,7 @@ h3 {
   align-items: center;
   justify-content: center;
   width: max-content;
+  @include transition-button;
 
   &-centered {
     margin: 0 auto;
@@ -160,11 +161,6 @@ button {
   &-active {
     fill: $color-secondary;
   }
-}
-
-.lucide {
-  width: 2.4rem;
-  height: 2.4rem;
 }
 
 @media screen and (max-width: $breakpoints-sm) {

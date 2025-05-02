@@ -31,10 +31,17 @@ function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Close the menu when a link is clicked on mobile
+  const handleLinkClick = () => {
+    if (isMobile && isMenuOpen) {
+      toggleMenu();
+    }
+  };
+
   return (
     <header className="header container">
       <div className="header-wrapper">
-        <Link className="header-logo" to="/">
+        <Link className="header-logo" to="/" onClick={handleLinkClick}>
           <svg
             viewBox="0 0 361 78"
             fill="none"
@@ -69,7 +76,7 @@ function Header() {
             aria-expanded={isMenuOpen}
             type="button"
           >
-            {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
+            {isMenuOpen ? <X /> : <Menu />}
           </button>
         )}
 
@@ -78,22 +85,38 @@ function Header() {
         >
           <ul className="header-nav">
             <li className="header-nav-element">
-              <Link className="header-nav-element-link" to="/">
+              <Link
+                className="header-nav-element-link"
+                to="/"
+                onClick={handleLinkClick}
+              >
                 Accueil
               </Link>
             </li>
             <li className="header-nav-element">
-              <Link className="header-nav-element-link" to="/explore">
+              <Link
+                className="header-nav-element-link"
+                to="/explore"
+                onClick={handleLinkClick}
+              >
                 Explorer
               </Link>
             </li>
             <li className="header-nav-element">
-              <Link className="header-nav-element-link" to="/explore">
+              <Link
+                className="header-nav-element-link"
+                to="/explore"
+                onClick={handleLinkClick}
+              >
                 Annonces
               </Link>
             </li>
             <li className="header-nav-element">
-              <a className="btn btn-reversed" href="/">
+              <a
+                className="btn btn-reversed"
+                href="/"
+                onClick={handleLinkClick}
+              >
                 <LogIn />
                 S'identifier
               </a>

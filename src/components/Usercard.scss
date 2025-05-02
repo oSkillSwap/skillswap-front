@@ -43,16 +43,12 @@
       flex-grow: 1;
     }
   }
-}
 
-@media (min-width: $breakpoints-sm) {
-  .profile-card {
+  @media screen and (min-width: $breakpoints-sm) {
     width: calc((100% - 6.4rem) / 2);
   }
-}
-
-@media (min-width: $breakpoints-lg) {
-  .profile-card {
+  
+  @media screen and (min-width: $breakpoints-lg) {
     width: calc((100% - 6.4rem) / 3);
   }
 }

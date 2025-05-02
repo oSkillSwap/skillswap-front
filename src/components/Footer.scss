@@ -9,28 +9,35 @@
 
   &-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    gap: $spacing-xl;
     font-size: $font-size-xs;
     line-height: $line-height-tight;
 
     &-logo {
       width: 18.5rem;
       color: $color-white;
+      @include transition-color;
+
+      &:hover {
+        color: $color-primary;
+      }
     }
 
     &-nav {
       display: flex;
+      flex-direction: column;
       width: 100%;
-      justify-content: space-between;
+      align-items: center;
       list-style: none;
-      gap: $spacing-xl;
+      gap: $spacing-lg;
       padding: 0;
       
       &-element-link {
         color: $color-white;
         text-decoration: none;
+        @include transition-color;
 
         &:hover {
           color: $color-primary;
@@ -49,28 +56,28 @@
       margin-bottom: 7.8rem;
     }
   }
-}
 
-@media (max-width: $breakpoints-xl) {
-  .footer {
+  @media screen and (min-width: $breakpoints-md) {
     &-container {
-      flex-direction: column;
-      align-items: center;
-      gap: $spacing-xl;
-
       &-nav {
-        align-items: center;
-        gap: $spacing-lg;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: $spacing-xl;
       }
     }
   }
-}
-
-@media (max-width: $breakpoints-md) {
-  .footer {
+  
+  @media screen and (min-width: $breakpoints-xl) {
     &-container {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0;
+
       &-nav {
-        flex-direction: column;
+        width: 100%;
+        align-items: normal;
       }
     }
   }
