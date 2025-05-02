@@ -8,10 +8,13 @@
   &-header {
     grid-column: 1/13;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: $spacing-xl;
 
     &-picture {
-      width: 25.8rem;
+      width: 20rem;
+      height: fit-content;
       aspect-ratio: 1;
       object-fit: cover;
       border-radius: 50%;
@@ -21,6 +24,10 @@
       display: flex;
       flex-direction: column;
       gap: $spacing-md;
+
+      & p {
+        text-align: center;
+      }
 
       &-title {
         display: flex;
@@ -36,6 +43,7 @@
   }
 
   &-col1, &-col2 {
+    grid-column: 1/13;
     display: flex;
     flex-direction: column;
     gap: $spacing-2xl;
@@ -46,12 +54,8 @@
     }
   }
 
-  &-col1 {
-    grid-column: 1/4;
-  }
-
   &-col2 {
-    grid-column: 4/13;
+    margin-top: $spacing-xl;
   }
 
   &-skills, &-interests, &-fav {
@@ -64,7 +68,7 @@
     gap: $spacing-md;
 
     &-picture {
-      width: calc((100% - $spacing-xl) / 3);
+      width: calc((100% - ($spacing-md * 5)) / 6);
       border-radius: 50%;
       object-fit: cover;
       aspect-ratio: 1;
@@ -97,7 +101,7 @@
         background-color: $color-primary;
         position: relative;
 
-        &::after{
+        &::after {
           content: '';
           position: absolute;
           background: no-repeat center center url('img/icons/check.svg');
@@ -119,4 +123,53 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
+}
+
+@media screen and (min-width: $breakpoints-md) {
+  .profile {
+    &-header {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+
+      &-content {
+        & p {
+          text-align: left;
+        }
+      }
+    }
+
+    &-col1 {
+      grid-column: 1/5;
+    }
+
+    &-col2 {
+      grid-column: 5/13;
+      margin-top: 0;
+    }
+
+    &-fav {
+      &-picture {
+        width: calc((100% - ($spacing-md * 2)) / 3);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $breakpoints-lg) {
+  .profile {
+    &-header {
+      &-picture {
+        width: 25.8rem;
+      }
+    }
+    
+    &-col1 {
+      grid-column: 1/4;
+    }
+    
+    &-col2 {
+      grid-column: 4/13;
+    }
+  }
 }
