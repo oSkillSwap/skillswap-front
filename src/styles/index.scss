@@ -1,0 +1,238 @@
+@use "variables" as *;
+
+:root {
+  font-family: $font-family-base;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 62.5%;
+
+  color: $color-text;
+  background-color: $color-background;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: hsl(from $color-primary h s 80);
+  color: hsl(from $color-primary h s 15);
+  text-shadow: none;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body {
+  font-size: 1.6rem;
+}
+
+main {
+  flex-grow: 1;
+  width: 100%;
+}
+
+h1, h2, h3 {
+  font-family: $font-family-heading;
+}
+
+h1 {
+  font-size: $h1-font-size;
+  font-weight: $h1-font-weight;
+  line-height: $h1-line-height;
+}
+
+h2 {
+  font-size: $h2-font-size;
+  font-weight: $h2-font-weight;
+  line-height: $h2-line-height;
+}
+
+h3 {
+  font-size: $h3-font-size;
+  font-weight: $h3-font-weight;
+  line-height: $h3-line-height;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+  @include transition-color;
+
+  &:hover {
+    color: $color-secondary;
+  }
+}
+
+label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+}
+
+input {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  border-radius: 0.8rem;
+  border: 3px solid $color-gray;
+  background-color: $color-gray;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  margin: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  display: grid;
+  place-content: center;
+
+  &::before {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em $color-primary;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+
+  &:checked::before {
+    transform: scale(1);
+  }
+}  
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  @include transition-button;
+}
+
+.btn {
+  font-weight: $font-weight-bold;
+  font-size: $font-size-md;
+  line-height: $line-height-tight;
+  text-decoration: none;
+  padding: 1.2rem 3.6rem;
+  border-radius: 0.8rem;
+  display: flex;
+  gap: $spacing-sm;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+
+  &-centered {
+    margin: 0 auto;
+  }
+
+  &-icon {
+    padding: 1.2rem 1.6rem;
+  }
+
+  &-default {
+    background-color: $color-primary;
+    color: $color-black;
+
+    &:hover {
+      background-color: $color-primary-dark;
+      color: $color-white;
+    }
+  }
+
+  &-secondary {
+    background-color: $color-black;
+    color: $color-white;
+
+    &:hover {
+      background-color: hsl(from $color-black h s 30);
+      color: $color-white;
+    }
+  }
+
+  &-reversed {
+    background-color: $color-white;
+    color: $color-black;
+
+    &:hover {
+      background-color: $color-primary;
+      color: $color-black;
+    }
+  }
+
+  &-alt {
+    background-color: $color-gray;
+    color: $color-black;
+
+    &:hover {
+      background-color: $color-secondary;
+      color: $color-black;
+    }
+  }
+}
+
+.container {
+  max-width: 119.4rem;
+  margin: 0 auto;
+  padding: 0 $spacing-xl;
+
+  &:is(main) {
+    margin: $spacing-md auto 0 auto;
+  }
+}
+
+.content {
+  margin: 10rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+
+  & h1 {
+    text-align: center;
+    width: 100%;
+  }
+
+  &-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xl;
+  }
+}
+
+.tag {
+  border-radius: 1.6rem;
+  font-size: $font-size-xs;
+  background-color: $color-gray;
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+
+  &-primary {
+    background-color: $color-primary;
+  }
+}
+
+.star {
+  stroke: none;
+  width: 2rem;
+  height: 2rem;
+  fill: $color-gray;
+
+  &-active {
+    fill: $color-secondary;
+  }
+}
+
+@media screen and (max-width: $breakpoints-sm) {
+  :root {
+    font-size: 50%;
+  }  
+}

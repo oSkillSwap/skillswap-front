@@ -1,0 +1,79 @@
+@use "../styles/variables" as *;
+
+.login, .register {
+  width: 40rem;
+
+  a {
+    font-weight: $font-weight-bold;
+  }
+
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 20rem;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md;
+  }
+
+  &-close-btn {
+    color: $color-white;
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    & svg {
+      width: 3.2rem;
+      height: auto;
+    }
+  }
+
+  &-alert {
+    color: rgb(255, 0, 0);
+    background-color: rgb(255, 218, 218);
+    border-radius: 0.8rem;
+    padding: $spacing-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    margin-top: $spacing-sm;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $spacing-md;
+    gap: $spacing-md;
+  }
+
+  &-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin: 0 auto;
+  
+    &-field {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      &:has(input[type="checkbox"]) {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+  }
+
+  & button {
+    width: 100%;
+  }
+}

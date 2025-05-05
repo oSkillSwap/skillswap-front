@@ -1,0 +1,32 @@
+$transition-duration: 0.2s;
+$transition-timing-function: ease;
+
+@mixin transition-color {
+  transition: color $transition-duration $transition-timing-function;
+}
+
+@mixin transition-background {
+  transition: background-color $transition-duration $transition-timing-function;
+}
+
+@mixin transition-border {
+  transition: border-color $transition-duration $transition-timing-function;
+}
+
+@mixin transition-transform {
+  transition: transform $transition-duration $transition-timing-function;
+}
+
+@mixin transition-opacity {
+  transition: opacity $transition-duration $transition-timing-function;
+}
+
+@mixin transition-all {
+  transition: all $transition-duration $transition-timing-function;
+}
+
+@mixin transition-button {
+  transition: 
+    background-color $transition-duration $transition-timing-function, 
+    color $transition-duration $transition-timing-function;
+}

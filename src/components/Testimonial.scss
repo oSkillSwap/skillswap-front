@@ -1,0 +1,19 @@
+@use "../styles/variables" as *;
+
+.testimonials-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+  align-items: center;
+
+  &-picture {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  &-info {
+    font-size: $font-size-xs;
+  }
+}

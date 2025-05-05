@@ -1,19 +1,22 @@
-# SkillSwap Front
+# SkillSwap Frontend
 
-Frontend application for the SkillSwap project developed with React, TypeScript, Sass, and Vite.
+Frontend application for the SkillSwap project developed with React, TypeScript, Sass, and Vite. SkillSwap is a platform that enables users to exchange skills and knowledge.
 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (recommended version: 18.x or higher)
-- npm or yarn or pnpm
+- npm, yarn, or pnpm
 
 ## Technologies Used
 
 - [Vite](https://vitejs.dev/) - Ultra-fast build tool
 - [React 19](https://react.dev/) - JavaScript library for building user interfaces
+- [React Router](https://reactrouter.com/) - Declarative routing for React applications
 - [TypeScript](https://www.typescriptlang.org/) - Typed programming language based on JavaScript
 - [Sass](https://sass-lang.com/) - CSS preprocessor
 - [Biome](https://biomejs.dev/) - Formatting and linting tool
+- [Swiper](https://swiperjs.com/) - Modern touch slider library
+- [Lucide React](https://lucide.dev/) - Icon library for React
 
 ## Installation
 
@@ -42,11 +45,19 @@ The page will automatically reload when you make changes to the code.
 ### `npm run build`
 
 Builds the application for production to the `dist` folder.  
-This command first runs TypeScript compilation then builds the application with Vite.
+This command first runs TypeScript compilation and then builds the application with Vite.
 
 ### `npm run preview`
 
 Allows you to preview the production build locally before deployment.
+
+### `npm run check`
+
+Runs the Biome linter to check for code issues.
+
+### `npm run format`
+
+Formats the code using Biome.
 
 ## Project Structure
 
@@ -72,21 +83,7 @@ skillswap-front/
 └── vite.config.ts      # Vite configuration
 ```
 
-## Biome Configuration
-
-[Biome](https://biomejs.dev/) is used for code formatting and linting. You can configure Biome by modifying the `biome.json` file at the project root.
-
-Example commands for using Biome:
-
-```bash
-# Check code with Biome
-npm run check
-
-# Format code with Biome
-npm run format
-```
-
-## Using Sass
+## Styling with Sass
 
 This project uses Sass for styling. Sass files (`.scss`) can be directly imported into React components:
 
@@ -98,21 +95,20 @@ function MyComponent() {
 }
 ```
 
+### Example Sass Variables and Mixins
+
+The project includes reusable variables and mixins for consistent styling. For example:
+
+- **Variables**: Colors, typography, spacing, and breakpoints are defined in `src/styles/variables/`.
+- **Mixins**: Transition effects like `transition-color` and `transition-border` are defined in `src/styles/variables/_transitions.scss`.
+
 ## Deployment
 
 To deploy the application:
 
-1. Create a production build with `npm run build`
-2. The `dist` folder contains all the necessary files for deployment
-3. Deploy the contents of the `dist` folder to your preferred hosting provider
-
-## Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Create a production build with `npm run build`.
+2. The `dist` folder contains all the necessary files for deployment.
+3. Deploy the contents of the `dist` folder to your preferred hosting provider.
 
 ## License
 

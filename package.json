@@ -11,14 +11,18 @@
     "format": "npx @biomejs/biome format ./src --write"
   },
   "dependencies": {
+    "lucide-react": "^0.503.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sass": "^1.87.0"
+    "react-router": "^7.5.3",
+    "sass": "^1.87.0",
+    "swiper": "^11.2.6"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/swiper": "^5.4.3",
     "@vitejs/plugin-react": "^4.3.4",
     "globals": "^16.0.0",
     "typescript": "~5.7.2",

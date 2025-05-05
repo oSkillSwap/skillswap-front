@@ -1,0 +1,175 @@
+@use "../styles/variables" as *;
+
+.profile {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: $spacing-xl;
+
+  &-header {
+    grid-column: 1/13;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xl;
+
+    &-picture {
+      width: 20rem;
+      height: fit-content;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+
+      & p {
+        text-align: center;
+      }
+
+      &-title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+      }
+
+      &-btns {
+        display: flex;
+        gap: $spacing-sm;
+      }
+    }
+  }
+
+  &-col1, &-col2 {
+    grid-column: 1/13;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xl;
+
+    & h2 {
+      width: 100%;
+      margin-bottom: $spacing-md;
+    }
+  }
+
+  &-col2 {
+    margin-top: $spacing-xl;
+  }
+
+  &-skills, &-interests, &-fav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  &-fav {
+    gap: $spacing-md;
+
+    &-picture {
+      width: calc((100% - ($spacing-md * 5)) / 6);
+      border-radius: 50%;
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+  }
+
+  &-availability {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: $spacing-xs;
+    align-items: center;
+  
+    &-day, &-slot {
+      font-size: $font-size-xs;
+      background-color: $color-black;
+      color: $color-white;
+      border-radius: 1.6rem;
+      padding: $spacing-xs;
+      text-align: center;
+    }
+  
+    &-check {
+      width: 2.4rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background-color: $color-gray;
+      margin: auto;
+  
+      &.active {
+        background-color: $color-primary;
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          background: no-repeat center center url('img/icons/check.svg');
+          background-size: 50%;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.testimonials {
+  display: flex;
+  gap: $spacing-xl;
+}
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+@media screen and (min-width: $breakpoints-md) {
+  .profile {
+    &-header {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+
+      &-content {
+        & p {
+          text-align: left;
+        }
+      }
+    }
+
+    &-col1 {
+      grid-column: 1/5;
+    }
+
+    &-col2 {
+      grid-column: 5/13;
+      margin-top: 0;
+    }
+
+    &-fav {
+      &-picture {
+        width: calc((100% - ($spacing-md * 2)) / 3);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $breakpoints-lg) {
+  .profile {
+    &-header {
+      &-picture {
+        width: 25.8rem;
+      }
+    }
+    
+    &-col1 {
+      grid-column: 1/4;
+    }
+    
+    &-col2 {
+      grid-column: 4/13;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@use "../styles/variables" as *;
+
+.search {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  & * {
+    border: none;
+    background-color: transparent;
+    font-weight: $font-weight-bold;
+  }
+
+  &-wrapper {
+    display: flex;
+    width: 65%;
+    border-radius: 1.6rem;
+    border: 3px solid $color-gray;
+    @include transition-border;
+  }
+
+  &:focus-within .search-wrapper {
+    border-color: $color-primary;
+  }
+
+  &-input {
+    width: 100%;
+    padding: $spacing-md $spacing-xl;
+    border-radius: 1.6rem 0 0 1.6rem;
+    
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  &-button {
+    height: fit-content;
+    padding: $spacing-md;
+    border-radius: 0 1.6rem 1.6rem 0;
+    
+    &:focus {
+      outline: 0;
+    }
+
+    & svg {
+      width: 2.4rem;
+      height: auto;
+    }
+  }
+}

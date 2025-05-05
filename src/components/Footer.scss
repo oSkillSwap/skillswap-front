@@ -1,0 +1,84 @@
+@use "../styles/variables" as *;
+
+.footer {
+  width: 100%;
+  background-color: $color-black;
+  color: $color-white;
+  padding-top: $spacing-xl;
+  margin-top: $spacing-2xl;
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xl;
+    font-size: $font-size-xs;
+    line-height: $line-height-tight;
+
+    &-logo {
+      width: 18.5rem;
+      color: $color-white;
+      @include transition-color;
+
+      &:hover {
+        color: $color-primary;
+      }
+    }
+
+    &-nav {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+      list-style: none;
+      gap: $spacing-lg;
+      padding: 0;
+      
+      &-element-link {
+        color: $color-white;
+        text-decoration: none;
+        @include transition-color;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+
+    &-copy {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-top: 1px solid $color-white;
+      padding-top: $spacing-md;
+      margin-top: $spacing-2xl;
+      margin-bottom: 7.8rem;
+    }
+  }
+
+  @media screen and (min-width: $breakpoints-md) {
+    &-container {
+      &-nav {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: $spacing-xl;
+      }
+    }
+  }
+  
+  @media screen and (min-width: $breakpoints-xl) {
+    &-container {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0;
+
+      &-nav {
+        width: 100%;
+        align-items: normal;
+      }
+    }
+  }
+}
