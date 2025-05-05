@@ -23,7 +23,6 @@
 
 body {
   font-size: 1.6rem;
-  min-height: 100vh;
 }
 
 h1, h2, h3 {
@@ -48,6 +47,23 @@ h3 {
   line-height: $h3-line-height;
 }
 
+a {
+  color: $color-primary;
+  text-decoration: none;
+  @include transition-color;
+
+  &:hover {
+    color: $color-secondary;
+  }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  @include transition-button;
+}
+
 .btn {
   font-weight: $font-weight-bold;
   font-size: $font-size-md;
@@ -60,7 +76,6 @@ h3 {
   align-items: center;
   justify-content: center;
   width: max-content;
-  @include transition-button;
 
   &-centered {
     margin: 0 auto;
@@ -111,10 +126,25 @@ h3 {
   }
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .container {
   max-width: 119.4rem;
-  margin: $spacing-xl auto 0 auto;
+  margin: 0 auto;
   padding: 0 $spacing-xl;
+
+  &:is(main) {
+    margin: $spacing-md auto 0 auto;
+  }
+}
+
+main {
+  flex-grow: 1;
+  width: 100%;
 }
 
 .content {
@@ -133,11 +163,6 @@ h3 {
     flex-wrap: wrap;
     gap: $spacing-xl;
   }
-}
-
-button {
-  cursor: pointer;
-  border: none;
 }
 
 .tag {

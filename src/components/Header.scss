@@ -7,7 +7,6 @@
   color: $color-white;
   border-radius: 1.6rem;
   padding: $spacing-md;
-  margin-top: $spacing-md;
   position: sticky;
   top: $spacing-md;
   z-index: 100;
@@ -45,12 +44,7 @@
 }
 
 .hamburger-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   padding: $spacing-sm;
   z-index: 100;
   color: $color-white;

@@ -1,0 +1,115 @@
+@use "../styles/variables" as *;
+
+.login {
+  a {
+    font-weight: $font-weight-bold;
+  }
+
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 20rem;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md;
+  }
+
+  &-close-btn {
+    color: $color-white;
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    & svg {
+      width: 3.2rem;
+      height: auto;
+    }
+  }
+
+  &-alert {
+    color: rgb(255, 0, 0);
+    background-color: rgb(255, 218, 218);
+    border-radius: 0.8rem;
+    padding: $spacing-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    margin-top: $spacing-sm;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $spacing-md;
+    gap: $spacing-md;
+  }
+
+  &-form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin: 0 auto;
+  
+    &-field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: $spacing-sm;
+  
+      & label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+      }
+  
+      & input {
+        width: 100%;
+        padding: $spacing-sm $spacing-md;
+        border-radius: 0.8rem;
+        border: 3px solid $color-gray;
+        background-color: $color-gray;
+    
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+        }
+      }
+  
+      & input[type="checkbox"] {
+        appearance: none;
+        margin: 0;
+        width: 2.4rem;
+        height: 2.4rem;
+        padding: 0;
+        display: grid;
+        place-content: center;
+  
+        &::before {
+          content: "";
+          width: 1rem;
+          height: 1rem;
+          transform: scale(0);
+          transition: 120ms transform ease-in-out;
+          box-shadow: inset 1em 1em $color-primary;
+          transform-origin: bottom left;
+          clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+  
+        &:checked::before {
+          transform: scale(1);
+        }
+      }  
+    }
+  }
+
+  & button {
+    width: 100%;
+  }
+}

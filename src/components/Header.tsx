@@ -112,14 +112,10 @@ function Header() {
               </Link>
             </li>
             <li className="header-nav-element">
-              <a
-                className="btn btn-reversed"
-                href="/"
-                onClick={handleLinkClick}
-              >
+              <Link className="btn btn-reversed" to="/login">
                 <LogIn />
                 S'identifier
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
