@@ -8,7 +8,7 @@ function Testimonial() {
       <Link to={'/profile'}>
         <img
           className="testimonials-card-picture"
-          src="img/avatars/robot1.jpg"
+          src="/img/avatars/robot1.jpg"
           alt=""
         />
       </Link>

@@ -89,7 +89,7 @@ function Post({
                 <div className="post-author-userinfo">
                   <img
                     className="post-author-userinfo-picture"
-                    src="img/avatars/robot1.jpg"
+                    src="/img/avatars/robot1.jpg"
                     alt=""
                   />
                   <div>
@@ -121,7 +121,7 @@ function Post({
                 <div className="post-author-userinfo">
                   <img
                     className="post-author-userinfo-picture"
-                    src="img/avatars/robot1.jpg"
+                    src="/img/avatars/robot1.jpg"
                     alt=""
                   />
                   <div>
@@ -181,7 +181,7 @@ function Post({
               <div className="post-offer-userinfo">
                 <img
                   className="post-offer-userinfo-picture"
-                  src="img/avatars/robot1.jpg"
+                  src="/img/avatars/robot1.jpg"
                   alt=""
                 />
                 <div>
@@ -215,7 +215,7 @@ function Post({
             <div className="post-author-userinfo">
               <img
                 className="post-author-userinfo-picture"
-                src="img/avatars/robot1.jpg"
+                src="/img/avatars/robot1.jpg"
                 alt=""
               />
               <div>
