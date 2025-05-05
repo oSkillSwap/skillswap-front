@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import './Login.scss';
+import './Onboarding.scss';
 import { Info } from 'lucide-react';
+import { Link } from 'react-router';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ function Login() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setError('');
 
     // Form check
     if (!email || !password) {
@@ -68,14 +70,14 @@ function Login() {
             </label>
           </div>
 
-          <a href="/">Mot de passe oublié ?</a>
+          <Link to="/">Mot de passe oublié ?</Link>
 
           <button type="submit" className="btn btn-default">
             Se connecter
           </button>
           <div className="login-footer">
             <p>
-              Pas encore de compte ? <a href="/register">S'inscrire</a>
+              Pas encore de compte ? <Link to="/register">S'inscrire</Link>
             </p>
           </div>
         </form>
