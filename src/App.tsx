@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import { AuthProvider } from './contexts/AuthContext';
 import Explore from './pages/Explore';
 import Homepage from './pages/Homepage';
 import Login from './pages/Login';
@@ -10,7 +11,7 @@ import ScrollToTop from './utils/ScrollToTop';
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Header />
       <ScrollToTop />
       <Routes>
@@ -24,7 +25,7 @@ function App() {
         <Route path="register" element={<Register />} />
       </Routes>
       <Footer />
-    </>
+    </AuthProvider>
   );
 }
 

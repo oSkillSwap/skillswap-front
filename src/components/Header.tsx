@@ -1,11 +1,13 @@
-import { LogIn, Menu, X } from 'lucide-react';
+import { LogIn, LogOut, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import './Header.scss';
 import { Link } from 'react-router';
+import { useAuth } from '../contexts/AuthContext';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { username, logout } = useAuth();
 
   // Check if the screen is mobile size
   // and update the state accordingly
@@ -112,10 +114,21 @@ function Header() {
               </Link>
             </li>
             <li className="header-nav-element">
-              <Link className="btn btn-reversed" to="/login">
-                <LogIn />
-                S'identifier
-              </Link>
+              {username ? (
+                <button
+                  className="btn btn-reversed"
+                  type={'button'}
+                  onClick={logout}
+                >
+                  <LogOut />
+                  Déconnexion
+                </button>
+              ) : (
+                <Link className="btn btn-reversed" to="/login">
+                  <LogIn />
+                  S'identifier
+                </Link>
+              )}
             </li>
           </ul>
         </nav>
