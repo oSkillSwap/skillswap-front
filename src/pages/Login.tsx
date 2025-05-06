@@ -1,36 +1,46 @@
 import { useEffect, useState } from 'react';
 import './Onboarding.scss';
 import { Info } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { useAuth } from '../contexts/AuthContext';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setEmail('');
-    setPassword('');
     setError('');
   }, []);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const handleSubmit = (formData: FormData) => {
     setError('');
 
     // Form check
+    const email = formData.get('email');
+    const password = formData.get('password');
+
     if (!email || !password) {
       setError('Veuillez remplir tous les champs');
       return;
     }
+
+    // Login request
+    login(email as string, password as string)
+      .then(() => {
+        // Redirect to homepage if successful
+        navigate('/');
+      })
+      .catch(() => {
+        setError('Erreur lors de la connexion, veuillez réessayer');
+      });
   };
 
   return (
     <main className="login container">
       <section className="content">
         <h1>Connexion</h1>
-
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="login-form" action={handleSubmit}>
           <div className="login-form-field">
             <label className="" htmlFor="email">
               Email
@@ -38,8 +48,7 @@ function Login() {
             <input
               id="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
               placeholder="exemple@email.com"
             />
           </div>
@@ -51,8 +60,7 @@ function Login() {
             <input
               id="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
               placeholder="••••••••"
             />
           </div>
