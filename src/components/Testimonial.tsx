@@ -1,27 +1,26 @@
 import './Testimonial.scss';
 import { Link } from 'react-router';
+import type User from '../types/User';
 import Grade from './Grade';
 
-function Testimonial() {
+function Testimonial({ data }: { data: User['Reviews'][0] }) {
   return (
     <article className="testimonials-card">
-      <Link to={'/profile'}>
+      <Link to={`/profile/${data.Reviewer.id}`}>
         <img
           className="testimonials-card-picture"
-          src="/img/avatars/robot1.jpg"
-          alt=""
+          src={data.Reviewer.avatar}
+          alt={data.Reviewer.username}
         />
       </Link>
       <div className="testimonials-card-title">
-        <h3>Vraiment génial !</h3>
-        <Grade rating={3} />
+        <h3>{data.title}</h3>
+        <Grade rating={data.grade} />
       </div>
-      <p className="testimonials-card-comment">
-        J'ai échangé mes compétences en graphisme contre des cours de guitare,
-        et c'était une expérience incroyable. Simple, humain, et tellement
-        enrichissant !
+      <p className="testimonials-card-comment">{data.content}</p>
+      <p className="testimonials-card-info">
+        {data.Reviewer.username}, {data.updatedAt}
       </p>
-      <p className="testimonials-card-info">Username, le 22 avril 2025</p>
     </article>
   );
 }

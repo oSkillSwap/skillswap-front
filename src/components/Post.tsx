@@ -20,6 +20,16 @@ type PostProps = {
   offers?: { username: string }[];
   isFinished?: boolean;
   reviewed?: boolean;
+  data?: {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+    user_id: number;
+    skill_id: number;
+    SkillWanted: { id: number; name: string };
+  };
 };
 
 function Post({
@@ -29,6 +39,7 @@ function Post({
   author,
   isFinished,
   reviewed,
+  data,
 }: PostProps) {
   return (
     <article className="post">
@@ -46,19 +57,20 @@ function Post({
 
         <div>
           <div className="post-header-title">
-            <h3>Titre de l'annonce</h3>
-            <p className="tag">Next.js</p>
+            <h3>{data?.title || "Titre de l'annonce"}</h3>
+            <p className="tag">{data?.SkillWanted.name || 'Next.js'}</p>
           </div>
-          <p className="post-header-date">Posté le 24 avril 2025</p>
+          <p className="post-header-date">
+            Posté le {data?.createdAt || '24 avril 2025'}
+          </p>
         </div>
       </div>
 
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-        molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia
-        harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam
-        incidunt esse.
+        {data?.content ||
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse.'}
       </p>
+
       {origin === 'profile' && (
         <>
           <div className="post-btns">

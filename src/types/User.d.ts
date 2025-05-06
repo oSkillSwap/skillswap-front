@@ -1,4 +1,6 @@
-interface User {
+import type Review from './Review';
+
+export default interface User {
   id: number;
   username: string;
   lastName: string;
@@ -10,8 +12,6 @@ interface User {
   avatar: string;
   createdAt: string;
   updatedAt: string;
-  averageGrade: string;
-  nbOfReviews: string;
   Skills: { id: number; name: string }[];
   WantedSkills: { id: number; name: string }[];
   Availabilities: {
@@ -27,6 +27,16 @@ interface User {
   }[];
   Followers: { id: number; username: string; avatar: string }[];
   Follows: { id: number; username: string; avatar: string }[];
+  Posts: {
+    id: number;
+    content: string;
+    title: string;
+    isClosed: boolean;
+    createdAt: string;
+    updatedAt: string;
+    user_id: number;
+    skill_id: number;
+    SkillWanted: { id: number; name: string };
+  }[];
+  Reviews: Review[];
 }
-
-export default User;

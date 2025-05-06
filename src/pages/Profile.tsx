@@ -27,12 +27,29 @@ function Profile() {
     setIsLoading(true);
     setError('');
 
+    const urls = [
+      `${API_URL}/users/${user}`,
+      `${API_URL}/users/follows/${user}`,
+      `${API_URL}/reviews/${user}`,
+      `${API_URL}/posts/${user}`,
+    ];
+
     axios
-      .get(`${API_URL}/users/${user}`)
-      .then((response) => {
-        setUserData(response.data.user);
-        setIsLoading(false);
-      })
+      .all(urls.map((url) => axios.get(url)))
+      .then(
+        axios.spread(
+          (userResponse, followsResponse, reviewsResponse, postsResponse) => {
+            setUserData({
+              ...userResponse.data.user,
+              Follows: followsResponse.data.user.Follows,
+              Followers: followsResponse.data.user.Followers,
+              Reviews: reviewsResponse.data.reviews,
+              Posts: postsResponse.data.posts,
+            });
+            setIsLoading(false);
+          },
+        ),
+      )
       .catch((error) => {
         setError(error.message);
         setIsLoading(false);
@@ -85,11 +102,18 @@ function Profile() {
           <div>
             <div className="profile-header-content-title">
               <h1>{userData.username}</h1>
-              <p className="tag tag-primary">Disponible</p>
+              {userData.isAvailable ? (
+                <p className="tag tag-primary">Disponible</p>
+              ) : (
+                <p className="tag tag-alt">Indisponible</p>
+              )}
             </div>
             <Grade
-              rating={+userData.averageGrade}
-              nbReviews={+userData.nbOfReviews}
+              rating={
+                userData.Reviews.reduce((acc, el) => acc + el.grade, 0) /
+                userData.Reviews.length
+              }
+              nbReviews={userData.Reviews.length}
             />
           </div>
           <p>{userData.description}</p>
@@ -179,16 +203,26 @@ function Profile() {
         <section className="profile-posts">
           <h2>Annonces</h2>
           <div className="posts-container">
-            <Post variant="post" origin="profile" />
-            <Post variant="post" origin="profile" />
+            {userData.Posts && userData.Posts.length > 0 ? (
+              userData.Posts.map((el) => (
+                <Post key={el.id} data={el} variant="post" origin="profile" />
+              ))
+            ) : (
+              <p>Aucune annonce renseignée</p>
+            )}
           </div>
         </section>
 
         <section className="profile-testimonials">
           <h2>Avis</h2>
           <div className="testimonials">
-            <Testimonial />
-            <Testimonial />
+            {userData.Reviews && userData.Reviews.length > 0 ? (
+              userData.Reviews.map((el) => (
+                <Testimonial key={el.id} data={el} />
+              ))
+            ) : (
+              <p>Aucun avis renseigné</p>
+            )}
           </div>
         </section>
       </div>
