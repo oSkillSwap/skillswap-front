@@ -6,7 +6,7 @@ import type User from '../types/User';
 type AuthContextType = {
   user: User | null;
   accessToken: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, remember: boolean) => Promise<void>;
   logout: () => void;
 };
 
@@ -27,22 +27,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const login = async (email: string, password: string) => {
-    await api
-      .post('/login', { email, password })
-      .then((response) => {
-        const { token, user } = response.data;
-        setAccessToken(accessToken);
+  const login = async (email: string, password: string, remember: boolean) => {
+    try {
+      const response = await api.post('/login', { email, password });
+      const { token, user } = response.data;
+
+      setUser(user);
+      setAccessToken(accessToken);
+
+      if (remember) {
         localStorage.setItem('accessToken', token);
-        setUser(user);
         // To store a js object in the localStorage it needs to be stringified
         localStorage.setItem('user', JSON.stringify(user));
-      })
-      .catch((error) => {
-        setUser(null);
-        setAccessToken(null);
-        throw error;
-      });
+      }
+    } catch (error) {
+      setUser(null);
+      setAccessToken(null);
+      throw error;
+    }
   };
 
   const logout = () => {
