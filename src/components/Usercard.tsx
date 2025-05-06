@@ -9,7 +9,7 @@ function UserCard() {
       <Link to={'/profile'}>
         <img
           className="profile-card-picture"
-          src="img/avatars/robot1.jpg"
+          src="/img/avatars/robot1.jpg"
           alt=""
         />
       </Link>

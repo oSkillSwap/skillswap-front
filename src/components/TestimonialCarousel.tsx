@@ -2,9 +2,36 @@ import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/scss';
 import './TestimonialCarousel.scss';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { API_URL } from '../config';
+import type Review from '../types/Review';
 import Testimonial from './Testimonial';
 
 function TestimonialCarousel() {
+  const [reviews, setReviews] = useState<Review[] | []>([]);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    setError('');
+
+    axios
+      .get(`${API_URL}/reviews`)
+      .then((response) => {
+        setReviews(response.data.reviews);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }, []);
+
+  if (error !== '' || !reviews) {
+    return (
+      <main className="container">
+        <h1>{error}</h1>
+      </main>
+    );
+  }
   return (
     <Swiper
       className="testimonial-carousel"
@@ -32,24 +59,11 @@ function TestimonialCarousel() {
       }}
       modules={[Autoplay]}
     >
-      <SwiperSlide>
-        <Testimonial />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial />
-      </SwiperSlide>
+      {reviews.map((review) => (
+        <SwiperSlide key={review.id}>
+          <Testimonial data={review} />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }

@@ -16,7 +16,10 @@ function App() {
       <Routes>
         <Route index element={<Homepage />} />
         <Route path="explore" element={<Explore />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile" element={<Profile />}>
+          <Route index element={<Profile />} />
+          <Route path=":user" element={<Profile />} />
+        </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Routes>

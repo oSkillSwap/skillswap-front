@@ -34,7 +34,7 @@ function CategoryCarousel() {
       <SwiperSlide className="categories-card">
         <img
           className="categories-card-img"
-          src="img/icons/graduation-cap.svg"
+          src="/img/icons/graduation-cap.svg"
           alt="Soutien scolaire"
         />
         <p className="categories-card-title">Soutien scolaire</p>
@@ -42,7 +42,7 @@ function CategoryCarousel() {
       <SwiperSlide className="categories-card">
         <img
           className="categories-card-img"
-          src="img/icons/mouse-pointer-click.svg"
+          src="/img/icons/mouse-pointer-click.svg"
           alt="Stratégie digitales"
         />
         <p className="categories-card-title">Stratégie digitales</p>
@@ -50,7 +50,7 @@ function CategoryCarousel() {
       <SwiperSlide className="categories-card">
         <img
           className="categories-card-img"
-          src="img/icons/shirt.svg"
+          src="/img/icons/shirt.svg"
           alt="Couture et retouches"
         />
         <p className="categories-card-title">Couture et retouches</p>
@@ -58,7 +58,7 @@ function CategoryCarousel() {
       <SwiperSlide className="categories-card">
         <img
           className="categories-card-img"
-          src="img/icons/scan-face.svg"
+          src="/img/icons/scan-face.svg"
           alt="Beauté et style"
         />
         <p className="categories-card-title">Beauté et style</p>
@@ -66,7 +66,7 @@ function CategoryCarousel() {
       <SwiperSlide className="categories-card">
         <img
           className="categories-card-img"
-          src="img/icons/gauge.svg"
+          src="/img/icons/gauge.svg"
           alt="Coaching de vie"
         />
         <p className="categories-card-title">Coaching de vie</p>
@@ -74,7 +74,7 @@ function CategoryCarousel() {
       <SwiperSlide className="categories-card">
         <img
           className="categories-card-img"
-          src="img/icons/code-xml.svg"
+          src="/img/icons/code-xml.svg"
           alt="Dev-pro"
         />
         <p className="categories-card-title">Dev-pro</p>
