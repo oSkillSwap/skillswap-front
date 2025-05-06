@@ -1,10 +1,10 @@
-import axios from 'axios';
 import type React from 'react';
-import { createContext, useContext, useState } from 'react';
-import { API_URL } from '../config';
+import { createContext, useContext, useEffect, useState } from 'react';
+import api from '../services/api';
+import type User from '../types/User';
 
 type AuthContextType = {
-  username: string | null;
+  user: User | null;
   accessToken: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -13,30 +13,47 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [username, setUsername] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem('accessToken');
+    const storedUser = localStorage.getItem('user');
+
+    if (storedToken && storedUser) {
+      setAccessToken(storedToken);
+      // storedUser is a stringified object and needs to be parsed before set to state
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const login = async (email: string, password: string) => {
-    await axios
-      .post(`${API_URL}/login`, { email, password })
+    await api
+      .post('/login', { email, password })
       .then((response) => {
-        setUsername(response.data.user.username);
-        setAccessToken(response.data.token);
+        const { token, user } = response.data;
+        setAccessToken(accessToken);
+        localStorage.setItem('accessToken', token);
+        setUser(user);
+        // To store a js object in the localStorage it needs to be stringified
+        localStorage.setItem('user', JSON.stringify(user));
       })
       .catch((error) => {
-        setUsername(null);
+        setUser(null);
         setAccessToken(null);
         throw error;
       });
   };
 
   const logout = () => {
-    setUsername(null);
+    setUser(null);
+    localStorage.removeItem('user');
     setAccessToken(null);
+    localStorage.removeItem('accessToken');
   };
 
   return (
-    <AuthContext.Provider value={{ username, accessToken, login, logout }}>
+    <AuthContext.Provider value={{ user, accessToken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

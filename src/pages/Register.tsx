@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import './Onboarding.scss';
+import axios from 'axios';
 import { Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
-import axios from 'axios';
 import { API_URL } from '../config';
 
 function Register() {
@@ -156,17 +156,7 @@ function Register() {
             </ul>
           )}
 
-          <button
-            type="submit"
-            className="btn btn-default"
-            disabled={
-              !email ||
-              !password ||
-              !username ||
-              !confirmPassword ||
-              !acceptedCgu
-            }
-          >
+          <button type="submit" className="btn btn-default">
             Valider
           </button>
 

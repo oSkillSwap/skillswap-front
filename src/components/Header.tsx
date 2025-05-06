@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { username, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   // Check if the screen is mobile size
   // and update the state accordingly
@@ -114,7 +114,7 @@ function Header() {
               </Link>
             </li>
             <li className="header-nav-element">
-              {username ? (
+              {user?.username ? (
                 <button
                   className="btn btn-reversed"
                   type={'button'}
