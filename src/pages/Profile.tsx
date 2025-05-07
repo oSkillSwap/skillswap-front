@@ -1,12 +1,11 @@
 import { Heart, MessageSquare } from 'lucide-react';
 import './Profile.scss';
-import axios from 'axios';
+import api from '../services/api';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import Grade from '../components/Grade';
 import Post from '../components/Post';
 import Testimonial from '../components/Testimonial';
-import { API_URL } from '../config';
 import type User from '../types/User';
 
 interface IAvailabilityMatrix {
@@ -27,28 +26,23 @@ function Profile() {
     setIsLoading(true);
     setError('');
 
-    const urls = [
-      `${API_URL}/users/${user}`,
-      `${API_URL}/users/follows/${user}`,
-      `${API_URL}/reviews/${user}`,
-      `${API_URL}/posts/${user}`,
-    ];
-
-    axios
-      .all(urls.map((url) => axios.get(url)))
+    Promise.all([
+      api.get(`/users/${user}`),
+      api.get(`/users/follows/${user}`),
+      api.get(`/reviews/${user}`),
+      api.get(`/posts/${user}`),
+    ])
       .then(
-        axios.spread(
-          (userResponse, followsResponse, reviewsResponse, postsResponse) => {
-            setUserData({
-              ...userResponse.data.user,
-              Follows: followsResponse.data.user.Follows,
-              Followers: followsResponse.data.user.Followers,
-              Reviews: reviewsResponse.data.reviews,
-              Posts: postsResponse.data.posts,
-            });
-            setIsLoading(false);
-          },
-        ),
+        ([userResponse, followsResponse, reviewsResponse, postsResponse]) => {
+          setUserData({
+            ...userResponse.data.user,
+            Follows: followsResponse.data.user.Follows,
+            Followers: followsResponse.data.user.Followers,
+            Reviews: reviewsResponse.data.reviews,
+            Posts: postsResponse.data.posts,
+          });
+          setIsLoading(false);
+        },
       )
       .catch((error) => {
         setError(error.message);
