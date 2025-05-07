@@ -1,9 +1,8 @@
 @use "../styles/variables" as *;
 
 .profile-card {
-
   &-content-wrapper {
-    display:flex;
+    display: flex;
     flex-direction: column;
     gap: $spacing-lg;
     padding: $spacing-md;
@@ -19,7 +18,8 @@
     border-radius: 1.6rem 1.6rem 0 0;
   }
 
-  &-skills, &-interests {
+  &-skills,
+  &-interests {
     &-title {
       font-weight: $font-weight-bold;
       font-size: $font-size-lg;
@@ -46,7 +46,7 @@
   @media screen and (min-width: $breakpoints-sm) {
     width: calc((100% - 6.4rem) / 2);
   }
-  
+
   @media screen and (min-width: $breakpoints-lg) {
     width: calc((100% - 6.4rem) / 3);
   }

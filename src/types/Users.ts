@@ -1,6 +1,6 @@
 import type { ISkills } from "./Skills";
 
-export interface IUsersHomePage {
+export interface IUsers {
   id: number;
   username: string;
   lastName: string;
