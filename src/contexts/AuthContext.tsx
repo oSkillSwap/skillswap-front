@@ -27,17 +27,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+
   const login = async (email: string, password: string, remember: boolean) => {
     try {
       const response = await api.post('/login', { email, password });
       const { token, user } = response.data;
       // Remove id and email from user object before localStorage
       const { id, email: mail, ...userClean } = user;
-
       setUser(userClean);
       setAccessToken(token);
 
       if (remember) {
+
         localStorage.setItem('accessToken', token);
         // To store a js object in the localStorage it needs to be stringified
         localStorage.setItem('user', JSON.stringify(userClean));

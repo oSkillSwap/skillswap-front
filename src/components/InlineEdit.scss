@@ -1,0 +1,32 @@
+@use "../styles/variables" as *;
+
+.inline-edit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+  
+.inline-edit-value {
+    margin: 0;
+}
+  
+.edit-input {
+    font-size: 1.5rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+  
+.edit-textarea {
+    font-size: 1rem;
+    padding: 0.4rem;
+    min-height: 80px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+
+    &:focus{
+        border: 1px solid $color-primary;
+    }
+}

@@ -1,13 +1,15 @@
-import { Heart, MessageSquare } from 'lucide-react';
+import { Heart, MessageSquare, Pencil } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import './Profile.scss';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import api from '../services/api';
 import { Link, useParams } from 'react-router';
 import Grade from '../components/Grade';
 import Post from '../components/Post';
 import Testimonial from '../components/Testimonial';
-import { API_URL } from '../config';
 import type User from '../types/User';
+import InlineEdit from '../components/InlineEdit';
+import { useAuth } from '../contexts/AuthContext';
+import AvailabilityEditor from '../components/AvailabilityEditor';
 
 interface IAvailabilityMatrix {
   [key: string]: {
@@ -20,6 +22,8 @@ function Profile() {
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isEditingAvailabilities, setIsEditingAvailabilities] = useState(false);
+  const { user: connectedUser } = useAuth();
 
   if (user === undefined) user = '1';
 
@@ -27,28 +31,23 @@ function Profile() {
     setIsLoading(true);
     setError('');
 
-    const urls = [
-      `${API_URL}/users/${user}`,
-      `${API_URL}/users/follows/${user}`,
-      `${API_URL}/reviews/${user}`,
-      `${API_URL}/posts/${user}`,
-    ];
-
-    axios
-      .all(urls.map((url) => axios.get(url)))
+    Promise.all([
+      api.get(`/users/${user}`),
+      api.get(`/users/follows/${user}`),
+      api.get(`/reviews/${user}`),
+      api.get(`/posts/${user}`),
+    ])
       .then(
-        axios.spread(
-          (userResponse, followsResponse, reviewsResponse, postsResponse) => {
-            setUserData({
-              ...userResponse.data.user,
-              Follows: followsResponse.data.user.Follows,
-              Followers: followsResponse.data.user.Followers,
-              Reviews: reviewsResponse.data.reviews,
-              Posts: postsResponse.data.posts,
-            });
-            setIsLoading(false);
-          },
-        ),
+        ([userResponse, followsResponse, reviewsResponse, postsResponse]) => {
+          setUserData({
+            ...userResponse.data.user,
+            Follows: followsResponse.data.user.Follows,
+            Followers: followsResponse.data.user.Followers,
+            Reviews: reviewsResponse.data.reviews,
+            Posts: postsResponse.data.posts,
+          });
+          setIsLoading(false);
+        },
       )
       .catch((error) => {
         setError(error.message);
@@ -72,8 +71,6 @@ function Profile() {
     );
   }
 
-  // Availability matrix to display the user's availability
-  // By default, all time slots are set to false (not available)
   const availabilityMatrix: IAvailabilityMatrix = {
     Lundi: { matin: false, midi: false, 'après-midi': false, soir: false },
     Mardi: { matin: false, midi: false, 'après-midi': false, soir: false },
@@ -84,11 +81,14 @@ function Profile() {
     Dimanche: { matin: false, midi: false, 'après-midi': false, soir: false },
   };
 
-  // Populate the availability matrix with the user's data
-  for (const availability of userData.Availabilities) {
-    availabilityMatrix[availability.day_of_the_week][availability.time_slot] =
-      true;
+  if (userData.Availabilities) {
+    for (const availability of userData.Availabilities) {
+      availabilityMatrix[availability.day_of_the_week][availability.time_slot] =
+        true;
+    }
   }
+
+  const isOwnProfile = connectedUser?.id?.toString() === user;
 
   return (
     <main className="profile container">
@@ -101,13 +101,32 @@ function Profile() {
         <div className="profile-header-content">
           <div>
             <div className="profile-header-content-title">
-              <h1>{userData.username}</h1>
+              {isOwnProfile ? (
+                <InlineEdit
+                  value={userData.username}
+                  onSave={async (newUsername) => {
+                    const res = await api.patch('/me', {
+                      username: newUsername,
+                    });
+                    setUserData((prev) =>
+                      prev
+                        ? { ...prev, username: res.data.user.username }
+                        : prev,
+                    );
+                  }}
+                  className="editable-username"
+                />
+              ) : (
+                <h1 className="inline-edit-value">{userData.username}</h1>
+              )}
+
               {userData.isAvailable ? (
                 <p className="tag tag-primary">Disponible</p>
               ) : (
                 <p className="tag tag-alt">Indisponible</p>
               )}
             </div>
+
             <Grade
               rating={
                 userData.Reviews.reduce((acc, el) => acc + el.grade, 0) /
@@ -116,7 +135,22 @@ function Profile() {
               nbReviews={userData.Reviews.length}
             />
           </div>
-          <p>{userData.description}</p>
+          {isOwnProfile ? (
+            <InlineEdit
+              value={userData.description}
+              onSave={async (newDesc) => {
+                const res = await api.patch('/me', { description: newDesc });
+                setUserData((prev) =>
+                  prev
+                    ? { ...prev, description: res.data.user.description }
+                    : prev,
+                );
+              }}
+              type="textarea"
+            />
+          ) : (
+            <p className="inline-edit-value">{userData.description}</p>
+          )}
           <div className="profile-header-content-btns">
             <button className="btn btn-default" type="button">
               <MessageSquare />
@@ -171,33 +205,63 @@ function Profile() {
           )}
         </section>
       </div>
+
       <div className="profile-col2">
         <section className="profile-availabilities">
-          <h2>Disponibilités</h2>
-          <div className="profile-availability">
-            <div />
-            {Object.keys(availabilityMatrix).map((day) => (
-              <div key={day} className="profile-availability-day">
-                {day}
-              </div>
-            ))}
-
-            {['matin', 'midi', 'après-midi', 'soir'].map((timeSlot) => (
-              <>
-                <div key={timeSlot} className="profile-availability-slot">
-                  {timeSlot}
-                </div>
-                {Object.keys(availabilityMatrix).map((day) => (
-                  <div
-                    key={`${day}-${timeSlot}`}
-                    className={`profile-availability-check ${
-                      availabilityMatrix[day][timeSlot] ? 'active' : ''
-                    }`}
-                  />
-                ))}
-              </>
-            ))}
+          <div className="availability-header">
+            <h2>Disponibilités</h2>
+            {isOwnProfile && !isEditingAvailabilities && (
+              <button
+                type="button"
+                className="btn-icon"
+                onClick={() => setIsEditingAvailabilities(true)}
+                aria-label="Modifier les disponibilités"
+              >
+                <Pencil />
+              </button>
+            )}
           </div>
+
+          {isOwnProfile ? (
+            <AvailabilityEditor
+              initialAvailabilities={userData.Availabilities}
+              editable={isEditingAvailabilities}
+              onSave={async (updatedAvailabilities) => {
+                const res = await api.patch('/me', {
+                  availabilities: updatedAvailabilities,
+                });
+
+                setUserData((prev) =>
+                  prev
+                    ? { ...prev, Availabilities: res.data.user.Availabilities }
+                    : prev,
+                );
+                setIsEditingAvailabilities(false);
+              }}
+            />
+          ) : (
+            <div className="profile-availability">
+              <div />
+              {Object.keys(availabilityMatrix).map((day) => (
+                <div key={day} className="profile-availability-day">
+                  {day}
+                </div>
+              ))}
+              {['matin', 'midi', 'après-midi', 'soir'].map((timeSlot) => (
+                <React.Fragment key={timeSlot}>
+                  <div className="profile-availability-slot">{timeSlot}</div>
+                  {Object.keys(availabilityMatrix).map((day) => (
+                    <div
+                      key={`${day}-${timeSlot}`}
+                      className={`profile-availability-check ${
+                        availabilityMatrix[day][timeSlot] ? 'active' : ''
+                      }`}
+                    />
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="profile-posts">
