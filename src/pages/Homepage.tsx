@@ -1,11 +1,42 @@
-import { LogIn } from 'lucide-react';
-import './Homepage.scss';
-import CategoryCarousel from '../components/CategoryCarousel';
-import Searchbar from '../components/Searchbar';
-import TestimonialCarousel from '../components/TestimonialCarousel';
-import UserCarousel from '../components/UserCarousel';
+import { LogIn } from "lucide-react";
+import "./Homepage.scss";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import CategoryCarousel from "../components/CategoryCarousel";
+import Searchbar from "../components/Searchbar";
+import TestimonialCarousel from "../components/TestimonialCarousel";
+import UserCarousel from "../components/UserCarousel";
+import { API_URL } from "../config";
+import type { ICategoriesHomePage } from "../types/CategoriesHomePage";
+import type { IUsersHomePage } from "../types/UsersHomePage";
 
 function Homepage() {
+  const [users, setUsers] = useState<IUsersHomePage[] | []>([]);
+  const [categories, setCategories] = useState<ICategoriesHomePage[] | []>([]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/users`);
+        setUsers(response.data.users);
+      } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.error("Error fetching users:", error);
+      }
+    };
+    const getCategories = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/categories`);
+        setCategories(response.data.categories);
+      } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.error("Error fetching categories:", error);
+      }
+    };
+    getUsers();
+    getCategories();
+  }, []);
+
   return (
     <main className="homepage container">
       <section className="homepage-hero">
@@ -24,7 +55,7 @@ function Homepage() {
 
       <section className="content">
         <h1>Catégories</h1>
-        <CategoryCarousel />
+        <CategoryCarousel categories={categories} />
       </section>
 
       <section className="content homepage-content-imgleft">
@@ -44,7 +75,7 @@ function Homepage() {
 
       <section className="content">
         <h1>Ils apprennent déjà</h1>
-        <UserCarousel />
+        <UserCarousel users={users} />
       </section>
 
       <section className="content">
