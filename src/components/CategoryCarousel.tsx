@@ -1,9 +1,14 @@
-import { Autoplay } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/scss';
-import './CategoryCarousel.scss';
+import { Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/scss";
+import "./CategoryCarousel.scss";
+import type { ICategoriesHomePage } from "../types/CategoriesHomePage";
 
-function CategoryCarousel() {
+function CategoryCarousel({
+  categories,
+}: {
+  categories: ICategoriesHomePage[];
+}) {
   return (
     <Swiper
       className="categories"
@@ -31,54 +36,18 @@ function CategoryCarousel() {
       }}
       modules={[Autoplay]}
     >
-      <SwiperSlide className="categories-card">
-        <img
-          className="categories-card-img"
-          src="/img/icons/graduation-cap.svg"
-          alt="Soutien scolaire"
-        />
-        <p className="categories-card-title">Soutien scolaire</p>
-      </SwiperSlide>
-      <SwiperSlide className="categories-card">
-        <img
-          className="categories-card-img"
-          src="/img/icons/mouse-pointer-click.svg"
-          alt="Stratégie digitales"
-        />
-        <p className="categories-card-title">Stratégie digitales</p>
-      </SwiperSlide>
-      <SwiperSlide className="categories-card">
-        <img
-          className="categories-card-img"
-          src="/img/icons/shirt.svg"
-          alt="Couture et retouches"
-        />
-        <p className="categories-card-title">Couture et retouches</p>
-      </SwiperSlide>
-      <SwiperSlide className="categories-card">
-        <img
-          className="categories-card-img"
-          src="/img/icons/scan-face.svg"
-          alt="Beauté et style"
-        />
-        <p className="categories-card-title">Beauté et style</p>
-      </SwiperSlide>
-      <SwiperSlide className="categories-card">
-        <img
-          className="categories-card-img"
-          src="/img/icons/gauge.svg"
-          alt="Coaching de vie"
-        />
-        <p className="categories-card-title">Coaching de vie</p>
-      </SwiperSlide>
-      <SwiperSlide className="categories-card">
-        <img
-          className="categories-card-img"
-          src="/img/icons/code-xml.svg"
-          alt="Dev-pro"
-        />
-        <p className="categories-card-title">Dev-pro</p>
-      </SwiperSlide>
+      {categories.map((category: ICategoriesHomePage) => {
+        return (
+          <SwiperSlide className="categories-card" key={category.name}>
+            <img
+              className="categories-card-img"
+              src="/img/icons/graduation-cap.svg"
+              alt="Soutien scolaire"
+            />
+            <p className="categories-card-title">{category.name}</p>
+          </SwiperSlide>
+        );
+      })}
     </Swiper>
   );
 }
