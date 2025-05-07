@@ -2,10 +2,12 @@ import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/scss";
 import "./UserCarousel.scss";
-import type { IUsersHomePage } from "../types/UsersHomePage";
+import { useUsers } from "../hooks/useUsers";
+import type { IUsers } from "../types/Users";
 import UserCard from "./UserCard";
 
-function UserCarousel({ users }: { users: IUsersHomePage[] }) {
+function UserCarousel() {
+  const { users } = useUsers();
   return (
     <Swiper
       className="profile-carousel"
@@ -29,7 +31,7 @@ function UserCarousel({ users }: { users: IUsersHomePage[] }) {
       }}
       modules={[Autoplay]}
     >
-      {users.map((user: IUsersHomePage) => {
+      {users.map((user: IUsers) => {
         return (
           <SwiperSlide key={user.username}>
             <UserCard user={user} />

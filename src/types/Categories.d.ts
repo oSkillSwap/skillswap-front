@@ -1,4 +1,4 @@
-export interface ICategoriesHomePage {
+export interface ICategories {
   id: number;
   name: string;
   createdAt: string;

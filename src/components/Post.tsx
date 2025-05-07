@@ -9,18 +9,18 @@ import {
   SquareX,
   Star,
   Trash,
-} from 'lucide-react';
-import './Post.scss';
-import Grade from './Grade';
+} from "lucide-react";
+import "./Post.scss";
+import Grade from "./Grade";
 
 type PostProps = {
-  variant: 'post' | 'offer' | 'trade';
-  origin: 'profile' | 'explore';
+  variant: "post" | "offer" | "trade";
+  origin: "profile" | "explore";
   author?: boolean;
   offers?: { username: string }[];
   isFinished?: boolean;
   reviewed?: boolean;
-  data?: {
+  data: {
     id: number;
     title: string;
     content: string;
@@ -28,7 +28,19 @@ type PostProps = {
     updatedAt: string;
     user_id: number;
     skill_id: number;
-    SkillWanted: { id: number; name: string };
+    SkillWanted: {
+      id: number;
+      name: string;
+      category_id?: number;
+      Category?: { id: number; name: string };
+    };
+    Author?: {
+      id: number;
+      username: string;
+      avatar: string;
+      averageGrade: number;
+      nbOfReviews: number;
+    };
   };
 };
 
@@ -44,7 +56,7 @@ function Post({
   return (
     <article className="post">
       <div className="post-header">
-        {variant === 'trade' &&
+        {variant === "trade" &&
           (author ? (
             <p className="post-header-arrow">
               <ArrowLeft />
@@ -58,23 +70,28 @@ function Post({
         <div>
           <div className="post-header-title">
             <h3>{data?.title || "Titre de l'annonce"}</h3>
-            <p className="tag">{data?.SkillWanted.name || 'Next.js'}</p>
+            <p className="tag">{data?.SkillWanted.name || "Next.js"}</p>
           </div>
           <p className="post-header-date">
-            Posté le {data?.createdAt || '24 avril 2025'}
+            Posté le{" "}
+            {new Date(data?.createdAt).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }) || "24 avril 2025"}
           </p>
         </div>
       </div>
 
       <p>
         {data?.content ||
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse.'}
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse."}
       </p>
 
-      {origin === 'profile' && (
+      {origin === "profile" && (
         <>
           <div className="post-btns">
-            {variant === 'post' &&
+            {variant === "post" &&
               (author ? (
                 <>
                   <button className="btn btn-alt" type="button">
@@ -95,7 +112,7 @@ function Post({
               ))}
           </div>
 
-          {variant === 'offer' && (
+          {variant === "offer" && (
             <div className="post-author">
               <div>
                 <div className="post-author-userinfo">
@@ -127,7 +144,7 @@ function Post({
             </div>
           )}
 
-          {variant === 'trade' && (
+          {variant === "trade" && (
             <div className="post-author">
               <div>
                 <div className="post-author-userinfo">
@@ -142,7 +159,7 @@ function Post({
                   </div>
                 </div>
                 <p className="post-offer-date">
-                  {isFinished ? 'Terminé' : 'Accepté'} le 24 avril 2025 à 11h52
+                  {isFinished ? "Terminé" : "Accepté"} le 24 avril 2025 à 11h52
                 </p>
               </div>
 
@@ -221,18 +238,21 @@ function Post({
         );
       })}
 
-      {origin === 'explore' && (
+      {origin === "explore" && (
         <div className="post-author">
           <div>
             <div className="post-author-userinfo">
               <img
                 className="post-author-userinfo-picture"
-                src="/img/avatars/robot1.jpg"
+                src={data?.Author?.avatar || "/img/avatars/robot1.jpg"}
                 alt=""
               />
               <div>
-                <h3>Author</h3>
-                <Grade rating={4} nbReviews={3} />
+                <h3>{data?.Author?.username}</h3>
+                <Grade
+                  rating={data.Author?.averageGrade}
+                  nbReviews={data?.Author?.nbOfReviews}
+                />
               </div>
             </div>
           </div>

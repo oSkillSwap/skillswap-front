@@ -2,13 +2,11 @@ import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/scss";
 import "./CategoryCarousel.scss";
-import type { ICategoriesHomePage } from "../types/CategoriesHomePage";
+import { useCategories } from "../hooks/useCategories";
+import type { ICategories } from "../types/Categories";
 
-function CategoryCarousel({
-  categories,
-}: {
-  categories: ICategoriesHomePage[];
-}) {
+function CategoryCarousel() {
+  const { categories } = useCategories();
   return (
     <Swiper
       className="categories"
@@ -36,9 +34,13 @@ function CategoryCarousel({
       }}
       modules={[Autoplay]}
     >
-      {categories.map((category: ICategoriesHomePage) => {
+      {categories.map((category: ICategories) => {
         return (
-          <SwiperSlide className="categories-card" key={category.name}>
+          <SwiperSlide
+            className="categories-card"
+            key={category.name}
+            data-id={category.id}
+          >
             <img
               className="categories-card-img"
               src="/img/icons/graduation-cap.svg"

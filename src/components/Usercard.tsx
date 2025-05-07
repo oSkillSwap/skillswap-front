@@ -2,10 +2,10 @@ import { Heart, MessageSquare } from "lucide-react";
 import "./UserCard.scss";
 import { Link } from "react-router";
 import type { ISkills } from "../types/Skills";
-import type { IUsersHomePage } from "../types/UsersHomePage";
+import type { IUsers } from "../types/Users";
 import Grade from "./Grade";
 
-function UserCard({ user }: { user: IUsersHomePage }) {
+function UserCard({ user }: { user: IUsers }) {
   return (
     <article className="profile-card">
       <Link to={`/profile/${user.id}`} className="profile-card-link">
