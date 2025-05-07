@@ -1,11 +1,14 @@
-import { LogIn } from 'lucide-react';
-import './Homepage.scss';
-import CategoryCarousel from '../components/CategoryCarousel';
-import Searchbar from '../components/Searchbar';
-import TestimonialCarousel from '../components/TestimonialCarousel';
-import UserCarousel from '../components/UserCarousel';
+import { LogIn } from "lucide-react";
+import "./Homepage.scss";
+import CategoryCarousel from "../components/CategoryCarousel";
+import Searchbar from "../components/Searchbar";
+import TestimonialCarousel from "../components/TestimonialCarousel";
+import UserCarousel from "../components/UserCarousel";
+import { useSearch } from "../hooks/useSearch";
 
 function Homepage() {
+  const { handleSearch } = useSearch();
+
   return (
     <main className="homepage container">
       <section className="homepage-hero">
@@ -19,7 +22,7 @@ function Homepage() {
       </section>
 
       <section className="content">
-        <Searchbar />
+        <Searchbar handleSearch={handleSearch} />
       </section>
 
       <section className="content">

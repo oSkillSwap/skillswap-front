@@ -1,34 +1,33 @@
-import { Heart, MessageSquare } from 'lucide-react';
-import './UserCard.scss';
-import { Link } from 'react-router';
-import Grade from './Grade';
+import { Heart, MessageSquare } from "lucide-react";
+import "./UserCard.scss";
+import { Link } from "react-router";
+import type { ISkills } from "../types/Skills";
+import type { IUsers } from "../types/Users";
+import Grade from "./Grade";
 
-function UserCard() {
+function UserCard({ user }: { user: IUsers }) {
   return (
     <article className="profile-card">
-      <Link to={'/profile'}>
-        <img
-          className="profile-card-picture"
-          src="/img/avatars/robot1.jpg"
-          alt=""
-        />
+      <Link to={`/profile/${user.id}`} className="profile-card-link">
+        <img className="profile-card-picture" src={user.avatar} alt="" />
       </Link>
       <div className="profile-card-content-wrapper">
         <div>
-          <h3 className="profile-card-username">Username</h3>
-          <Grade rating={4} nbReviews={3} />
+          <h3 className="profile-card-username">{user.username}</h3>
+          <Grade rating={user.averageGrade} nbReviews={user.nbOfReviews} />
         </div>
-        <p className="profile-card-bio">
-          J'aide volontiers à réparer vos appareils du quotidien. En échange, je
-          cherche à mieux maîtriser les outils bureautiques et le montage vidéo.
-        </p>
+        <p className="profile-card-bio">{user.description}</p>
 
         <div className="profile-card-skills">
           <p className="profile-card-skills-title">Mes compétences :</p>
           <div className="profile-card-skills-tags">
-            <p className="tag">React</p>
-            <p className="tag">React</p>
-            <p className="tag">React</p>
+            {user.Skills.map((skill: ISkills) => {
+              return (
+                <p className="tag" key={skill.name}>
+                  {skill.name}
+                </p>
+              );
+            })}
           </div>
         </div>
         <div className="profile-card-interests">
@@ -36,9 +35,13 @@ function UserCard() {
             Je suis interessé par :
           </p>
           <div className="profile-card-interests-tags">
-            <p className="tag">Angular</p>
-            <p className="tag">Angular</p>
-            <p className="tag">Angular</p>
+            {user.WantedSkills.map((skill: ISkills) => {
+              return (
+                <p className="tag" key={skill.name}>
+                  {skill.name}
+                </p>
+              );
+            })}
           </div>
         </div>
         <div className="profile-card-btns">

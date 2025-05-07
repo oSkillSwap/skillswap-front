@@ -114,17 +114,44 @@ function Header() {
               </Link>
             </li>
             <li className="header-nav-element">
-              {user?.username ? (
-                <button
-                  className="btn btn-reversed"
-                  type={'button'}
-                  onClick={logout}
-                >
-                  <LogOut />
-                  Déconnexion
-                </button>
+              {user ? (
+                <div className="header-nav-element-user">
+                  <Link
+                    className="header-nav-element-link header-nav-element-user-link"
+                    to={'/profile'}
+                  >
+                    <img src={user.avatar} alt={user.username} />
+                    {user.username}
+                  </Link>
+                  <div className="header-nav-element-user-dropdown">
+                    <div className="header-nav-element-user-dropdown-content">
+                      <Link
+                        className="header-nav-element-link"
+                        to={'/profile'}
+                        onClick={handleLinkClick}
+                      >
+                        Mon profil
+                      </Link>
+                      <Link
+                        className="btn btn-reversed"
+                        onClick={() => {
+                          logout();
+                          handleLinkClick();
+                        }}
+                        to={'/'}
+                      >
+                        Me déconnecter
+                        <LogOut />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               ) : (
-                <Link className="btn btn-reversed" to="/login">
+                <Link
+                  className="btn btn-reversed"
+                  to="/login"
+                  onClick={handleLinkClick}
+                >
                   <LogIn />
                   S'identifier
                 </Link>

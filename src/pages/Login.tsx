@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import './Onboarding.scss';
+import { AxiosError } from 'axios';
 import { Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 
 function Login() {
   const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -13,27 +18,26 @@ function Login() {
     setError('');
   }, []);
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = async () => {
     setError('');
 
     // Form check
-    const email = formData.get('email');
-    const password = formData.get('password');
-
     if (!email || !password) {
       setError('Veuillez remplir tous les champs');
       return;
     }
 
     // Login request
-    login(email as string, password as string)
-      .then(() => {
-        // Redirect to homepage if successful
-        navigate('/');
-      })
-      .catch(() => {
-        setError('Erreur lors de la connexion, veuillez réessayer');
-      });
+    try {
+      await login(email, password, remember);
+      navigate('/');
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Une erreur est survenue');
+      }
+    }
   };
 
   return (
@@ -42,25 +46,23 @@ function Login() {
         <h1>Connexion</h1>
         <form className="login-form" action={handleSubmit}>
           <div className="login-form-field">
-            <label className="" htmlFor="email">
-              Email
-            </label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
               name="email"
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="exemple@email.com"
             />
           </div>
 
           <div className="login-form-field">
-            <label className="" htmlFor="password">
-              Mot de passe
-            </label>
+            <label htmlFor="password">Mot de passe</label>
             <input
               id="password"
               type="password"
               name="password"
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
             />
           </div>
@@ -72,10 +74,13 @@ function Login() {
           )}
 
           <div className="login-form-field">
-            <input id="remember" type="checkbox" className="" />
-            <label className="" htmlFor="remember">
-              Se souvenir de moi
-            </label>
+            <input
+              id="remember"
+              name="remember"
+              type="checkbox"
+              onChange={(e) => setRemember(e.target.checked)}
+            />
+            <label htmlFor="remember">Se souvenir de moi</label>
           </div>
 
           <Link to="/">Mot de passe oublié ?</Link>
