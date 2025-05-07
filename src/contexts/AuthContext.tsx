@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       .post('/login', { email, password })
       .then((response) => {
         const { token, user } = response.data;
-        setAccessToken(accessToken);
+        setAccessToken(token); // J ai changer le accessToken par token du back et ca marche ========================================================================
         localStorage.setItem('accessToken', token);
         setUser(user);
         // To store a js object in the localStorage it needs to be stringified

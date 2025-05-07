@@ -97,6 +97,7 @@
     }
   
     &-check {
+      position: relative;
       width: 2.4rem;
       aspect-ratio: 1;
       border-radius: 50%;
@@ -104,12 +105,15 @@
       margin: auto;
   
       &.active {
+        position: relative;
         background-color: $color-primary;
         position: relative;
 
         &::after {
           content: '';
           position: absolute;
+          top: 0;
+          left: 0;
           background: no-repeat center center url('/img/icons/check.svg');
           background-size: 50%;
           width: 100%;
@@ -118,6 +122,41 @@
       }
     }
   }
+}
+
+.availability-header {
+  display: flex;
+  align-items: center;
+  gap:  0.8rem;
+  margin-bottom: $spacing-md;
+
+  h2 {
+    margin: 0;
+  }
+
+  .btn-icon {
+    padding: 0.4rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    svg {
+      width: 1.6rem;
+      height: 1.6rem;
+      color: $color-black;
+    }
+
+    &:hover svg {
+      color: $color-primary;
+    }
+  }
+}
+
+.availability-header h2 {
+  width: auto;
+  margin: 0;
 }
 
 .testimonials {
@@ -130,6 +169,7 @@
   flex-direction: column;
   gap: $spacing-md;
 }
+
 
 @media screen and (min-width: $breakpoints-md) {
   .profile {
