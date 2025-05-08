@@ -1,20 +1,20 @@
-import { Search } from "lucide-react";
-import "./Searchbar.scss";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import du hook useNavigate
-import { useSearchParams } from "react-router-dom";
+import { Search } from 'lucide-react';
+import './Searchbar.scss';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router'; // Import du hook useNavigate
+import { useSearchParams } from 'react-router';
 
 interface SearchbarProps {
   handleSearch: (search: string) => void;
 }
 function Searchbar({ handleSearch }: SearchbarProps) {
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>('');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   // Remplit le champ input si "search" est dans l'URL
   useEffect(() => {
-    const search = searchParams.get("search");
+    const search = searchParams.get('search');
     if (search) {
       setSearchValue(search);
     }

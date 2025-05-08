@@ -42,7 +42,7 @@ function Message() {
   // Socket.IO client init
   useEffect(() => {
     // Init socket with Socket.IO server
-    const socket = io('http://localhost:3000', {
+    const socket = io('https://skillswap-hknk.onrender.com', {
       withCredentials: true, // check for CORS credentials (backend)
     });
 

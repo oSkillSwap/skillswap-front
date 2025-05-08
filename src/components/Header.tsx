@@ -1,4 +1,4 @@
-import { LogIn, LogOut, Menu, X } from 'lucide-react';
+import { Home, LogIn, LogOut, Mail, Menu, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import './Header.scss';
 import { Link } from 'react-router';
@@ -92,7 +92,7 @@ function Header() {
                 to="/"
                 onClick={handleLinkClick}
               >
-                Accueil
+                {isMobile ? 'Accueil' : <Home />}
               </Link>
             </li>
             <li className="header-nav-element">
@@ -101,52 +101,58 @@ function Header() {
                 to="/explore"
                 onClick={handleLinkClick}
               >
-                Explorer
+                {isMobile ? 'Explorer' : <Search />}
               </Link>
             </li>
-            <li className="header-nav-element">
-              <Link
-                className="header-nav-element-link"
-                to="/explore"
-                onClick={handleLinkClick}
-              >
-                Annonces
-              </Link>
-            </li>
-            <li className="header-nav-element">
-              {user ? (
-                <div className="header-nav-element-user">
+            {user ? (
+              <>
+                <li className="header-nav-element">
                   <Link
-                    className="header-nav-element-link header-nav-element-user-link"
-                    to={'/profile'}
+                    className="header-nav-element-link"
+                    to="/message"
+                    onClick={handleLinkClick}
                   >
-                    <img src={user.avatar} alt={user.username} />
-                    {user.username}
+                    {isMobile ? 'Messages' : <Mail />}
                   </Link>
-                  <div className="header-nav-element-user-dropdown">
-                    <div className="header-nav-element-user-dropdown-content">
+                </li>
+                <li className="header-nav-element">
+                  <div className="header-nav-element-user">
+                    {!isMobile && (
                       <Link
-                        className="header-nav-element-link"
+                        className="header-nav-element-link header-nav-element-user-link"
                         to={'/profile'}
-                        onClick={handleLinkClick}
                       >
-                        Mon profil
+                        <img src={user.avatar} alt={user.username} />
+                        {user.username}
                       </Link>
-                      <Link
-                        className="btn btn-reversed"
-                        onClick={() => {
-                          logout();
-                          handleLinkClick();
-                        }}
-                        to={'/'}
-                      >
-                        Me déconnecter
-                        <LogOut />
-                      </Link>
+                    )}
+                    <div className="header-nav-element-user-dropdown">
+                      <div className="header-nav-element-user-dropdown-content">
+                        <Link
+                          className="header-nav-element-link"
+                          to={'/profile'}
+                          onClick={handleLinkClick}
+                        >
+                          Mon profil
+                        </Link>
+                        <Link
+                          className="btn btn-reversed"
+                          onClick={() => {
+                            logout();
+                            handleLinkClick();
+                          }}
+                          to={'/'}
+                        >
+                          Me déconnecter
+                          <LogOut />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
+                </li>
+              </>
+            ) : (
+              <li className="header-nav-element">
                 <Link
                   className="btn btn-reversed"
                   to="/login"
@@ -155,8 +161,8 @@ function Header() {
                   <LogIn />
                   S'identifier
                 </Link>
-              )}
-            </li>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
