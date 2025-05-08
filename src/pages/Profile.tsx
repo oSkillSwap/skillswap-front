@@ -88,7 +88,8 @@ function Profile() {
     }
   }
 
-  const isOwnProfile = connectedUser?.id?.toString() === user;
+  //const isOwnProfile = connectedUser?.id?.toString() === user;
+  const isOwnProfile = connectedUser?.username === userData.username;
 
   return (
     <main className="profile container">
