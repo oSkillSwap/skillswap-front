@@ -1,10 +1,45 @@
 @use "../styles/variables" as *;
 
 .messages {
-  &-msg{
+  & .content {
+    margin-top: $spacing-xl;
+  }
+
+  & .conversation {
     width: 100%;
     background-color: $color-gray;
     padding: $spacing-md;
     border-radius: 1.6rem;
+    color: $color-black;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    &-userpicture {
+      border-radius: 50%;
+      object-fit: cover;
+      width: 6rem;
+      aspect-ratio: 1;
+    }
+
+    &-username {
+      font-weight: $font-weight-bold;
+    }
+
+    &-timestamp {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-normal;
+      opacity: .7;
+    }
+  }
+
+  &-form {
+    width: 100%;
+
+    &-input {
+      width: 100%;
+      resize: disabled;
+      field-sizing: content;
+    }
   }
 }

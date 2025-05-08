@@ -24,7 +24,7 @@ function App() {
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="message" element={<Message />} />
+        <Route path="message/:userId?" element={<Message />} />
       </Routes>
       <Footer />
     </AuthProvider>
