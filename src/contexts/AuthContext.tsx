@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
+  // Set user and accessToken state if they exist in localStorage
   useEffect(() => {
     const storedToken = localStorage.getItem('accessToken');
     const storedUser = localStorage.getItem('user');
@@ -27,29 +28,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-
+  // Login function
   const login = async (email: string, password: string, remember: boolean) => {
     try {
       const response = await api.post('/login', { email, password });
       const { token, user } = response.data;
-      // Remove id and email from user object before localStorage
-      const { id, email: mail, ...userClean } = user;
-      setUser(userClean);
+
+      setUser(user);
       setAccessToken(token);
 
+      // If user checked remember me we store token and user object into localStorage
       if (remember) {
-
         localStorage.setItem('accessToken', token);
         // To store a js object in the localStorage it needs to be stringified
-        localStorage.setItem('user', JSON.stringify(userClean));
+        localStorage.setItem('user', JSON.stringify(user));
       }
     } catch (error) {
-      setUser(null);
+      setUser(null); // We clear both states if error
       setAccessToken(null);
       throw error;
     }
   };
 
+  // Logout function
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -57,6 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem('accessToken');
   };
 
+  // <AuthProvider> ... </AuthProvider>
   return (
     <AuthContext.Provider value={{ user, accessToken, login, logout }}>
       {children}
