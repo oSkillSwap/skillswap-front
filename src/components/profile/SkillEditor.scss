@@ -36,7 +36,7 @@
     margin: 0.5rem 0;
   }
 
-  .skill-editor .tag{
+  .skill-editor .tag, .profile-interest .tag{
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
   }
@@ -77,9 +77,10 @@
     flex-direction: column;
     gap: 0.5rem;
     margin-top: 1rem;
+    width: 100%;
   }
   
   .edit-buttons-vertical button {
-    width: 165%;
+    width: 100%;
   }
 

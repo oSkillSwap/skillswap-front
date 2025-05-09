@@ -12,6 +12,7 @@ import AvailabilityEditor from '../components/profile/AvailabilityEditor';
 import ProfileHeaderEditor from '../components/profile/ProfileHeaderEditor';
 import IsAvailableToggle from '../components/profile/IsAvailableToggle';
 import SkillEditor from '../components/profile/SkillEditor';
+import SkillWantedEditor from '../components/profile/SkillWantedEditor';
 
 function Profile() {
   let { user: profileId } = useParams();
@@ -132,17 +133,13 @@ function Profile() {
             setUserData={setUserData}
           />
         </section>
-        <section className="profile-interests">
+        <section className="profile-interest">
           <h2>Intérêts</h2>
-          {userData.WantedSkills?.length ? (
-            userData.WantedSkills.map((el) => (
-              <p key={el.name} className="tag">
-                {el.name}
-              </p>
-            ))
-          ) : (
-            <p>Aucun intérêt renseigné</p>
-          )}
+          <SkillWantedEditor
+            skills={userData.WantedSkills ?? []}
+            isOwner={isOwnProfile}
+            setUserData={setUserData}
+          />
         </section>
         <section className="profile-fav">
           <h2>Favoris</h2>
