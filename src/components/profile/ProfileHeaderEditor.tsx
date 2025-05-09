@@ -1,32 +1,49 @@
-// src/components/InlineEdit.tsx
-import './InlineEdit.scss';
+import './ProfileHeaderEditor.scss';
 import { useState } from 'react';
 import { Edit3, Check, X } from 'lucide-react';
-interface InlineEditProps {
+import api from '../../services/api';
+import type User from '../../types/User';
+
+interface Props {
   value: string;
-  onSave: (newValue: string) => Promise<void>;
+  field: 'username' | 'description';
+  setUserData: React.Dispatch<React.SetStateAction<User | null>>;
   className?: string;
   type?: 'input' | 'textarea';
+  isOwner?: boolean;
 }
 
-function InlineEdit({
+function ProfileHeaderEditor({
   value,
-  onSave,
+  field,
+  setUserData,
   className,
   type = 'input',
-}: InlineEditProps) {
+  isOwner = false,
+}: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
 
   const handleSave = async () => {
     try {
-      await onSave(editedValue);
+      const res = await api.patch('/me', { [field]: editedValue });
+      setUserData((prev) =>
+        prev ? { ...prev, [field]: res.data.user[field] } : prev,
+      );
       setIsEditing(false);
     } catch (err) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error('Erreur de sauvegarde :', err);
+      console.error(`Erreur lors de la mise à jour du champ ${field} :`, err);
     }
   };
+
+  if (!isOwner) {
+    return type === 'textarea' ? (
+      <p className="inline-edit-value">{value}</p>
+    ) : (
+      <h1 className="inline-edit-value">{value}</h1>
+    );
+  }
 
   return (
     <div className={`inline-edit ${className ?? ''}`}>
@@ -76,4 +93,4 @@ function InlineEdit({
   );
 }
 
-export default InlineEdit;
+export default ProfileHeaderEditor;
