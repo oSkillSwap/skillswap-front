@@ -11,6 +11,7 @@ import { useAuth } from '../contexts/AuthContext';
 import AvailabilityEditor from '../components/profile/AvailabilityEditor';
 import ProfileHeaderEditor from '../components/profile/ProfileHeaderEditor';
 import IsAvailableToggle from '../components/profile/IsAvailableToggle';
+import SkillEditor from '../components/profile/SkillEditor';
 
 function Profile() {
   let { user: profileId } = useParams();
@@ -125,15 +126,11 @@ function Profile() {
       <div className="profile-col1">
         <section className="profile-skills">
           <h2>Compétences</h2>
-          {userData.Skills?.length ? (
-            userData.Skills.map((el) => (
-              <p key={el.name} className="tag">
-                {el.name}
-              </p>
-            ))
-          ) : (
-            <p>Aucune compétence renseignée</p>
-          )}
+          <SkillEditor
+            skills={userData.Skills ?? []}
+            isOwner={isOwnProfile}
+            setUserData={setUserData}
+          />
         </section>
         <section className="profile-interests">
           <h2>Intérêts</h2>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AvailabilityEditor.scss';
-import { Pencil } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 import api from '../../services/api';
 import type User from '../../types/User';
 
@@ -85,7 +85,7 @@ function AvailabilityEditor({ userData, isOwner, setUserData }: Props) {
               onClick={() => setIsEditing(true)}
               aria-label="Modifier les disponibilités"
             >
-              <Pencil />
+              <SquarePen size={18} />
             </button>
           )}
         </div>

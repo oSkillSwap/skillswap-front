@@ -1,6 +1,6 @@
 import './ProfileHeaderEditor.scss';
 import { useState } from 'react';
-import { Edit3, Check, X } from 'lucide-react';
+import { SquarePen, Check, X } from 'lucide-react';
 import api from '../../services/api';
 import type User from '../../types/User';
 
@@ -85,7 +85,7 @@ function ProfileHeaderEditor({
             className="btn-icon"
             onClick={() => setIsEditing(true)}
           >
-            <Edit3 size={18} />
+            <SquarePen size={18} />
           </button>
         </>
       )}
