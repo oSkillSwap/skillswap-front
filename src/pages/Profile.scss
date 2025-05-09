@@ -133,26 +133,20 @@
   h2 {
     margin: 0;
   }
-
-  .btn-icon {
-    padding: 0.4rem;
-    border: none;
-    background: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-
-    svg {
-      width: 1.6rem;
-      height: 1.6rem;
-      color: $color-black;
-    }
-
-    &:hover svg {
-      color: $color-primary;
-    }
-  }
 }
+
+
+.success-message {
+  margin: 2rem auto;
+  padding: 0.75rem;
+  background-color: #e6ffed;
+  color: $color-success;
+  border-radius: 4px;
+  text-align: center;
+  width: 57vw;
+  border-radius: 1rem;
+}
+
 
 .profile-skills, .profile-interest {
   position: relative;

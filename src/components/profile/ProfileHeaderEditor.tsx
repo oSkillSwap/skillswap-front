@@ -23,6 +23,7 @@ function ProfileHeaderEditor({
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSave = async () => {
     try {
@@ -31,9 +32,32 @@ function ProfileHeaderEditor({
         prev ? { ...prev, [field]: res.data.user[field] } : prev,
       );
       setIsEditing(false);
+      setSuccessMessage('Modifié avec succès');
+      setTimeout(() => setSuccessMessage(''), 2000);
     } catch (err) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(`Erreur lors de la mise à jour du champ ${field} :`, err);
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      setEditedValue(value);
+      setIsEditing(false);
+    }
+
+    if (type === 'textarea') {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        handleSave();
+      }
+    } else {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSave();
+      }
     }
   };
 
@@ -54,12 +78,14 @@ function ProfileHeaderEditor({
               className="edit-textarea"
               value={editedValue}
               onChange={(e) => setEditedValue(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           ) : (
             <input
               className="edit-input"
               value={editedValue}
               onChange={(e) => setEditedValue(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           )}
           <button type="button" className="btn-icon" onClick={handleSave}>
@@ -68,7 +94,10 @@ function ProfileHeaderEditor({
           <button
             type="button"
             className="btn-icon"
-            onClick={() => setIsEditing(false)}
+            onClick={() => {
+              setEditedValue(value);
+              setIsEditing(false);
+            }}
           >
             <X size={18} />
           </button>
@@ -89,6 +118,8 @@ function ProfileHeaderEditor({
           </button>
         </>
       )}
+
+      {successMessage && <span className="edit-success">{successMessage}</span>}
     </div>
   );
 }

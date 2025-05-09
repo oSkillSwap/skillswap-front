@@ -72,15 +72,30 @@
     right: 10px;
   }
 
-  .edit-buttons-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    width: 100%;
-  }
+  .profile-interest, .profile-skills{
+    .edit-buttons-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      width: 100%;
+      
+    }
+    
+    .edit-buttons-vertical button {
+      font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  text-decoration: none;
+  padding: 1.2rem 3.6rem;
+  border-radius: 0.8rem;
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+    }
   
-  .edit-buttons-vertical button {
-    width: 100%;
   }
 
+ 
