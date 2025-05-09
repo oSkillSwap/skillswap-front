@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Explore from './pages/Explore';
 import Homepage from './pages/Homepage';
 import Login from './pages/Login';
+import Message from './pages/Message';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import ScrollToTop from './utils/ScrollToTop';
@@ -23,6 +24,7 @@ function App() {
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="message" element={<Message />} />
       </Routes>
       <Footer />
     </AuthProvider>

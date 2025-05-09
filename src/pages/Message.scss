@@ -1,0 +1,10 @@
+@use "../styles/variables" as *;
+
+.messages {
+  &-msg{
+    width: 100%;
+    background-color: $color-gray;
+    padding: $spacing-md;
+    border-radius: 1.6rem;
+  }
+}
