@@ -1,10 +1,100 @@
 @use "../styles/variables" as *;
 
 .messages {
-  &-msg{
+  & .content {
+    margin-top: $spacing-lg;
+    margin-bottom: 0;
+  }
+
+  &-chat {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
     width: 100%;
-    background-color: $color-gray;
-    padding: $spacing-md;
-    border-radius: 1.6rem;
+
+    &-header {
+      display: flex;
+      gap: $spacing-md;
+
+      &-user {
+        background-color: $color-gray;
+        padding: $spacing-md;
+        border-radius: 0.8rem;
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        gap: $spacing-md;
+        color: inherit;
+        @include transition-button;
+
+        &:hover {
+          color: $color-black;
+          background-color: $color-secondary;
+        }
+
+        &-picture {
+          border-radius: 50%;
+          object-fit: cover;
+          width: 6rem;
+          aspect-ratio: 1;
+          background-color: $color-white;
+        }
+
+        &-username {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-bold;
+
+        }
+      }
+    }
+  }
+
+  & .conversation {
+    width: 100%;
+    justify-content: flex-start;
+    gap: $spacing-md;
+    font-weight: $font-weight-normal;
+
+    &-info {
+      overflow: hidden;
+
+      &-username {
+        font-weight: $font-weight-bold;
+      }
+
+      &-timestamp {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-normal;
+        opacity: .7;
+      }
+
+      &-lastmsg {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        &-from {
+          opacity: 0.6;
+        }
+      }
+    }
+
+    &-userpicture {
+      border-radius: 50%;
+      object-fit: cover;
+      width: 6rem;
+      aspect-ratio: 1;
+      background-color: $color-white;
+    }
+  }
+
+  &-form {
+    width: 100%;
+
+    &-input {
+      width: 100%;
+      resize: disabled;
+      field-sizing: content;
+    }
   }
 }
