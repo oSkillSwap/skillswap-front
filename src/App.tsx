@@ -1,14 +1,15 @@
-import { Route, Routes } from 'react-router';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import { AuthProvider } from './contexts/AuthContext';
-import Explore from './pages/Explore';
-import Homepage from './pages/Homepage';
-import Login from './pages/Login';
-import Message from './pages/Message';
-import Profile from './pages/Profile';
-import Register from './pages/Register';
-import ScrollToTop from './utils/ScrollToTop';
+import { Route, Routes } from "react-router";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import { AuthProvider } from "./contexts/AuthContext";
+import Explore from "./pages/Explore";
+import Homepage from "./pages/Homepage";
+import Login from "./pages/Login";
+import Message from "./pages/Message";
+import Post from "./pages/Post";
+import Profile from "./pages/Profile";
+import Register from "./pages/Register";
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="message/:userId?" element={<Message />} />
+        <Route path="/post" element={<Post />} />
       </Routes>
       <Footer />
     </AuthProvider>

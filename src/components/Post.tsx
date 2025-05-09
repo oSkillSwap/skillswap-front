@@ -21,14 +21,14 @@ type PostProps = {
   isFinished?: boolean;
   reviewed?: boolean;
   data: {
-    id: number;
+    id?: number;
     title: string;
     content: string;
-    createdAt: string;
-    updatedAt: string;
-    user_id: number;
-    skill_id: number;
-    SkillWanted: {
+    createdAt?: string;
+    updatedAt?: string;
+    user_id?: number;
+    skill_id?: string | number;
+    SkillWanted?: {
       id: number;
       name: string;
       category_id?: number;
@@ -37,9 +37,9 @@ type PostProps = {
     Author?: {
       id: number;
       username: string;
-      avatar: string;
-      averageGrade: number;
-      nbOfReviews: number;
+      avatar?: string;
+      averageGrade?: number;
+      nbOfReviews?: number;
     };
   };
 };
@@ -70,15 +70,18 @@ function Post({
         <div>
           <div className="post-header-title">
             <h3>{data?.title || "Titre de l'annonce"}</h3>
-            <p className="tag">{data?.SkillWanted.name || "Next.js"}</p>
+            <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
           </div>
           <p className="post-header-date">
             Posté le{" "}
-            {new Date(data?.createdAt).toLocaleDateString("fr-FR", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            }) || "24 avril 2025"}
+            {new Date(data!.createdAt ?? Date.now()).toLocaleDateString(
+              "fr-FR",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }
+            ) || "24 avril 2025"}
           </p>
         </div>
       </div>
