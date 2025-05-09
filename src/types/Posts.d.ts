@@ -1,26 +1,22 @@
 export interface IPosts {
-  id: number;
-  content: string;
+  id?: number;
+  isClosed?: boolean;
   title: string;
-  isClosed: boolean;
-  createdAt: string;
-  updatedAt: string;
-  user_id: number;
+  content: string;
   skill_id: number;
-  SkillWanted: {
+  user_id?: number;
+  createdAt?: string;
+  updatedAt?: string;
+
+  SkillWanted?: {
     id: number;
     name: string;
+    createdAt: string;
+    updatedAt: string;
     category_id: number;
-    Category: {
-      id: number;
-      name: string;
-    };
   };
-  Author: {
+  Author?: {
     id: number;
     username: string;
-    avatar: string;
-    averageGrade: number;
-    nbOfReviews: number;
   };
 }

@@ -1,8 +1,17 @@
-import { Home, LogIn, LogOut, Mail, Menu, Search, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import './Header.scss';
-import { Link } from 'react-router';
-import { useAuth } from '../contexts/AuthContext';
+import {
+  CirclePlus,
+  Home,
+  LogIn,
+  LogOut,
+  Mail,
+  Menu,
+  Search,
+  X,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import "./Header.scss";
+import { Link } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,10 +31,10 @@ function Header() {
 
     // Update the state on resize
     // to handle screen size changes
-    window.addEventListener('resize', checkIfMobile);
+    window.addEventListener("resize", checkIfMobile);
 
     return () => {
-      window.removeEventListener('resize', checkIfMobile);
+      window.removeEventListener("resize", checkIfMobile);
     };
   }, []);
 
@@ -74,7 +83,7 @@ function Header() {
           <button
             className="hamburger-btn"
             onClick={toggleMenu}
-            aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={isMenuOpen}
             type="button"
           >
@@ -83,7 +92,9 @@ function Header() {
         )}
 
         <nav
-          className={`${isMobile ? 'mobile-nav' : ''} ${isMenuOpen ? 'open' : ''}`}
+          className={`${isMobile ? "mobile-nav" : ""} ${
+            isMenuOpen ? "open" : ""
+          }`}
         >
           <ul className="header-nav">
             <li className="header-nav-element">
@@ -92,7 +103,7 @@ function Header() {
                 to="/"
                 onClick={handleLinkClick}
               >
-                {isMobile ? 'Accueil' : <Home />}
+                {isMobile ? "Accueil" : <Home />}
               </Link>
             </li>
             <li className="header-nav-element">
@@ -101,7 +112,16 @@ function Header() {
                 to="/explore"
                 onClick={handleLinkClick}
               >
-                {isMobile ? 'Explorer' : <Search />}
+                {isMobile ? "Explorer" : <Search />}
+              </Link>
+            </li>
+            <li className="header-nav-element">
+              <Link
+                className="header-nav-element-link"
+                to="/post"
+                onClick={handleLinkClick}
+              >
+                {isMobile ? "Poster une annonce" : <CirclePlus />}
               </Link>
             </li>
             {user ? (
@@ -112,7 +132,7 @@ function Header() {
                     to="/message"
                     onClick={handleLinkClick}
                   >
-                    {isMobile ? 'Messages' : <Mail />}
+                    {isMobile ? "Messages" : <Mail />}
                   </Link>
                 </li>
                 <li className="header-nav-element">
@@ -120,7 +140,7 @@ function Header() {
                     {!isMobile && (
                       <Link
                         className="header-nav-element-link header-nav-element-user-link"
-                        to={'/profile'}
+                        to={"/profile"}
                       >
                         <img src={user.avatar} alt={user.username} />
                         {user.username}
@@ -130,7 +150,7 @@ function Header() {
                       <div className="header-nav-element-user-dropdown-content">
                         <Link
                           className="header-nav-element-link"
-                          to={'/profile'}
+                          to={"/profile"}
                           onClick={handleLinkClick}
                         >
                           Mon profil
@@ -141,7 +161,7 @@ function Header() {
                             logout();
                             handleLinkClick();
                           }}
-                          to={'/'}
+                          to={"/"}
                         >
                           Me déconnecter
                           <LogOut />
