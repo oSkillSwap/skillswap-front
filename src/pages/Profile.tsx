@@ -1,20 +1,20 @@
-import { Heart, MessageSquare, Trash2, KeyRound } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import './Profile.scss';
-import api from '../services/api';
-import { Link, useParams, useNavigate } from 'react-router';
-import Post from '../components/Post';
-import Grade from '../components/Grade';
-import Testimonial from '../components/Testimonial';
-import type User from '../types/User';
-import { useAuth } from '../contexts/AuthContext';
-import AvailabilityEditor from '../components/profile/AvailabilityEditor';
-import ProfileHeaderEditor from '../components/profile/ProfileHeaderEditor';
-import IsAvailableToggle from '../components/profile/IsAvailableToggle';
-import SkillEditor from '../components/profile/SkillEditor';
-import SkillWantedEditor from '../components/profile/SkillWantedEditor';
-import PasswordModal from '../components/profile/PasswordModal';
-import ConfirmModal from '../components/profile/ConfirmModal';
+import { Heart, KeyRound, MessageSquare, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import "./Profile.scss";
+import { Link, useNavigate, useParams } from "react-router";
+import Grade from "../components/Grade";
+import Post from "../components/Post";
+import Testimonial from "../components/Testimonial";
+import AvailabilityEditor from "../components/profile/AvailabilityEditor";
+import ConfirmModal from "../components/profile/ConfirmModal";
+import IsAvailableToggle from "../components/profile/IsAvailableToggle";
+import PasswordModal from "../components/profile/PasswordModal";
+import ProfileHeaderEditor from "../components/profile/ProfileHeaderEditor";
+import SkillEditor from "../components/profile/SkillEditor";
+import SkillWantedEditor from "../components/profile/SkillWantedEditor";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+import type User from "../types/User";
 
 function Profile() {
   let { user: profileId } = useParams();
@@ -25,18 +25,18 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(true);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [error, setError] = useState('');
-  const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
+  const [error, setError] = useState("");
+  const [passwordChangeMessage, setPasswordChangeMessage] = useState("");
+  const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
 
   if (!profileId && connectedUser) {
     profileId = connectedUser.id.toString();
   }
 
   const isOwnProfile = connectedUser?.id?.toString() === profileId;
-
   useEffect(() => {
     setIsLoading(true);
-    setError('');
+    setError("");
 
     Promise.all([
       api.get(`/users/${profileId}`),
@@ -54,7 +54,7 @@ function Profile() {
             Posts: postsResponse.data.posts,
           });
           setIsLoading(false);
-        },
+        }
       )
       .catch((error) => {
         setError(error.message);
@@ -64,18 +64,97 @@ function Profile() {
 
   const handleDeleteAccount = async () => {
     try {
-      await api.delete('/me');
+      await api.delete("/me");
       logout();
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error('Erreur lors de la suppression du compte :', error);
+      console.error("Erreur lors de la suppression du compte :", error);
       alert(
         `Erreur : ${
           (error as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message || 'Erreur inconnue'
-        }`,
+            ?.data?.message || "Erreur inconnue"
+        }`
       );
+    }
+  };
+
+  // Vérifie si l'utilisateur connecté suit déjà le profil
+  // et met à jour l'état isFollowing en conséquence
+  useEffect(() => {
+    if (userData) {
+      const isFollowing = userData.Followers.some(
+        (follower) => follower.id === connectedUser?.id
+      );
+      setIsFollowing(isFollowing);
+    }
+  }, [userData, connectedUser]);
+
+  // Permet de suivre un utilisateur
+  const followUser = async () => {
+    if (!connectedUser) return;
+    try {
+      await api.post(`/me/follow/${profileId}`);
+      setUserData((prev) => {
+        return prev
+          ? {
+              ...prev,
+              Followers: [
+                ...(prev.Followers ?? []),
+                {
+                  id: connectedUser.id,
+                  username: connectedUser.username,
+                  avatar: connectedUser.avatar,
+                },
+              ],
+            }
+          : prev;
+      });
+      // Met à jour l'état isFollowing
+      setIsFollowing(true);
+    } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.error("Erreur lors du follow :", error);
+    }
+  };
+
+  // Permet de ne plus suivre un utilisateur
+  const unfollowUser = async () => {
+    // Vérifie si l'utilisateur est connecté
+    if (!connectedUser) return;
+    try {
+      await api.delete(`/me/follow/${profileId}`);
+      // Met à jour l'état de l'utilisateur
+      setUserData((prev) => {
+        return prev
+          ? {
+              ...prev,
+              Followers: prev.Followers.filter(
+                (follower) => follower.id !== connectedUser.id
+              ),
+            }
+          : prev;
+      });
+      setIsFollowing(false);
+    } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.error("Erreur lors du unfollow :", error);
+    }
+  };
+
+  const handleFollowAndUnfollow = async () => {
+    if (!connectedUser) return;
+    try {
+      // Vérifie si l'utilisateur suit déjà le profil
+      if (!isFollowing) {
+        // Si l'utilisateur ne suit pas, on le suit
+        return await followUser();
+      }
+      // Si l'utilisateur suit déjà, on arrête de le suivre
+      await unfollowUser();
+    } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.error("Erreur lors du follow :", error);
     }
   };
 
@@ -87,7 +166,7 @@ function Profile() {
     );
   }
 
-  if (error !== '' || !userData) {
+  if (error !== "" || !userData) {
     return (
       <main className="container">
         <h1>{error}</h1>
@@ -166,7 +245,11 @@ function Profile() {
                     <MessageSquare /> Contacter
                   </button>
                   <button className="btn btn-alt btn-icon" type="button">
-                    <Heart />
+                    <Heart
+                      onClick={handleFollowAndUnfollow}
+                      color={isFollowing ? "red" : "black"}
+                      fill={isFollowing ? "red" : "transparent"}
+                    />
                   </button>
                 </>
               )}
@@ -248,7 +331,7 @@ function Profile() {
             onSuccess={(message) => {
               setPasswordChangeMessage(message);
               setIsPasswordModalOpen(false);
-              setTimeout(() => setPasswordChangeMessage(''), 3000);
+              setTimeout(() => setPasswordChangeMessage(""), 3000);
             }}
           />
         )}
