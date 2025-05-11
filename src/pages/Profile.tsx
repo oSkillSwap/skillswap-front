@@ -95,20 +95,28 @@ function Profile() {
     if (!connectedUser) return;
     try {
       await api.post(`/me/follow/${profileId}`);
-      setUserData((prev) => {
-        return prev
-          ? {
-              ...prev,
-              Followers: [
-                ...(prev.Followers ?? []),
-                {
-                  id: connectedUser.id,
-                  username: connectedUser.username,
-                  avatar: connectedUser.avatar,
-                },
-              ],
-            }
-          : prev;
+      // Met à jour localement l'état de l'utilisateur
+      // en ajoutant l'utilisateur connecté dans la liste des Followers
+      setUserData((prevUserData) => {
+        // Si les données précédentes existent
+        if (prevUserData) {
+          return {
+            ...prevUserData, // Copie toutes les propriétés existantes
+
+            // On ajoute l'utilisateur connecté dans la liste des Followers
+            Followers: [
+              ...prevUserData.Followers, // On garde les anciens followers
+              // On ajoute l'utilisateur connecté
+              {
+                id: connectedUser.id,
+                username: connectedUser.username,
+                avatar: connectedUser.avatar,
+              },
+            ],
+          };
+        }
+        // Si `prevUserData` est null, on ne fait rien
+        return prevUserData;
       });
       // Met à jour l'état isFollowing
       setIsFollowing(true);
@@ -124,17 +132,24 @@ function Profile() {
     if (!connectedUser) return;
     try {
       await api.delete(`/me/follow/${profileId}`);
-      // Met à jour l'état de l'utilisateur
-      setUserData((prev) => {
-        return prev
-          ? {
-              ...prev,
-              Followers: prev.Followers.filter(
-                (follower) => follower.id !== connectedUser.id
-              ),
-            }
-          : prev;
+      // Met à jour localement l'état de l'utilisateur
+      // en supprimant l'utilisateur connecté de la liste des Followers
+      setUserData((prevUserData) => {
+        // Si les données précédentes existent
+        if (prevUserData) {
+          return {
+            ...prevUserData, // On garde toutes les autres données inchangées
+
+            // On retire l'utilisateur connecté de la liste des Followers
+            Followers: prevUserData.Followers.filter(
+              (follower) => follower.id !== connectedUser.id // Supprime uniquement si l'id correspond
+            ),
+          };
+        }
+        // Si `prevUserData` est null, on retourne tel quel
+        return prevUserData;
       });
+      // Met à jour localement l'était isFollowing
       setIsFollowing(false);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
