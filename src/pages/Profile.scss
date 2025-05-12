@@ -63,7 +63,10 @@
   }
 
   &-skills,
-  &-interests,
+  &-skills-list,
+  &-interest,
+  &-interest-list,
+  .selected-skill-list,
   &-fav {
     display: flex;
     flex-wrap: wrap;
