@@ -8,7 +8,6 @@ import {
   SquarePen,
   SquareX,
   Star,
-  Trash,
   Trash2,
 } from "lucide-react";
 import "./Post.scss";
@@ -65,6 +64,9 @@ function Post({
   // Vérifie si l'utilisateur connecté est l'auteur du post
   const isAuthor = connectedUser?.id === data?.user_id;
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleDeletePost = async () => {
     try {
@@ -84,71 +86,140 @@ function Post({
     }
   };
 
+  const handleEditPost = async (formData: FormData) => {
+    try {
+      const title = formData.get("title") as string;
+      const content = formData.get("content") as string;
+      const editedPost = {
+        title,
+        content,
+      };
+      if (!title.trim() || !content.trim()) {
+        setErrorMessage("Veuillez remplir tous les champs");
+        return;
+      }
+
+      const response = await api.patch(`/me/posts/${data?.id}`, editedPost);
+      console.log(response.data);
+
+      setUserData((prevUserData) => {
+        if (prevUserData) {
+          const updatedPosts = prevUserData.Posts.map((post) => {
+            if (post.id === data?.id) {
+              return { ...post, ...response.data.updatedPost };
+            }
+            return post;
+          });
+          return {
+            ...prevUserData,
+            Posts: updatedPosts,
+          };
+        }
+        return prevUserData;
+      });
+      setSuccessMessage(response.data.message);
+      setTimeout(() => setSuccessMessage(""), 2000);
+      setIsEditing(false);
+    } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.error("Erreur lors de la modification du post :", error);
+    }
+  };
+
   return (
     <article className="post">
-      <div className="post-header">
-        {variant === "trade" &&
-          (author ? (
-            <p className="post-header-arrow">
-              <ArrowLeft />
-            </p>
-          ) : (
-            <p className="post-header-arrow arrow-alt">
-              <ArrowRight />
-            </p>
-          ))}
+      {isEditing ? (
+        <form
+          className="post-edit-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            handleEditPost(formData);
+          }}
+        >
+          <input
+            type="text"
+            name="title"
+            defaultValue={data?.title}
+            placeholder="Titre de l'annonce"
+            className="post-edit-form-title"
+          />
+          <textarea
+            name="content"
+            defaultValue={data?.content}
+            placeholder="Contenu de l'annonce"
+            className="post-edit-form-content"
+            rows={5}
+          />
+          <p style={{ color: "red" }}>{errorMessage}</p>
+          <button className="btn btn-alt" type="submit">
+            Enregistrer
+          </button>
+        </form>
+      ) : (
+        <>
+          <div className="post-header">
+            {variant === "trade" &&
+              (author ? (
+                <p className="post-header-arrow">
+                  <ArrowLeft />
+                </p>
+              ) : (
+                <p className="post-header-arrow arrow-alt">
+                  <ArrowRight />
+                </p>
+              ))}
 
-        <div>
-          <div className="post-header-title">
-            <h3>{data?.title || "Titre de l'annonce"}</h3>
-            <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
-            {/* Si l'utilisateur connecté est l'auteur du post, alors il peut le supprimer ou l'éditer */}
-            {isAuthor && (
-              <>
-                <SquarePen />
-                <button
-                  onClick={() => setIsConfirmModalOpen(true)}
-                  type="button"
-                  className="btn btn-alt"
-                >
-                  <Trash2 />
-                </button>
-              </>
-            )}
+            <div>
+              <div className="post-header-title">
+                <h3>{data?.title || "Titre de l'annonce"}</h3>
+                <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
+              </div>
+              <p className="post-header-date">
+                Posté le{" "}
+                {new Date(data!.createdAt ?? Date.now()).toLocaleDateString(
+                  "fr-FR",
+                  {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  }
+                ) || "24 avril 2025"}
+              </p>
+            </div>
           </div>
-          <p className="post-header-date">
-            Posté le{" "}
-            {new Date(data!.createdAt ?? Date.now()).toLocaleDateString(
-              "fr-FR",
-              {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }
-            ) || "24 avril 2025"}
+          <p>
+            {data?.content ||
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse."}
           </p>
-        </div>
-      </div>
-
-      <p>
-        {data?.content ||
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse."}
-      </p>
+          <p style={{ color: "green" }}>{successMessage}</p>
+        </>
+      )}
 
       {origin === "profile" && (
         <>
           <div className="post-btns">
             {variant === "post" &&
-              (author ? (
-                <>
-                  <button className="btn btn-alt" type="button">
-                    <SquarePen />
-                    Modifier
-                  </button>
-                  <button className="btn btn-alt btn-icon" type="button">
-                    <Trash />
-                  </button>
-                </>
+              (isAuthor ? (
+                !isEditing && (
+                  <>
+                    <button
+                      className="btn btn-alt"
+                      type="button"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <SquarePen />
+                      Modifier
+                    </button>
+                    <button
+                      className="btn btn-alt btn-icon"
+                      type="button"
+                      onClick={() => setIsConfirmModalOpen(true)}
+                    >
+                      <Trash2 />
+                    </button>
+                  </>
+                )
               ) : (
                 <>
                   <button className="btn btn-default" type="button">

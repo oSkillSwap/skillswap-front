@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import './Message.scss';
-import { ArrowLeft } from 'lucide-react';
-import { Link, useParams } from 'react-router';
-import { type Socket, io } from 'socket.io-client';
-import MessagesList from '../components/MessagesList';
-import { useAuth } from '../contexts/AuthContext';
-import api from '../services/api';
-import type IMessage from '../types/Message';
-import type User from '../types/User';
+import { useCallback, useEffect, useRef, useState } from "react";
+import "./Message.scss";
+import { ArrowLeft } from "lucide-react";
+import { Link, useParams } from "react-router";
+import { type Socket, io } from "socket.io-client";
+import MessagesList from "../components/MessagesList";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+import type IMessage from "../types/Message";
+import type User from "../types/User";
 
 interface Conversation {
   userId: number;
@@ -21,7 +21,7 @@ function Message() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [otherUser, setOtherUser] = useState<User | null>(null);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const socketRef = useRef<Socket | null>(null);
   const { user } = useAuth();
   const { userId: paramId } = useParams();
@@ -39,7 +39,7 @@ function Message() {
     // Sort messages chronologically
     const sortedMessages = [...allMsgs].sort(
       (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
 
     // Update state
@@ -47,13 +47,13 @@ function Message() {
   }, [paramId]);
 
   const fetchConversations = useCallback(async () => {
-    const response = await api.get('/me/messages');
+    const response = await api.get("/me/messages");
     const allMsgs = response.data.messages;
 
     // Sort messages chronologically
     const sortedMessages = [...allMsgs].sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
     const convMap = new Map();
@@ -107,7 +107,7 @@ function Message() {
   // Socket.IO client init
   useEffect(() => {
     // Init socket with Socket.IO server
-    const socket = io('https://skillswap-hknk.onrender.com', {
+    const socket = io("https://skillswap-hknk.onrender.com", {
       withCredentials: true, // check for CORS credentials (backend)
     });
 
@@ -115,10 +115,10 @@ function Message() {
     socketRef.current = socket;
 
     // Trigger 'join' socket event when page opens
-    socket.emit('join', currentUserId);
+    socket.emit("join", currentUserId);
 
     // Listen 'receiveMessage' socket event
-    socket.on('receiveMessage', () => {
+    socket.on("receiveMessage", () => {
       fetchConversations();
       fetchMsgs();
     });
@@ -141,7 +141,7 @@ function Message() {
     });
 
     // Trigger 'sendMessage' socket event
-    socketRef.current?.emit('sendMessage', {
+    socketRef.current?.emit("sendMessage", {
       content: input,
       sender_id: currentUserId,
       receiver_id: paramId,
@@ -149,7 +149,7 @@ function Message() {
 
     // Refresh messages displayed + Clear message input
     fetchMsgs();
-    setInput('');
+    setInput("");
   };
 
   return (
@@ -158,7 +158,7 @@ function Message() {
         {paramId ? (
           <div className="messages-chat">
             <div className="messages-chat-header">
-              <Link className="btn btn-alt" to={'/message'}>
+              <Link className="btn btn-alt" to={"/message"}>
                 <ArrowLeft /> Retour
               </Link>
               <Link
@@ -208,17 +208,17 @@ function Message() {
 
                   <div className="conversation-info">
                     <p className="conversation-info-username">
-                      {el.lastMessage.user.username}{' '}
+                      {el.lastMessage.user.username}{" "}
                       <span className="conversation-info-timestamp">
                         {new Date(
-                          el.lastMessage.message.createdAt || '',
-                        ).toLocaleString('fr-FR')}
-                      </span>{' '}
+                          el.lastMessage.message.createdAt || ""
+                        ).toLocaleString("fr-FR")}
+                      </span>{" "}
                     </p>
                     <p className="conversation-info-lastmsg">
                       {el.lastMessage.message.sender_id === user?.id && (
                         <span className="conversation-info-lastmsg-from">
-                          Vous :{' '}
+                          Vous :{" "}
                         </span>
                       )}
                       {el.lastMessage.message.content}
