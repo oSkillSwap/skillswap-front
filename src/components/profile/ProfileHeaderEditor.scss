@@ -36,16 +36,6 @@
   }
 
   .edit-btns {
-    display: flex;
-    align-items: center;
     padding: 0 $spacing-md;
-
-    & > :first-child {
-      border-radius: 0.8rem 0 0 0.8rem;
-    }
-
-    & > :last-child {
-      border-radius: 0 0.8rem 0.8rem 0;
-    }
   }
 }

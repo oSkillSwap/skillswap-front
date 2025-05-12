@@ -128,6 +128,19 @@
   }
 }
 
+.edit-btns {
+  display: flex;
+  align-items: center;
+
+  & > :first-child {
+    border-radius: 0.8rem 0 0 0.8rem;
+  }
+
+  & > :last-child {
+    border-radius: 0 0.8rem 0.8rem 0;
+  }
+}
+
 .availability-header {
   display: flex;
   align-items: center;
