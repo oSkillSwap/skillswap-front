@@ -35,15 +35,15 @@ export const useSearch = () => {
         (post: IPosts) =>
           // Recherche de l'annonce par titre, compétence recherchée ou catégorie de la compétence
           post.title.toLowerCase().trim().includes(search.toLowerCase()) ||
-          post.SkillWanted.name
+          post.SkillWanted?.name
             .toLowerCase()
             .trim()
             .includes(search.toLowerCase()) ||
-          post.SkillWanted.Category?.name
+          post.SkillWanted?.Category?.name
             .toLowerCase()
             .trim()
             .includes(search.toLowerCase()) ||
-          post.Author.username
+          post.Author?.username
             .trim()
             .toLowerCase()
             .includes(search.toLowerCase().trim())

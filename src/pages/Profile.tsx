@@ -83,10 +83,9 @@ function Profile() {
   // et met à jour l'état isFollowing en conséquence
   useEffect(() => {
     if (userData) {
-      const isFollowing = userData.Followers.some(
-        (follower) => follower.id === connectedUser?.id
+      setIsFollowing(
+        userData.Followers.some((follower) => follower.id === connectedUser?.id)
       );
-      setIsFollowing(isFollowing);
     }
   }, [userData, connectedUser]);
 
@@ -318,7 +317,13 @@ function Profile() {
             <div className="posts-container">
               {userData.Posts?.length ? (
                 userData.Posts.map((el) => (
-                  <Post key={el.id} data={el} variant="post" origin="profile" />
+                  <Post
+                    key={el.id}
+                    data={el}
+                    variant="post"
+                    origin="profile"
+                    setUserData={setUserData}
+                  />
                 ))
               ) : (
                 <p>Aucune annonce renseignée</p>
