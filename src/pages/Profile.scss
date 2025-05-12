@@ -45,7 +45,8 @@
     }
   }
 
-  &-col1, &-col2 {
+  &-col1,
+  &-col2 {
     grid-column: 1/13;
     display: flex;
     flex-direction: column;
@@ -61,7 +62,9 @@
     margin-top: $spacing-xl;
   }
 
-  &-skills, &-interests, &-fav {
+  &-skills,
+  &-interests,
+  &-fav {
     display: flex;
     flex-wrap: wrap;
     gap: $spacing-sm;
@@ -86,8 +89,9 @@
     grid-template-columns: repeat(8, 1fr);
     gap: $spacing-xs;
     align-items: center;
-  
-    &-day, &-slot {
+
+    &-day,
+    &-slot {
       font-size: $font-size-xs;
       background-color: $color-black;
       color: $color-white;
@@ -95,7 +99,7 @@
       padding: $spacing-xs;
       text-align: center;
     }
-  
+
     &-check {
       position: relative;
       width: 2.4rem;
@@ -103,18 +107,18 @@
       border-radius: 50%;
       background-color: $color-gray;
       margin: auto;
-  
+
       &.active {
         position: relative;
         background-color: $color-primary;
         position: relative;
 
         &::after {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: 0;
-          background: no-repeat center center url('/img/icons/check.svg');
+          background: no-repeat center center url("/img/icons/check.svg");
           background-size: 50%;
           width: 100%;
           height: 100%;
@@ -127,14 +131,13 @@
 .availability-header {
   display: flex;
   align-items: center;
-  gap:  0.8rem;
+  gap: 0.8rem;
   margin-bottom: $spacing-md;
 
   h2 {
     margin: 0;
   }
 }
-
 
 .success-message {
   margin: 2rem auto;
@@ -147,11 +150,10 @@
   border-radius: 1rem;
 }
 
-
-.profile-skills, .profile-interest {
+.profile-skills,
+.profile-interest {
   position: relative;
 }
-
 
 .availability-header h2 {
   width: auto;
@@ -169,7 +171,6 @@
   gap: $spacing-md;
 }
 
-
 @media screen and (min-width: $breakpoints-md) {
   .profile {
     &-header {
@@ -178,8 +179,6 @@
       text-align: left;
 
       &-content {
-        width: auto;
-
         & p {
           text-align: left;
         }
@@ -214,11 +213,11 @@
         width: 25.8rem;
       }
     }
-    
+
     &-col1 {
       grid-column: 1/4;
     }
-    
+
     &-col2 {
       grid-column: 4/13;
     }

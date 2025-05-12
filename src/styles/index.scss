@@ -36,7 +36,9 @@ main {
   width: 100%;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: $font-family-heading;
 }
 
@@ -73,7 +75,8 @@ label {
   font-weight: $font-weight-bold;
 }
 
-input {
+input,
+textarea {
   width: 100%;
   padding: $spacing-sm $spacing-md;
   border-radius: 0.8rem;
@@ -84,6 +87,10 @@ input {
     outline: none;
     border-color: $color-primary;
   }
+}
+
+textarea {
+  resize: none;
 }
 
 input[type="checkbox"] {
@@ -109,7 +116,7 @@ input[type="checkbox"] {
   &:checked::before {
     transform: scale(1);
   }
-}  
+}
 
 button {
   cursor: pointer;
@@ -235,5 +242,5 @@ button {
 @media screen and (max-width: $breakpoints-sm) {
   :root {
     font-size: 50%;
-  }  
+  }
 }

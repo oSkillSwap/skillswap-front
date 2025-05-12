@@ -81,11 +81,11 @@ function AvailabilityEditor({ userData, isOwner, setUserData }: Props) {
           {isOwner && !isEditing && (
             <button
               type="button"
-              className="btn-icon"
+              className="btn btn-reversed btn-icon"
               onClick={() => setIsEditing(true)}
               aria-label="Modifier les disponibilités"
             >
-              <SquarePen size={18} />
+              <SquarePen size={18} /> Editer
             </button>
           )}
         </div>
