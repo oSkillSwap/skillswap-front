@@ -9,9 +9,15 @@ import {
   SquareX,
   Star,
   Trash,
+  Trash2,
 } from "lucide-react";
 import "./Post.scss";
+import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+import type User from "../types/User";
 import Grade from "./Grade";
+import ConfirmModal from "./profile/ConfirmModal";
 
 type PostProps = {
   variant: "post" | "offer" | "trade";
@@ -42,6 +48,7 @@ type PostProps = {
       nbOfReviews?: number;
     };
   };
+  setUserData: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 function Post({
@@ -52,7 +59,31 @@ function Post({
   isFinished,
   reviewed,
   data,
+  setUserData,
 }: PostProps) {
+  const { user: connectedUser } = useAuth();
+  // Vérifie si l'utilisateur connecté est l'auteur du post
+  const isAuthor = connectedUser?.id === data?.user_id;
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+
+  const handleDeletePost = async () => {
+    try {
+      await api.delete(`/me/posts/${data?.id}`);
+      setUserData((prevUserData) => {
+        if (prevUserData) {
+          return {
+            ...prevUserData,
+            Posts: prevUserData.Posts.filter((post) => post.id !== data?.id),
+          };
+        }
+        return prevUserData;
+      });
+    } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.error("Erreur lors de la suppression du post :", error);
+    }
+  };
+
   return (
     <article className="post">
       <div className="post-header">
@@ -71,6 +102,19 @@ function Post({
           <div className="post-header-title">
             <h3>{data?.title || "Titre de l'annonce"}</h3>
             <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
+            {/* Si l'utilisateur connecté est l'auteur du post, alors il peut le supprimer ou l'éditer */}
+            {isAuthor && (
+              <>
+                <SquarePen />
+                <button
+                  onClick={() => setIsConfirmModalOpen(true)}
+                  type="button"
+                  className="btn btn-alt"
+                >
+                  <Trash2 />
+                </button>
+              </>
+            )}
           </div>
           <p className="post-header-date">
             Posté le{" "}
@@ -271,6 +315,16 @@ function Post({
             </button>
           </div>
         </div>
+      )}
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          message="Es-tu sûr de vouloir supprimer cette annonce ? Cette action est irréversible."
+          onCancel={() => setIsConfirmModalOpen(false)}
+          onConfirm={() => {
+            handleDeletePost();
+            setIsConfirmModalOpen(false);
+          }}
+        />
       )}
     </article>
   );

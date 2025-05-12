@@ -1,3 +1,5 @@
+import type { ICategories } from "./Categories";
+
 export interface IPosts {
   id?: number;
   isClosed?: boolean;
@@ -14,6 +16,7 @@ export interface IPosts {
     createdAt: string;
     updatedAt: string;
     category_id: number;
+    Category: ICategories;
   };
   Author?: {
     id: number;
