@@ -1,32 +1,32 @@
-import { Heart, KeyRound, MessageSquare, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
-import "./Profile.scss";
-import { Link, useNavigate, useParams } from "react-router";
-import Grade from "../components/Grade";
-import Post from "../components/Post";
-import Testimonial from "../components/Testimonial";
-import AvailabilityEditor from "../components/profile/AvailabilityEditor";
-import ConfirmModal from "../components/profile/ConfirmModal";
-import IsAvailableToggle from "../components/profile/IsAvailableToggle";
-import PasswordModal from "../components/profile/PasswordModal";
-import ProfileHeaderEditor from "../components/profile/ProfileHeaderEditor";
-import SkillEditor from "../components/profile/SkillEditor";
-import SkillWantedEditor from "../components/profile/SkillWantedEditor";
-import { useAuth } from "../contexts/AuthContext";
-import api from "../services/api";
-import type User from "../types/User";
+import { Heart, KeyRound, MessageSquare, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import './Profile.scss';
+import { Link, useNavigate, useParams } from 'react-router';
+import Grade from '../components/Grade';
+import Post from '../components/Post';
+import Testimonial from '../components/Testimonial';
+import AvailabilityEditor from '../components/profile/AvailabilityEditor';
+import ConfirmModal from '../components/profile/ConfirmModal';
+import IsAvailableToggle from '../components/profile/IsAvailableToggle';
+import PasswordModal from '../components/profile/PasswordModal';
+import ProfileHeaderEditor from '../components/profile/ProfileHeaderEditor';
+import SkillEditor from '../components/profile/SkillEditor';
+import SkillWantedEditor from '../components/profile/SkillWantedEditor';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
+import type User from '../types/User';
 
 function Profile() {
   let { user: profileId } = useParams();
   const navigate = useNavigate();
-  const { user: connectedUser, logout } = useAuth();
+  const { user: connectedUser, logout, isAuthLoading } = useAuth();
 
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [error, setError] = useState("");
-  const [passwordChangeMessage, setPasswordChangeMessage] = useState("");
+  const [error, setError] = useState('');
+  const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
   const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
 
   if (!profileId && connectedUser) {
@@ -34,47 +34,59 @@ function Profile() {
   }
 
   const isOwnProfile = connectedUser?.id?.toString() === profileId;
+
   useEffect(() => {
     setIsLoading(true);
-    setError("");
+    setError('');
 
-    Promise.all([
-      api.get(`/users/${profileId}`),
-      api.get(`/users/follows/${profileId}`),
-      api.get(`/reviews/${profileId}`),
-      api.get(`/posts/${profileId}`),
-    ])
-      .then(
-        ([userResponse, followsResponse, reviewsResponse, postsResponse]) => {
-          setUserData({
-            ...userResponse.data.user,
-            Follows: followsResponse.data.user.Follows,
-            Followers: followsResponse.data.user.Followers,
-            Reviews: reviewsResponse.data.reviews,
-            Posts: postsResponse.data.posts,
+    const fetchUserData = async () => {
+      if (!isAuthLoading) {
+        Promise.all([
+          api.get(`/users/${profileId}`),
+          api.get(`/users/follows/${profileId}`),
+          api.get(`/reviews/${profileId}`),
+          api.get(`/posts/${profileId}`),
+        ])
+          .then(
+            ([
+              userResponse,
+              followsResponse,
+              reviewsResponse,
+              postsResponse,
+            ]) => {
+              setUserData({
+                ...userResponse.data.user,
+                Follows: followsResponse.data.user.Follows,
+                Followers: followsResponse.data.user.Followers,
+                Reviews: reviewsResponse.data.reviews,
+                Posts: postsResponse.data.posts,
+              });
+              setIsLoading(false);
+            },
+          )
+          .catch((error) => {
+            setError(error.message);
+            setIsLoading(false);
           });
-          setIsLoading(false);
-        }
-      )
-      .catch((error) => {
-        setError(error.message);
-        setIsLoading(false);
-      });
-  }, [profileId]);
+      } else fetchUserData();
+    };
+
+    fetchUserData();
+  }, [profileId, isAuthLoading]);
 
   const handleDeleteAccount = async () => {
     try {
-      await api.delete("/me");
+      await api.delete('/me');
       logout();
-      navigate("/login");
+      navigate('/login');
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors de la suppression du compte :", error);
+      console.error('Erreur lors de la suppression du compte :', error);
       alert(
         `Erreur : ${
           (error as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message || "Erreur inconnue"
-        }`
+            ?.data?.message || 'Erreur inconnue'
+        }`,
       );
     }
   };
@@ -84,7 +96,9 @@ function Profile() {
   useEffect(() => {
     if (userData) {
       setIsFollowing(
-        userData.Followers.some((follower) => follower.id === connectedUser?.id)
+        userData.Followers.some(
+          (follower) => follower.id === connectedUser?.id,
+        ),
       );
     }
   }, [userData, connectedUser]);
@@ -121,7 +135,7 @@ function Profile() {
       setIsFollowing(true);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors du follow :", error);
+      console.error('Erreur lors du follow :', error);
     }
   };
 
@@ -141,7 +155,7 @@ function Profile() {
 
             // On retire l'utilisateur connecté de la liste des Followers
             Followers: prevUserData.Followers.filter(
-              (follower) => follower.id !== connectedUser.id // Supprime uniquement si l'id correspond
+              (follower) => follower.id !== connectedUser.id, // Supprime uniquement si l'id correspond
             ),
           };
         }
@@ -152,7 +166,7 @@ function Profile() {
       setIsFollowing(false);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors du unfollow :", error);
+      console.error('Erreur lors du unfollow :', error);
     }
   };
 
@@ -168,7 +182,7 @@ function Profile() {
       await unfollowUser();
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors du follow :", error);
+      console.error('Erreur lors du follow :', error);
     }
   };
 
@@ -180,7 +194,7 @@ function Profile() {
     );
   }
 
-  if (error !== "" || !userData) {
+  if (error !== '' || !userData) {
     return (
       <main className="container">
         <h1>{error}</h1>
@@ -261,8 +275,8 @@ function Profile() {
                   <button className="btn btn-alt btn-icon" type="button">
                     <Heart
                       onClick={handleFollowAndUnfollow}
-                      color={isFollowing ? "red" : "black"}
-                      fill={isFollowing ? "red" : "transparent"}
+                      color={isFollowing ? 'red' : 'black'}
+                      fill={isFollowing ? 'red' : 'transparent'}
                     />
                   </button>
                 </>
@@ -351,7 +365,7 @@ function Profile() {
             onSuccess={(message) => {
               setPasswordChangeMessage(message);
               setIsPasswordModalOpen(false);
-              setTimeout(() => setPasswordChangeMessage(""), 3000);
+              setTimeout(() => setPasswordChangeMessage(''), 3000);
             }}
           />
         )}

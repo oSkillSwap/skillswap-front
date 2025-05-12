@@ -201,7 +201,7 @@ function Message() {
                   to={`/message/${el.userId}`}
                 >
                   <img
-                    src={`${el.lastMessage.user.avatar}`}
+                    src={el.lastMessage.user.avatar}
                     alt=""
                     className="conversation-userpicture"
                   />
