@@ -6,6 +6,7 @@ import api from '../services/api';
 import type { IPosts } from '../types/Posts';
 import type { ISkills } from '../types/Skills';
 import PageTransition from '../utils/PageTransition';
+import './Post.scss';
 
 function Post() {
   const [posts, setPosts] = useState<[] | IPosts[]>([]);
@@ -125,20 +126,32 @@ function Post() {
     }
   };
   return (
-    <main className="post container">
+    <main className="container">
       <section className="content">
         <h1>Post</h1>
         <form
+          className="add-post-form"
           action={(formData) => {
             handleSubmit(formData);
           }}
         >
-          <input type="text" name="title" placeholder="Titre de l'annonce" />
-          <input
-            type="text"
-            name="content"
-            placeholder="Contenu de l'annonce"
-          />
+          <div className="add-post-form-input">
+            <label htmlFor="add-post-title">Titre</label>
+            <input
+              id="add-post-title"
+              type="text"
+              name="title"
+              placeholder="Titre de l'annonce"
+            />
+          </div>
+          <div className="add-post-form-input">
+            <label htmlFor="add-post-content">Description</label>
+            <textarea
+              id="add-post-content"
+              name="content"
+              placeholder="Contenu de l'annonce"
+            />
+          </div>
           {/* Permet d'afficher chaque compétence dans le groupe (optgroup) correspondant à sa catégorie. */}
           <select name="skill_id" id="skill_id">
             {[...new Set(skills.map((skill) => skill.Category.name))].map(
@@ -156,7 +169,7 @@ function Post() {
             )}
           </select>
 
-          <button type="submit" className="btn">
+          <button type="submit" className="btn btn-default">
             Poster
           </button>
           {error && <p className="error">{error}</p>}

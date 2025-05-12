@@ -189,7 +189,7 @@ function Profile() {
 
   if (isLoading) {
     return (
-      <main className="container">
+      <main className="container loader">
         <h1>Chargement...</h1>
       </main>
     );

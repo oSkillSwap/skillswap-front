@@ -39,8 +39,10 @@
 
       &-btns {
         display: flex;
+        flex-wrap: wrap;
         gap: $spacing-sm;
         align-self: center;
+        justify-content: center;
       }
     }
   }
@@ -201,6 +203,7 @@
 
         &-btns {
           align-self: flex-start;
+          justify-content: flex-start;
         }
       }
     }
