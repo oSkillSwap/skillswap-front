@@ -1,6 +1,7 @@
 @use "../styles/variables" as *;
 
 .post {
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: $spacing-xl;
