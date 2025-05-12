@@ -8,6 +8,7 @@ import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import type IMessage from '../types/Message';
 import type User from '../types/User';
+import PageTransition from '../utils/PageTransition';
 
 interface Conversation {
   userId: number;
@@ -236,4 +237,4 @@ function Message() {
   );
 }
 
-export default Message;
+export default PageTransition(Message);

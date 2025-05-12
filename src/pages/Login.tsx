@@ -4,6 +4,7 @@ import { AxiosError } from 'axios';
 import { Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import PageTransition from '../utils/PageTransition';
 
 function Login() {
   const [error, setError] = useState('');
@@ -99,4 +100,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default PageTransition(Login);

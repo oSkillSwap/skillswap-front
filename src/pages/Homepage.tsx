@@ -1,10 +1,11 @@
-import { LogIn } from "lucide-react";
-import "./Homepage.scss";
-import CategoryCarousel from "../components/CategoryCarousel";
-import Searchbar from "../components/Searchbar";
-import TestimonialCarousel from "../components/TestimonialCarousel";
-import UserCarousel from "../components/UserCarousel";
-import { useSearch } from "../hooks/useSearch";
+import { LogIn } from 'lucide-react';
+import './Homepage.scss';
+import CategoryCarousel from '../components/CategoryCarousel';
+import Searchbar from '../components/Searchbar';
+import TestimonialCarousel from '../components/TestimonialCarousel';
+import UserCarousel from '../components/UserCarousel';
+import { useSearch } from '../hooks/useSearch';
+import PageTransition from '../utils/PageTransition';
 
 function Homepage() {
   const { handleSearch } = useSearch();
@@ -64,4 +65,4 @@ function Homepage() {
   );
 }
 
-export default Homepage;
+export default PageTransition(Homepage);

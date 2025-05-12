@@ -15,6 +15,7 @@ import SkillWantedEditor from '../components/profile/SkillWantedEditor';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import type User from '../types/User';
+import PageTransition from '../utils/PageTransition';
 
 function Profile() {
   let { user: profileId } = useParams();
@@ -382,4 +383,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default PageTransition(Profile);
