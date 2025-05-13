@@ -1,7 +1,8 @@
 import { CirclePlus, LogIn } from 'lucide-react';
 import './Homepage.scss';
-import {} from 'react';
 import { useNavigate } from 'react-router';
+import heroImage from '/src/assets/img/hero-image.webp';
+import homeImage from '/src/assets/img/home-image.webp';
 import CategoryCarousel from '../components/CategoryCarousel';
 import Searchbar from '../components/Searchbar';
 import TestimonialCarousel from '../components/TestimonialCarousel';
@@ -18,7 +19,10 @@ function Homepage() {
   return (
     <main className="homepage container">
       <section className="homepage-hero">
-        <img src="img/hero-image.jpg" alt="" />
+        <img
+          src={heroImage}
+          alt="Astronaute assis interagissant par visioconférence avec une collègue à travers un robot flottant dans une station spatiale."
+        />
         <div className="homepage-hero-text">
           <h1>Échangez vos compétences, enrichissez vos savoirs.</h1>
           <p>
@@ -37,7 +41,10 @@ function Homepage() {
       </section>
 
       <section className="content homepage-content-imgleft">
-        <img src="img/home-image.jpg" alt="" />
+        <img
+          src={homeImage}
+          alt="Astronaute souriante marchant dans une station spatiale tout en tenant un dossier et en saluant."
+        />
         <div>
           <h1>Recherchez, proposez, apprenez</h1>
           <p>
