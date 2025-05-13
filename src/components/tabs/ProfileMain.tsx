@@ -74,7 +74,6 @@ function ProfilePage() {
       logout();
       navigate('/login');
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du compte :', error);
       alert(
         `Erreur : ${
@@ -95,23 +94,16 @@ function ProfilePage() {
     }
   }, [userData, connectedUser]);
 
-  // Permet de suivre un utilisateur
   const followUser = async () => {
     if (!connectedUser) return;
     try {
       await api.post(`/me/follow/${userId}`);
-      // Met à jour localement l'état de l'utilisateur
-      // en ajoutant l'utilisateur connecté dans la liste des Followers
       setUserData((prevUserData) => {
-        // Si les données précédentes existent
         if (prevUserData) {
           return {
-            ...prevUserData, // Copie toutes les propriétés existantes
-
-            // On ajoute l'utilisateur connecté dans la liste des Followers
+            ...prevUserData,
             Followers: [
-              ...prevUserData.Followers, // On garde les anciens followers
-              // On ajoute l'utilisateur connecté
+              ...prevUserData.Followers,
               {
                 id: connectedUser.id,
                 username: connectedUser.username,
@@ -120,44 +112,31 @@ function ProfilePage() {
             ],
           };
         }
-        // Si `prevUserData` est null, on ne fait rien
         return prevUserData;
       });
-      // Met à jour l'état isFollowing
       setIsFollowing(true);
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors du follow :', error);
     }
   };
 
-  // Permet de ne plus suivre un utilisateur
   const unfollowUser = async () => {
-    // Vérifie si l'utilisateur est connecté
     if (!connectedUser) return;
     try {
       await api.delete(`/me/follow/${userId}`);
-      // Met à jour localement l'état de l'utilisateur
-      // en supprimant l'utilisateur connecté de la liste des Followers
       setUserData((prevUserData) => {
-        // Si les données précédentes existent
         if (prevUserData) {
           return {
-            ...prevUserData, // On garde toutes les autres données inchangées
-
-            // On retire l'utilisateur connecté de la liste des Followers
+            ...prevUserData,
             Followers: prevUserData.Followers.filter(
-              (follower) => follower.id !== connectedUser.id, // Supprime uniquement si l'id correspond
+              (follower) => follower.id !== connectedUser.id,
             ),
           };
         }
-        // Si `prevUserData` est null, on retourne tel quel
         return prevUserData;
       });
-      // Met à jour localement l'était isFollowing
       setIsFollowing(false);
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors du unfollow :', error);
     }
   };
@@ -165,15 +144,11 @@ function ProfilePage() {
   const handleFollowAndUnfollow = async () => {
     if (!connectedUser) return;
     try {
-      // Vérifie si l'utilisateur suit déjà le profil
       if (!isFollowing) {
-        // Si l'utilisateur ne suit pas, on le suit
         return await followUser();
       }
-      // Si l'utilisateur suit déjà, on arrête de le suivre
       await unfollowUser();
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors du follow :', error);
     }
   };
@@ -321,8 +296,8 @@ function ProfilePage() {
           <section className="profile-posts">
             <h2>Annonces</h2>
             <div className="posts-container">
-              {userData.Posts?.length ? (
-                userData.Posts.map((el) => (
+              {userData.Posts?.filter((el) => !el.isClosed).length ? (
+                userData.Posts.filter((el) => !el.isClosed).map((el) => (
                   <Post
                     key={el.id}
                     data={el}
@@ -332,7 +307,7 @@ function ProfilePage() {
                   />
                 ))
               ) : (
-                <p>Aucune annonce renseignée</p>
+                <p>Aucune annonce active</p>
               )}
             </div>
           </section>
