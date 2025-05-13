@@ -4,9 +4,6 @@ import {
   HandHelping,
   MessageSquare,
   SquarePen,
-  Trash,
-  SquareX,
-  Star,
   Trash2,
 } from 'lucide-react';
 import './Post.scss';
@@ -57,15 +54,14 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleDeletePost = async () => {
     try {
       await api.delete(`/me/posts/${data?.id}`);
       if (setUserData) {
-        setUserData((prevUserData) => {
+        setUserData?.((prevUserData) => {
           if (prevUserData) {
             return {
               ...prevUserData,
@@ -82,21 +78,21 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
 
   const handleEditPost = async (formData: FormData) => {
     try {
-      const title = formData.get("title") as string;
-      const content = formData.get("content") as string;
+      const title = formData.get('title') as string;
+      const content = formData.get('content') as string;
       const editedPost = {
         title,
         content,
       };
       if (!title.trim() || !content.trim()) {
-        setErrorMessage("Veuillez remplir tous les champs");
+        setErrorMessage('Veuillez remplir tous les champs');
         return;
       }
 
       const response = await api.patch(`/me/posts/${data?.id}`, editedPost);
       console.log(response.data);
 
-      setUserData((prevUserData) => {
+      setUserData?.((prevUserData) => {
         if (prevUserData) {
           const updatedPosts = prevUserData.Posts.map((post) => {
             if (post.id === data?.id) {
@@ -112,12 +108,18 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
         return prevUserData;
       });
       setSuccessMessage(response.data.message);
-      setTimeout(() => setSuccessMessage(""), 2000);
+      setTimeout(() => setSuccessMessage(''), 2000);
       setIsEditing(false);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors de la modification du post :", error);
+      console.error('Erreur lors de la modification du post :', error);
     }
+  };
+
+  const author = data.Author || {
+    id: 0,
+    username: 'Auteur inconnu',
+    avatar: '/img/avatars/robot1.jpg',
   };
 
   return (
@@ -145,7 +147,7 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
             className="post-edit-form-content"
             rows={5}
           />
-          <p style={{ color: "red" }}>{errorMessage}</p>
+          <p style={{ color: 'red' }}>{errorMessage}</p>
           <button className="btn btn-alt" type="submit">
             Enregistrer
           </button>
@@ -153,47 +155,47 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
       ) : (
         <>
           <div className="post-header">
-            {variant === "trade" &&
-              (author ? (
-                <p className="post-header-arrow">
+            {variant === 'trade' && (
+              <p
+                className={`post-header-arrow ${author.id === connectedUser?.id ? '' : 'arrow-alt'}`}
+              >
+                {author.id === connectedUser?.id ? (
                   <ArrowLeft />
-                </p>
-              ) : (
-                <p className="post-header-arrow arrow-alt">
+                ) : (
                   <ArrowRight />
-                </p>
-              ))}
-
+                )}
+              </p>
+            )}
             <div>
               <div className="post-header-title">
                 <h3>{data?.title || "Titre de l'annonce"}</h3>
-                <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
+                <p className="tag">{data?.SkillWanted?.name || 'Next.js'}</p>
               </div>
               <p className="post-header-date">
-                Posté le{" "}
+                Posté le{' '}
                 {new Date(data!.createdAt ?? Date.now()).toLocaleDateString(
-                  "fr-FR",
+                  'fr-FR',
                   {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  }
-                ) || "24 avril 2025"}
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  },
+                ) || '24 avril 2025'}
               </p>
             </div>
           </div>
           <p>
             {data?.content ||
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse."}
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse.'}
           </p>
-          <p style={{ color: "green" }}>{successMessage}</p>
+          <p style={{ color: 'green' }}>{successMessage}</p>
         </>
       )}
 
       {origin === 'profile' && (
         <>
           <div className="post-btns">
-            {variant === "post" &&
+            {variant === 'post' &&
               (isAuthor ? (
                 !isEditing && (
                   <>

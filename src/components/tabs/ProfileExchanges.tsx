@@ -101,7 +101,14 @@ function ProfileExchanges() {
           ongoingExchanges.map((prop) => (
             <Post
               key={prop.id}
-              data={prop.Post}
+              data={{
+                ...prop.Post,
+                Author: {
+                  id: prop.Receiver?.id ?? 0,
+                  username: prop.Receiver?.username ?? 'Utilisateur inconnu',
+                  avatar: prop.Receiver?.avatar ?? '/img/avatars/robot1.jpg',
+                },
+              }}
               variant="trade"
               origin="profile"
             >
@@ -160,7 +167,14 @@ function ProfileExchanges() {
           finishedExchanges.map((prop) => (
             <Post
               key={prop.id}
-              data={prop.Post}
+              data={{
+                ...prop.Post,
+                Author: {
+                  id: prop.Receiver?.id ?? 0,
+                  username: prop.Receiver?.username ?? 'Utilisateur inconnu',
+                  avatar: prop.Receiver?.avatar ?? '/img/avatars/robot1.jpg',
+                },
+              }}
               variant="trade"
               origin="profile"
               isFinished
