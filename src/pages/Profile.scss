@@ -169,6 +169,25 @@
   gap: $spacing-md;
 }
 
+.nav{
+  margin-top: 3rem;
+  display: flex;
+  gap: 1rem;
+
+  .active{
+    background-color: $color-black;
+    color: $color-white;
+  }
+
+   & a:hover{
+      background-color: $color-black;
+      color: $color-white;
+    }
+}
+
+.profile-header-picture, .post-author-userinfo-picture{
+  background-color: $color-black;
+}
 
 @media screen and (min-width: $breakpoints-md) {
   .profile {
