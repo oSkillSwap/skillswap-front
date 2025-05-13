@@ -1,4 +1,3 @@
-// ProfileExchanges.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
@@ -25,6 +24,12 @@ function ProfileExchanges() {
   const navigate = useNavigate();
   const LOCAL_KEY = 'finishedPropositions';
   const REVIEWED_KEY = 'reviewedPropositions';
+
+  function hasGrades(
+    user: any,
+  ): user is { averageGrade: number; nbOfReviews: number } {
+    return 'averageGrade' in user && 'nbOfReviews' in user;
+  }
 
   useEffect(() => {
     const fetchAcceptedPropositions = async () => {
@@ -92,70 +97,83 @@ function ProfileExchanges() {
     }
   };
 
+  const buildOtherUser = (prop: IEnrichedProposition) => {
+    const rawUser =
+      prop.Sender?.id === connectedUser?.id ? prop.Receiver : prop.Sender;
+    return {
+      id: rawUser?.id ?? 0,
+      username: rawUser?.username ?? 'Utilisateur inconnu',
+      avatar: rawUser?.avatar ?? '/img/avatars/robot1.jpg',
+      averageGrade: hasGrades(rawUser) ? rawUser.averageGrade : 0,
+      nbOfReviews: hasGrades(rawUser) ? rawUser.nbOfReviews : 0,
+    };
+  };
+
   return (
     <section className="container posts-propositions">
       <h2 className="tabs-subtitle">Mes échanges en cours</h2>
       {error && <p className="error">{error}</p>}
       <div className="posts-container">
         {ongoingExchanges.length > 0 ? (
-          ongoingExchanges.map((prop) => (
-            <Post
-              key={prop.id}
-              data={{
-                ...prop.Post,
-                Author: {
-                  id: prop.Receiver?.id ?? 0,
-                  username: prop.Receiver?.username ?? 'Utilisateur inconnu',
-                  avatar: prop.Receiver?.avatar ?? '/img/avatars/robot1.jpg',
-                },
-              }}
-              variant="trade"
-              origin="profile"
-            >
-              <div className="post-author">
-                <div>
-                  <div className="post-author-userinfo">
-                    <img
-                      className="post-author-userinfo-picture"
-                      src={prop.Receiver?.avatar || '/img/avatars/robot1.jpg'}
-                      alt={prop.Receiver?.username}
-                    />
-                    <div>
-                      <h3>{prop.Receiver?.username}</h3>
-                      <Grade
-                        rating={prop.Receiver?.averageGrade}
-                        nbReviews={prop.Receiver?.nbOfReviews}
+          ongoingExchanges.map((prop) => {
+            const otherUser = buildOtherUser(prop);
+            return (
+              <Post
+                key={prop.id}
+                data={{
+                  ...prop.Post,
+                  Author: otherUser,
+                }}
+                variant="trade"
+                origin="profile"
+              >
+                <div className="post-author">
+                  <div>
+                    <div className="post-author-userinfo">
+                      <img
+                        className="post-author-userinfo-picture"
+                        src={otherUser.avatar}
+                        alt={otherUser.username}
                       />
+                      <div>
+                        <h3>{otherUser.username}</h3>
+                        <Grade
+                          rating={otherUser.averageGrade}
+                          nbReviews={otherUser.nbOfReviews}
+                        />
+                      </div>
                     </div>
+                    <p className="post-offer-date">
+                      Acceptée le{' '}
+                      {new Date(prop.updatedAt ?? '').toLocaleDateString(
+                        'fr-FR',
+                      )}
+                    </p>
+                    <p className="post-offer-content">{prop.content}</p>
                   </div>
-                  <p className="post-offer-date">
-                    Acceptée le{' '}
-                    {new Date(prop.updatedAt ?? '').toLocaleDateString('fr-FR')}
-                  </p>
-                  <p className="post-offer-content">{prop.content}</p>
+                  <div className="post-author-btns">
+                    <button
+                      className="btn btn-reversed"
+                      type="button"
+                      onClick={() => navigate(`/message/${otherUser.id}`)}
+                    >
+                      <MessageSquare /> Contacter
+                    </button>
+                    <button
+                      className="btn btn-default"
+                      type="button"
+                      onClick={() => handleFinish(prop)}
+                    >
+                      <SquareCheckBig /> Terminer
+                    </button>
+                    <button className="btn btn-secondary" type="button">
+                      <SquareX /> Annuler
+                    </button>
+                  </div>
                 </div>
-                <div className="post-author-btns">
-                  <button
-                    className="btn btn-reversed"
-                    type="button"
-                    onClick={() => navigate(`/message/${prop.Receiver?.id}`)}
-                  >
-                    <MessageSquare /> Contacter
-                  </button>
-                  <button
-                    className="btn btn-default"
-                    type="button"
-                    onClick={() => handleFinish(prop)}
-                  >
-                    <SquareCheckBig /> Terminer
-                  </button>
-                  <button className="btn btn-secondary" type="button">
-                    <SquareX /> Annuler
-                  </button>
-                </div>
-              </div>
-            </Post>
-          ))
+              </Post>
+            );
+          })
         ) : (
           <p>Aucun échange en cours.</p>
         )}
@@ -164,85 +182,86 @@ function ProfileExchanges() {
       <h2 className="tabs-subtitle">Mes échanges terminés</h2>
       <div className="posts-container">
         {finishedExchanges.length > 0 ? (
-          finishedExchanges.map((prop) => (
-            <Post
-              key={prop.id}
-              data={{
-                ...prop.Post,
-                Author: {
-                  id: prop.Receiver?.id ?? 0,
-                  username: prop.Receiver?.username ?? 'Utilisateur inconnu',
-                  avatar: prop.Receiver?.avatar ?? '/img/avatars/robot1.jpg',
-                },
-              }}
-              variant="trade"
-              origin="profile"
-              isFinished
-            >
-              <div className="post-author">
-                <div>
-                  <div className="post-author-userinfo">
-                    <img
-                      className="post-author-userinfo-picture"
-                      src={prop.Receiver?.avatar || '/img/avatars/robot1.jpg'}
-                      alt={prop.Receiver?.username}
-                    />
-                    <div>
-                      <h3>{prop.Receiver?.username}</h3>
-                      <Grade
-                        rating={prop.Receiver?.averageGrade}
-                        nbReviews={prop.Receiver?.nbOfReviews}
+          finishedExchanges.map((prop) => {
+            const otherUser = buildOtherUser(prop);
+            return (
+              <Post
+                key={prop.id}
+                data={{
+                  ...prop.Post,
+                  Author: otherUser,
+                }}
+                variant="trade"
+                origin="profile"
+                isFinished
+              >
+                <div className="post-author">
+                  <div>
+                    <div className="post-author-userinfo">
+                      <img
+                        className="post-author-userinfo-picture"
+                        src={otherUser.avatar}
+                        alt={otherUser.username}
                       />
+                      <div>
+                        <h3>{otherUser.username}</h3>
+                        <Grade
+                          rating={otherUser.averageGrade}
+                          nbReviews={otherUser.nbOfReviews}
+                        />
+                      </div>
                     </div>
+                    <p className="post-offer-date">
+                      Terminé le{' '}
+                      {new Date(prop.updatedAt ?? '').toLocaleDateString(
+                        'fr-FR',
+                      )}
+                    </p>
+                    <p className="post-offer-content">{prop.content}</p>
                   </div>
-                  <p className="post-offer-date">
-                    Terminé le{' '}
-                    {new Date(prop.updatedAt ?? '').toLocaleDateString('fr-FR')}
-                  </p>
-                  <p className="post-offer-content">{prop.content}</p>
-                </div>
-                <div className="post-author-btns">
-                  {connectedUser?.id === prop.Post.user_id ? (
-                    reviewedIds.includes(prop.id!) ? (
+                  <div className="post-author-btns">
+                    {connectedUser?.id === prop.Post.user_id ? (
+                      reviewedIds.includes(prop.id!) ? (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          disabled
+                        >
+                          Avis envoyé
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-default"
+                          type="button"
+                          onClick={() => setActiveReviewProp(prop)}
+                        >
+                          <Star /> Donner un avis
+                        </button>
+                      )
+                    ) : reviewedIds.includes(prop.id!) ? (
+                      <button
+                        type="button"
+                        className="btn btn-default"
+                        onClick={() =>
+                          alert("Fonction Voir l'avis à implémenter")
+                        }
+                      >
+                        <Star /> Voir l'avis
+                      </button>
+                    ) : (
                       <button
                         type="button"
                         className="btn btn-secondary"
                         disabled
                       >
-                        Avis envoyé
+                        En attente de l'avis
                       </button>
-                    ) : (
-                      <button
-                        className="btn btn-default"
-                        type="button"
-                        onClick={() => setActiveReviewProp(prop)}
-                      >
-                        <Star /> Donner un avis
-                      </button>
-                    )
-                  ) : reviewedIds.includes(prop.id!) ? (
-                    <button
-                      type="button"
-                      className="btn btn-default"
-                      onClick={() =>
-                        alert("Fonction Voir l'avis à implémenter")
-                      }
-                    >
-                      <Star /> Voir l'avis
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      disabled
-                    >
-                      En attente de l'avis
-                    </button>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Post>
-          ))
+              </Post>
+            );
+          })
         ) : (
           <p>Aucun échange terminé.</p>
         )}

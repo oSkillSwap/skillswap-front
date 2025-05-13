@@ -1,4 +1,4 @@
-import type { ISkills } from "./Skills";
+import type { ISkills } from './Skills';
 
 export interface IUsers {
   id: number;
@@ -10,8 +10,8 @@ export interface IUsers {
   isAvailable: boolean;
   description: string;
   avatar: string;
-  averageGrade: number;
-  nbOfReviews: number;
+  averageGrade?: number;
+  nbOfReviews?: number;
   createdAt: string;
   updatedAt: string;
   Skills: ISkills[];
