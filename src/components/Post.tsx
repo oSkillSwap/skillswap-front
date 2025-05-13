@@ -74,6 +74,7 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
         });
       }
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du post :', error);
     }
   };
@@ -92,6 +93,7 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
       }
 
       const response = await api.patch(`/me/posts/${data?.id}`, editedPost);
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.log(response.data);
 
       if (setUserData) {

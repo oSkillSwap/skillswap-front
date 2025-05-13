@@ -5,6 +5,10 @@
   align-items: center;
   gap: $spacing-md;
 
+  &-value {
+    overflow-wrap: anywhere;
+  }
+
   .edit-wrapper {
     display: flex;
     width: 100%;
