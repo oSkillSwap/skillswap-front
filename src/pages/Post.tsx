@@ -7,6 +7,7 @@ import type { IPosts } from '../types/Posts';
 import type { ISkills } from '../types/Skills';
 import PageTransition from '../utils/PageTransition';
 import './Post.scss';
+//import { useNavigate } from "react-router";
 
 function Post() {
   const [posts, setPosts] = useState<[] | IPosts[]>([]);
@@ -125,6 +126,7 @@ function Post() {
       console.error('Error submitting form:', error);
     }
   };
+
   return (
     <main className="container">
       <section className="content">
