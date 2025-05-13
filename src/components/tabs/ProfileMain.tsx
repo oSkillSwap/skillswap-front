@@ -2,6 +2,9 @@ import { Heart, KeyRound, MessageSquare, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import '../../pages/Profile.scss';
 import { Link, useNavigate, useParams } from 'react-router';
+import { useAuth } from '../../contexts/AuthContext';
+import api from '../../services/api';
+import type User from '../../types/User';
 import Grade from '../Grade';
 import Post from '../Post';
 import Testimonial from '../Testimonial';
@@ -12,9 +15,6 @@ import PasswordModal from '../profile/PasswordModal';
 import ProfileHeaderEditor from '../profile/ProfileHeaderEditor';
 import SkillEditor from '../profile/SkillEditor';
 import SkillWantedEditor from '../profile/SkillWantedEditor';
-import { useAuth } from '../../contexts/AuthContext';
-import api from '../../services/api';
-import type User from '../../types/User';
 
 function Profile() {
   let { user: profileId } = useParams();
@@ -255,9 +255,12 @@ function Profile() {
                 </>
               ) : (
                 <>
-                  <button className="btn btn-default" type="button">
+                  <Link
+                    className="btn btn-default"
+                    to={`/message/${profileId}`}
+                  >
                     <MessageSquare /> Contacter
-                  </button>
+                  </Link>
                   <button className="btn btn-alt btn-icon" type="button">
                     <Heart
                       onClick={handleFollowAndUnfollow}
