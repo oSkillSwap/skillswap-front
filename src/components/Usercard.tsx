@@ -1,9 +1,9 @@
-import { Heart, MessageSquare } from "lucide-react";
-import "./UserCard.scss";
-import { Link } from "react-router";
-import type { ISkills } from "../types/Skills";
-import type { IUsers } from "../types/Users";
-import Grade from "./Grade";
+import { Heart, MessageSquare } from 'lucide-react';
+import './UserCard.scss';
+import { Link } from 'react-router';
+import type { ISkills } from '../types/Skills';
+import type { IUsers } from '../types/Users';
+import Grade from './Grade';
 
 function UserCard({ user }: { user: IUsers }) {
   return (
@@ -45,10 +45,10 @@ function UserCard({ user }: { user: IUsers }) {
           </div>
         </div>
         <div className="profile-card-btns">
-          <button className="btn btn-default" type="button">
+          <Link className="btn btn-default" to={`/message/${user.id}`}>
             <MessageSquare />
             Contacter
-          </button>
+          </Link>
           <button className="btn btn-alt btn-icon" type="button">
             <Heart />
           </button>
