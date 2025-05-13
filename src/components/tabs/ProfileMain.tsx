@@ -240,16 +240,26 @@ function ProfilePage() {
                 </>
               ) : (
                 <>
-                  <button className="btn btn-default" type="button">
+                  <button
+                    className="btn btn-default"
+                    type="button"
+                    onClick={() => {
+                      connectedUser
+                        ? navigate(`/message/${userId}`)
+                        : navigate('/login');
+                    }}
+                  >
                     <MessageSquare /> Contacter
                   </button>
-                  <button className="btn btn-alt btn-icon" type="button">
-                    <Heart
-                      onClick={handleFollowAndUnfollow}
-                      color={isFollowing ? 'red' : 'black'}
-                      fill={isFollowing ? 'red' : 'transparent'}
-                    />
-                  </button>
+                  {connectedUser && (
+                    <button className="btn btn-alt btn-icon" type="button">
+                      <Heart
+                        onClick={handleFollowAndUnfollow}
+                        color={isFollowing ? 'red' : 'black'}
+                        fill={isFollowing ? 'red' : 'transparent'}
+                      />
+                    </button>
+                  )}
                 </>
               )}
             </div>

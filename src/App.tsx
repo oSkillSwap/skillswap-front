@@ -13,10 +13,10 @@ import Post from './pages/Post';
 import Register from './pages/Register';
 
 import ProfileExchanges from './components/tabs/ProfileExchanges';
+import ProfilePage from './components/tabs/ProfileMain';
 import ProfileOffers from './components/tabs/ProfileOffers';
 import ProfilePosts from './components/tabs/ProfilePosts';
 import ProfileLayout from './pages/Profile';
-import ProfilePage from './components/tabs/ProfileMain';
 
 function App() {
   const location = useLocation();

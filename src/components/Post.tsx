@@ -239,7 +239,7 @@ function Post({
               </>
             )}
 
-            {variant === 'post' && !isEditing && !isAuthor && (
+            {variant === 'post' && !isEditing && !isAuthor && connectedUser && (
               <button
                 className="btn btn-default"
                 type="button"
@@ -268,11 +268,13 @@ function Post({
         <div className="post-author">
           <div>
             <div className="post-author-userinfo">
-              <img
-                className="post-author-userinfo-picture"
-                src={data?.Author?.avatar || '/img/avatars/robot1.jpg'}
-                alt=""
-              />
+              <Link to={`/profile/${postAuthor.id}`}>
+                <img
+                  className="post-author-userinfo-picture"
+                  src={data?.Author?.avatar || '/img/avatars/robot1.jpg'}
+                  alt=""
+                />
+              </Link>
               <div>
                 <h3>{data?.Author?.username}</h3>
                 <Grade
@@ -282,20 +284,24 @@ function Post({
               </div>
             </div>
           </div>
-
           <div className="post-author-btns">
-            <Link className="btn btn-reversed" to={`/message/${data.user_id}`}>
+            <Link
+              className="btn btn-reversed"
+              to={connectedUser ? `/message/${data.user_id}` : '/login'}
+            >
               <MessageSquare />
               Contacter
             </Link>
-            <button
-              className="btn btn-default"
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <HandHelping />
-              Proposer
-            </button>
+            {!isAuthor && connectedUser && (
+              <button
+                className="btn btn-default"
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <HandHelping />
+                Proposer
+              </button>
+            )}
           </div>
 
           {isModalOpen && data.id && (

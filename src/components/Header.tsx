@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import './Header.scss';
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import Logo from './Logo';
 
@@ -76,57 +76,57 @@ function Header() {
         >
           <ul className="header-nav">
             <li className="header-nav-element">
-              <Link
+              <NavLink
                 className="header-nav-element-link"
                 to="/"
                 onClick={handleLinkClick}
               >
                 {isMobile ? 'Accueil' : <Home />}
-              </Link>
+              </NavLink>
             </li>
             <li className="header-nav-element">
-              <Link
+              <NavLink
                 className="header-nav-element-link"
                 to="/explore"
                 onClick={handleLinkClick}
               >
                 {isMobile ? 'Explorer' : <Search />}
-              </Link>
+              </NavLink>
             </li>
 
             {user && (
               <li className="header-nav-element">
-                <Link
+                <NavLink
                   className="header-nav-element-link"
                   to="/post"
                   onClick={handleLinkClick}
                 >
                   {isMobile ? 'Poster une annonce' : <CirclePlus />}
-                </Link>
+                </NavLink>
               </li>
             )}
 
             {user ? (
               <>
                 <li className="header-nav-element">
-                  <Link
+                  <NavLink
                     className="header-nav-element-link"
                     to="/message"
                     onClick={handleLinkClick}
                   >
                     {isMobile ? 'Messages' : <Mail />}
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="header-nav-element">
                   <div className="header-nav-element-user">
                     {!isMobile && (
-                      <Link
+                      <NavLink
                         className="header-nav-element-link header-nav-element-user-link"
                         to={'/profile'}
                       >
                         <img src={user.avatar} alt={user.username} />
                         {user.username}
-                      </Link>
+                      </NavLink>
                     )}
                     <div className="header-nav-element-user-dropdown">
                       <div className="header-nav-element-user-dropdown-content">
