@@ -12,8 +12,13 @@
     object-fit: cover;
     border-radius: 50%;
   }
-  
+
+  &-comment {
+    width: 100%;
+  }
+
   &-info {
+    width: 100%;
     font-size: $font-size-xs;
   }
 }

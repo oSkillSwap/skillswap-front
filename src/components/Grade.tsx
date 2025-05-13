@@ -22,7 +22,9 @@ function Grade({ rating = 0, nbReviews }: GradeProps) {
   return (
     <div className="grade">
       <div className="grade-stars">{renderStars()}</div>
-      <p className="grade-nbreviews">({nbReviews} avis)</p>
+      {nbReviews !== undefined && (
+        <p className="grade-nbreviews">({nbReviews} avis)</p>
+      )}
     </div>
   );
 }
