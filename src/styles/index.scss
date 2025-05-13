@@ -36,7 +36,9 @@ main {
   width: 100%;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: $font-family-heading;
 }
 
@@ -73,7 +75,9 @@ label {
   font-weight: $font-weight-bold;
 }
 
-input {
+input,
+textarea,
+select {
   width: 100%;
   padding: $spacing-sm $spacing-md;
   border-radius: 0.8rem;
@@ -84,6 +88,10 @@ input {
     outline: none;
     border-color: $color-primary;
   }
+}
+
+textarea {
+  resize: none;
 }
 
 input[type="checkbox"] {
@@ -109,7 +117,48 @@ input[type="checkbox"] {
   &:checked::before {
     transform: scale(1);
   }
-}  
+}
+
+select {
+  font-family: $font-family-base;
+  cursor: pointer;
+
+  &,
+  &::picker(select) {
+    appearance: base-select;
+    background-color: $color-gray;
+  }
+
+  &:open {
+    display: flex;
+    gap: 2rem;
+  }
+
+  &::picker(select) {
+    border: none;
+    border-radius: 0.8rem;
+    padding: $spacing-sm;
+    margin: $spacing-md 0;
+  }
+
+  option {
+    font-family: $font-family-base;
+
+    &:checked:hover,
+    &:hover {
+      color: $color-black;
+      background-color: $color-primary;
+    }
+
+    &:checked {
+      background-color: hsl(from $color-primary h s l / 0.3);
+    }
+
+    &::checkmark {
+      content: "";
+    }
+  }
+}
 
 button {
   cursor: pointer;
@@ -184,10 +233,11 @@ button {
   max-width: 119.4rem;
   margin: 0 auto;
   padding: 0 $spacing-xl;
+}
 
-  &:is(main) {
-    margin: $spacing-md auto 0 auto;
-  }
+.page-content {
+  flex-grow: 1;
+  margin-top: $spacing-md;
 }
 
 .content {
@@ -202,6 +252,7 @@ button {
   }
 
   &-results {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: $spacing-xl;
@@ -231,8 +282,14 @@ button {
   }
 }
 
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media screen and (max-width: $breakpoints-sm) {
   :root {
     font-size: 50%;
-  }  
+  }
 }

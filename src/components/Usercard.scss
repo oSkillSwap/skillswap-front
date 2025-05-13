@@ -1,6 +1,10 @@
 @use "../styles/variables" as *;
 
 .profile-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
   &-content-wrapper {
     display: flex;
     flex-direction: column;
@@ -9,6 +13,7 @@
     border: 3px solid $color-gray;
     border-top: 0;
     border-radius: 0 0 1.6rem 1.6rem;
+    flex-grow:1;
   }
 
   &-picture {
@@ -37,6 +42,8 @@
     display: flex;
     gap: $spacing-sm;
     margin-top: $spacing-md;
+    height: 100%;
+    align-items: flex-end;
 
     button:first-of-type {
       flex-grow: 1;

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './AvailabilityEditor.scss';
-import { SquarePen } from 'lucide-react';
+import { Check, SquarePen, X } from 'lucide-react';
 import api from '../../services/api';
 import type User from '../../types/User';
 
@@ -43,6 +43,9 @@ function AvailabilityEditor({ userData, isOwner, setUserData }: Props) {
     return base;
   });
 
+  // Sauvegarde avant edit
+  const oldMatrix = useRef(matrix);
+
   const toggle = (day: string, slot: string) => {
     setMatrix((prev) => ({
       ...prev,
@@ -73,21 +76,44 @@ function AvailabilityEditor({ userData, isOwner, setUserData }: Props) {
     setIsEditing(false);
   };
 
+  const handleCancel = () => {
+    setMatrix(oldMatrix.current);
+    setIsEditing(false);
+  };
+
   return (
     <section className="profile-availabilities">
       <div className="availability-editor">
         <div className="availability-header">
           <h2>Disponibilités</h2>
-          {isOwner && !isEditing && (
-            <button
-              type="button"
-              className="btn-icon"
-              onClick={() => setIsEditing(true)}
-              aria-label="Modifier les disponibilités"
-            >
-              <SquarePen size={18} />
-            </button>
-          )}
+          {isOwner &&
+            (isEditing ? (
+              <div className="edit-btns">
+                <button
+                  type="button"
+                  className="btn btn-default btn-icon"
+                  onClick={handleSave}
+                >
+                  <Check size={18} />
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-icon"
+                  onClick={() => handleCancel()}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-reversed btn-icon"
+                onClick={() => setIsEditing(true)}
+                aria-label="Modifier les disponibilités"
+              >
+                <SquarePen size={18} /> Editer
+              </button>
+            ))}
         </div>
 
         <div className="profile-availability">
@@ -124,16 +150,6 @@ function AvailabilityEditor({ userData, isOwner, setUserData }: Props) {
             </React.Fragment>
           ))}
         </div>
-
-        {isEditing && isOwner && (
-          <button
-            type="button"
-            className="btn btn-default save-availabilities"
-            onClick={handleSave}
-          >
-            Enregistrer les disponibilités
-          </button>
-        )}
       </div>
     </section>
   );

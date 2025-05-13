@@ -1,0 +1,12 @@
+@use "../styles/variables" as *;
+
+.add-post-form {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  button[type="submit"] {
+    width: 100%;
+  }
+}

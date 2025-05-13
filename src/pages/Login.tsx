@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import "./Onboarding.scss";
-import { AxiosError } from "axios";
-import { Info } from "lucide-react";
-import { Link, useNavigate } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
+import { useEffect, useRef, useState } from 'react';
+import './Onboarding.scss';
+import { AxiosError } from 'axios';
+import { Info } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
+import { useAuth } from '../contexts/AuthContext';
+
 
 function Login() {
   const [error, setError] = useState("");
@@ -113,4 +114,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default PageTransition(Login);

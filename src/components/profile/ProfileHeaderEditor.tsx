@@ -1,8 +1,8 @@
-import "./ProfileHeaderEditor.scss";
-import { Check, SquarePen, X } from "lucide-react";
-import { useState } from "react";
-import api from "../../services/api";
-import type User from "../../types/User";
+import './ProfileHeaderEditor.scss';
+import { Check, SquarePen, X } from 'lucide-react';
+import { useState } from 'react';
+import api from '../../services/api';
+import type User from '../../types/User';
 
 interface Props {
   value: string;
@@ -72,8 +72,8 @@ function ProfileHeaderEditor({
   return (
     <div className={`inline-edit ${className ?? ""}`}>
       {isEditing ? (
-        <>
-          {type === "textarea" ? (
+        <div className="edit-wrapper">
+          {type === 'textarea' ? (
             <textarea
               className="edit-textarea"
               value={editedValue}
@@ -88,33 +88,41 @@ function ProfileHeaderEditor({
               onKeyDown={handleKeyDown}
             />
           )}
-          <button type="button" className="btn-icon" onClick={handleSave}>
-            <Check size={18} />
-          </button>
-          <button
-            type="button"
-            className="btn-icon"
-            onClick={() => {
-              setEditedValue(value);
-              setIsEditing(false);
-            }}
-          >
-            <X size={18} />
-          </button>
-        </>
+          <div className="edit-btns">
+            <button
+              type="button"
+              className="btn btn-default btn-icon"
+              onClick={handleSave}
+            >
+              <Check size={18} />
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary btn-icon"
+              onClick={() => {
+                setEditedValue(value);
+                setIsEditing(false);
+              }}
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </div>
       ) : (
         <>
-          {type === "textarea" ? (
-            <p className="inline-edit-value">{value}</p>
+          {type === 'textarea' ? (
+            <p className="inline-edit-value">
+              {value ? value : 'Votre description'}
+            </p>
           ) : (
             <h1 className="inline-edit-value">{value}</h1>
           )}
           <button
             type="button"
-            className="btn-icon"
+            className="btn btn-reversed btn-icon"
             onClick={() => setIsEditing(true)}
           >
-            <SquarePen size={18} />
+            <SquarePen size={18} /> Editer
           </button>
         </>
       )}

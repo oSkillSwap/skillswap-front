@@ -1,8 +1,8 @@
-import { SquarePen } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import "./SkillEditor.scss";
-import api from "../../services/api";
-import type User from "../../types/User";
+import { Check, SquarePen, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import './SkillEditor.scss';
+import api from '../../services/api';
+import type User from '../../types/User';
 
 interface Skill {
   id: number;
@@ -88,33 +88,95 @@ function SkillWantedEditor({ skills, isOwner, setUserData }: Props) {
     }
   };
 
-  if (!isOwner) {
-    return (
-      <>
-        {selectedSkills.length ? (
-          selectedSkills.map((el) => (
-            <p key={el.name} className="tag">
-              {el.name}
-            </p>
-          ))
-        ) : (
-          <p>Aucun intérêt renseigné</p>
-        )}
-      </>
-    );
-  }
-
   return (
     <>
-      {isOwner && !isEditing && (
-        <>
-          <button
-            type="button"
-            className="btn-icon skill-edit-icon"
-            onClick={() => setIsEditing(true)}
-          >
-            <SquarePen size={18} />
-          </button>
+      {isOwner ? (
+        isEditing ? (
+          <>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Rechercher un intérêt"
+              className="edit-input"
+              ref={inputRef}
+            />
+            {inputValue && filteredSkills.length > 0 && (
+              <ul className="autocomplete-list">
+                {filteredSkills.map((skill) => (
+                  <li key={skill.id} className="autocomplete-list-item">
+                    <button
+                      type="button"
+                      onClick={() => handleAddSkill(skill)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleAddSkill(skill);
+                        }
+                      }}
+                    >
+                      {skill.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="selected-skill-list">
+              {selectedSkills.map((skill) => (
+                <span key={skill.id} className="tag selected">
+                  {skill.name}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSkill(skill.id)}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+            <div className="edit-btns">
+              <button
+                className="btn btn-icon btn-default"
+                type="button"
+                onClick={handleSave}
+              >
+                <Check size={18} />
+              </button>
+              <button
+                type="button"
+                className="btn btn-icon btn-secondary"
+                onClick={() => setIsEditing(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              className="btn btn-icon btn-reversed"
+              onClick={() => setIsEditing(true)}
+            >
+              <SquarePen size={18} /> Editer
+            </button>
+            <div className="profile-skills-list">
+              {selectedSkills.length ? (
+                selectedSkills.map((el) => (
+                  <p key={el.name} className="tag">
+                    {el.name}
+                  </p>
+                ))
+              ) : (
+                <p>Aucun intérêt renseigné</p>
+              )}
+            </div>
+          </>
+        )
+      ) : (
+        <div className="profile-skills-list">
           {selectedSkills.length ? (
             selectedSkills.map((el) => (
               <p key={el.name} className="tag">
@@ -124,70 +186,7 @@ function SkillWantedEditor({ skills, isOwner, setUserData }: Props) {
           ) : (
             <p>Aucun intérêt renseigné</p>
           )}
-        </>
-      )}
-
-      {isEditing && (
-        <>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Rechercher un intérêt"
-            className="edit-input"
-            ref={inputRef}
-          />
-          {inputValue && filteredSkills.length > 0 && (
-            <ul className="autocomplete-list">
-              {filteredSkills.map((skill) => (
-                <li key={skill.id} className="autocomplete-item">
-                  <button
-                    type="button"
-                    onClick={() => handleAddSkill(skill)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        handleAddSkill(skill);
-                      }
-                    }}
-                  >
-                    {skill.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <div className="selected-skill-list">
-            {selectedSkills.map((skill) => (
-              <span key={skill.id} className="tag selected">
-                {skill.name}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveSkill(skill.id)}
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-          <div className="edit-buttons-vertical">
-            <button
-              className="btn btn-default"
-              type="button"
-              onClick={handleSave}
-            >
-              Enregistrer
-            </button>
-            <button
-              type="button"
-              className="btn btn-alt"
-              onClick={() => setIsEditing(false)}
-            >
-              Annuler
-            </button>
-          </div>
-        </>
+        </div>
       )}
     </>
   );

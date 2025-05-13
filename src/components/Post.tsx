@@ -2,25 +2,23 @@ import {
   ArrowLeft,
   ArrowRight,
   HandHelping,
-  Handshake,
   MessageSquare,
-  SquareCheckBig,
   SquarePen,
-  SquareX,
-  Star,
   Trash2,
-} from "lucide-react";
-import "./Post.scss";
-import { useEffect, useRef, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import api from "../services/api";
-import type User from "../types/User";
-import Grade from "./Grade";
-import ConfirmModal from "./profile/ConfirmModal";
+} from 'lucide-react';
+import './Post.scss';
+import { useEffect, useRef, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
+import type User from '../types/User';
+import Grade from './Grade';
+import ConfirmModal from './profile/ConfirmModal';
+import PropositionFormModal from './tabs/PropositionFormModal';
+
 
 type PostProps = {
-  variant: "post" | "offer" | "trade";
-  origin: "profile" | "explore";
+  variant: 'post' | 'offer' | 'trade';
+  origin: 'profile' | 'explore';
   author?: boolean;
   offers?: { username: string }[];
   isFinished?: boolean;
@@ -48,22 +46,14 @@ type PostProps = {
     };
   };
   setUserData?: React.Dispatch<React.SetStateAction<User | null>>;
+  children?: React.ReactNode;
 };
 
-function Post({
-  variant,
-  origin,
-  offers,
-  author,
-  isFinished,
-  reviewed,
-  data,
-  setUserData,
-}: PostProps) {
+function Post({ variant, origin, data, setUserData, children }: PostProps) {
   const { user: connectedUser } = useAuth();
-  // Vérifie si l'utilisateur connecté est l'auteur du post
   const isAuthor = connectedUser?.id === data?.user_id;
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -84,21 +74,20 @@ function Post({
         });
       }
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors de la suppression du post :", error);
+      console.error('Erreur lors de la suppression du post :', error);
     }
   };
 
   const handleEditPost = async (formData: FormData) => {
     try {
-      const title = formData.get("title") as string;
-      const content = formData.get("content") as string;
+      const title = formData.get('title') as string;
+      const content = formData.get('content') as string;
       const editedPost = {
         title,
         content,
       };
       if (!title.trim() || !content.trim()) {
-        setErrorMessage("Veuillez remplir tous les champs");
+        setErrorMessage('Veuillez remplir tous les champs');
         return;
       }
 
@@ -123,11 +112,11 @@ function Post({
         });
       }
       setSuccessMessage(response.data.message);
-      setTimeout(() => setSuccessMessage(""), 2000);
+      setTimeout(() => setSuccessMessage(''), 2000);
       setIsEditing(false);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors de la modification du post :", error);
+      console.error('Erreur lors de la modification du post :', error);
     }
   };
 
@@ -136,6 +125,12 @@ function Post({
       inputRef.current.focus();
     }
   }, []);
+  
+  const author = data.Author || {
+    id: 0,
+    username: 'Auteur inconnu',
+    avatar: '/img/avatars/robot1.jpg',
+  };
 
   return (
     <article className="post">
@@ -183,21 +178,21 @@ function Post({
       ) : (
         <>
           <div className="post-header">
-            {variant === "trade" &&
-              (author ? (
-                <p className="post-header-arrow">
+            {variant === 'trade' && (
+              <p
+                className={`post-header-arrow ${author.id === connectedUser?.id ? '' : 'arrow-alt'}`}
+              >
+                {author.id === connectedUser?.id ? (
                   <ArrowLeft />
-                </p>
-              ) : (
-                <p className="post-header-arrow arrow-alt">
+                ) : (
                   <ArrowRight />
-                </p>
-              ))}
-
+                )}
+              </p>
+            )}
             <div>
               <div className="post-header-title">
                 <h3>{data?.title || "Titre de l'annonce"}</h3>
-                <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
+                <p className="tag">{data?.SkillWanted?.name || 'Next.js'}</p>
               </div>
               <p className="post-header-date">
                 {data?.updatedAt !== data?.createdAt
@@ -220,16 +215,16 @@ function Post({
           </div>
           <p>
             {data?.content ||
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse."}
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse.'}
           </p>
-          <p style={{ color: "green" }}>{successMessage}</p>
+          <p style={{ color: 'green' }}>{successMessage}</p>
         </>
       )}
 
-      {origin === "profile" && (
+      {origin === 'profile' && (
         <>
           <div className="post-btns">
-            {variant === "post" &&
+            {variant === 'post' &&
               (isAuthor ? (
                 !isEditing && (
                   <>
@@ -252,7 +247,11 @@ function Post({
                 )
               ) : (
                 <>
-                  <button className="btn btn-default" type="button">
+                  <button
+                    className="btn btn-default"
+                    type="button"
+                    onClick={() => setIsModalOpen(true)}
+                  >
                     <HandHelping />
                     Proposer
                   </button>
@@ -260,98 +259,107 @@ function Post({
               ))}
           </div>
 
-          {variant === "offer" && (
-            <div className="post-author">
-              <div>
-                <div className="post-author-userinfo">
-                  <img
-                    className="post-author-userinfo-picture"
-                    src="/img/avatars/robot1.jpg"
-                    alt=""
-                  />
-                  <div>
-                    <h3>Author</h3>
-                    <Grade rating={4} nbReviews={3} />
-                  </div>
-                </div>
-                <p className="post-offer-date">
-                  Envoyé le 24 avril 2025 à 11h52
-                </p>
-              </div>
+          {isModalOpen && data.id && (
+            <PropositionFormModal
+              postId={data.id}
+              onClose={() => setIsModalOpen(false)}
+              onSuccess={() => {
+                setIsModalOpen(false);
+                alert('Proposition envoyée !');
+              }}
+            />
+          )}
+        </>
+      )}
 
-              <div className="post-author-btns">
+      {/* {variant === 'offer' && (
+        <div className="post-author">
+          <div>
+            <div className="post-author-userinfo">
+              <img
+                className="post-author-userinfo-picture"
+                src="/img/avatars/robot1.jpg"
+                alt=""
+              />
+              <div>
+                <h3>Author</h3>
+                <Grade rating={4} nbReviews={3} />
+              </div>
+            </div>
+            <p className="post-offer-date">Envoyé le 24 avril 2025 à 11h52</p>
+          </div>
+
+          <div className="post-author-btns">
+            <button className="btn btn-reversed" type="button">
+              <MessageSquare />
+              Contacter
+            </button>
+            <button className="btn btn-secondary" type="button">
+              <SquareX />
+              Annuler
+            </button>
+          </div>
+        </div>
+      )} */}
+
+      {/* {variant === 'trade' && (
+        <div className="post-author">
+          <div>
+            <div className="post-author-userinfo">
+              <img
+                className="post-author-userinfo-picture"
+                src="/img/avatars/robot1.jpg"
+                alt=""
+              />
+              <div>
+                <h3>Author</h3>
+                <Grade rating={4} nbReviews={3} />
+              </div>
+            </div>
+            <p className="post-offer-date">
+              {isFinished ? 'Terminé' : 'Accepté'} le 24 avril 2025 à 11h52
+            </p>
+          </div>
+
+          <div className="post-author-btns">
+            {isFinished ? (
+              isAuthor ? (
+                <button className="btn btn-secondary" type="button">
+                  <Star />
+                  Voir l'avis
+                </button>
+              ) : reviewed ? (
+                <button className="btn btn-secondary" type="button">
+                  <Star />
+                  Modifier l'avis
+                </button>
+              ) : (
+                <button className="btn btn-default" type="button">
+                  <Star />
+                  Laisser un avis
+                </button>
+              )
+            ) : (
+              <>
                 <button className="btn btn-reversed" type="button">
                   <MessageSquare />
                   Contacter
+                </button>
+                <button className="btn btn-default" type="button">
+                  <SquareCheckBig />
+                  Terminer
                 </button>
                 <button className="btn btn-secondary" type="button">
                   <SquareX />
                   Annuler
                 </button>
-              </div>
-            </div>
-          )}
+              </>
+            )}
+          </div>
+        </div>
+      )} */}
 
-          {variant === "trade" && (
-            <div className="post-author">
-              <div>
-                <div className="post-author-userinfo">
-                  <img
-                    className="post-author-userinfo-picture"
-                    src="/img/avatars/robot1.jpg"
-                    alt=""
-                  />
-                  <div>
-                    <h3>Author</h3>
-                    <Grade rating={4} nbReviews={3} />
-                  </div>
-                </div>
-                <p className="post-offer-date">
-                  {isFinished ? "Terminé" : "Accepté"} le 24 avril 2025 à 11h52
-                </p>
-              </div>
-
-              <div className="post-author-btns">
-                {isFinished ? (
-                  author ? (
-                    <button className="btn btn-secondary" type="button">
-                      <Star />
-                      Voir l'avis
-                    </button>
-                  ) : reviewed ? (
-                    <button className="btn btn-secondary" type="button">
-                      <Star />
-                      Modifier l'avis
-                    </button>
-                  ) : (
-                    <button className="btn btn-default" type="button">
-                      <Star />
-                      Laisser un avis
-                    </button>
-                  )
-                ) : (
-                  <>
-                    <button className="btn btn-reversed" type="button">
-                      <MessageSquare />
-                      Contacter
-                    </button>
-                    <button className="btn btn-default" type="button">
-                      <SquareCheckBig />
-                      Terminer
-                    </button>
-                    <button className="btn btn-secondary" type="button">
-                      <SquareX />
-                      Annuler
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
-      {offers?.map((el) => {
+      {/* {offers?.map((el) => {
         return (
           <div key={el.username} className="post-offer">
             <div>
@@ -384,15 +392,15 @@ function Post({
             </div>
           </div>
         );
-      })}
+      })} */}
 
-      {origin === "explore" && (
+      {origin === 'explore' && (
         <div className="post-author">
           <div>
             <div className="post-author-userinfo">
               <img
                 className="post-author-userinfo-picture"
-                src={data?.Author?.avatar || "/img/avatars/robot1.jpg"}
+                src={data?.Author?.avatar || '/img/avatars/robot1.jpg'}
                 alt=""
               />
               <div>
@@ -410,13 +418,29 @@ function Post({
               <MessageSquare />
               Contacter
             </button>
-            <button className="btn btn-default" type="button">
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+            >
               <HandHelping />
               Proposer
             </button>
           </div>
+
+          {isModalOpen && data.id && (
+            <PropositionFormModal
+              postId={data.id}
+              onClose={() => setIsModalOpen(false)}
+              onSuccess={() => {
+                setIsModalOpen(false);
+                alert('Proposition envoyée !');
+              }}
+            />
+          )}
         </div>
       )}
+
       {isConfirmModalOpen && (
         <ConfirmModal
           message="Es-tu sûr de vouloir supprimer cette annonce ? Cette action est irréversible."
@@ -427,6 +451,8 @@ function Post({
           }}
         />
       )}
+
+      {children}
     </article>
   );
 }
