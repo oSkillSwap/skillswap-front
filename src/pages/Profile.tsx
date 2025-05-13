@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import PageTransition from '../utils/PageTransition';
 import './Profile.scss';
 
-function Profile() {
+function ProfileLayout() {
   const { userId } = useParams();
   const { user: connectedUser } = useAuth();
   const location = useLocation();
@@ -44,4 +44,4 @@ function Profile() {
   );
 }
 
-export default PageTransition(Profile);
+export default PageTransition(ProfileLayout);

@@ -13,10 +13,10 @@ import Post from './pages/Post';
 import Register from './pages/Register';
 
 import ProfileExchanges from './components/tabs/ProfileExchanges';
-import ProfileMain from './components/tabs/ProfileMain';
 import ProfileOffers from './components/tabs/ProfileOffers';
 import ProfilePosts from './components/tabs/ProfilePosts';
-import Profile from './pages/Profile'; // layout avec les onglets
+import ProfileLayout from './pages/Profile';
+import ProfilePage from './components/tabs/ProfileMain';
 
 function App() {
   const location = useLocation();
@@ -33,12 +33,12 @@ function App() {
           <Route path="message/:userId?" element={<Message />} />
           <Route path="post" element={<Post />} />
 
-          <Route path="profile" element={<Profile />}>
-            <Route index element={<ProfileMain />} />
-            <Route path=":user" element={<ProfileMain />} />
-            <Route path=":user/posts" element={<ProfilePosts />} />
-            <Route path=":user/offers" element={<ProfileOffers />} />
-            <Route path=":user/exchanges" element={<ProfileExchanges />} />
+          <Route path="profile" element={<ProfileLayout />}>
+            <Route index element={<ProfilePage />} />
+            <Route path=":userId" element={<ProfilePage />} />
+            <Route path=":userId/posts" element={<ProfilePosts />} />
+            <Route path=":userId/offers" element={<ProfileOffers />} />
+            <Route path=":userId/exchanges" element={<ProfileExchanges />} />
             <Route path="posts" element={<ProfilePosts />} />
             <Route path="offers" element={<ProfileOffers />} />
             <Route path="exchanges" element={<ProfileExchanges />} />
