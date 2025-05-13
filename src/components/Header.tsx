@@ -93,7 +93,7 @@ function Header() {
                 {isMobile ? 'Explorer' : <Search />}
               </Link>
             </li>
-            
+
             {user && (
               <li className="header-nav-element">
                 <Link
@@ -101,11 +101,11 @@ function Header() {
                   to="/post"
                   onClick={handleLinkClick}
                 >
-                  {isMobile ? "Poster une annonce" : <CirclePlus />}
+                  {isMobile ? 'Poster une annonce' : <CirclePlus />}
                 </Link>
               </li>
             )}
-            
+
             {user ? (
               <>
                 <li className="header-nav-element">
@@ -122,7 +122,7 @@ function Header() {
                     {!isMobile && (
                       <Link
                         className="header-nav-element-link header-nav-element-user-link"
-                        to={'/profile'}
+                        to={'/profile/me'}
                       >
                         <img src={user.avatar} alt={user.username} />
                         {user.username}
@@ -132,7 +132,7 @@ function Header() {
                       <div className="header-nav-element-user-dropdown-content">
                         <Link
                           className="header-nav-element-link"
-                          to={'/profile'}
+                          to={'/profile/me'}
                           onClick={handleLinkClick}
                         >
                           Mon profil
