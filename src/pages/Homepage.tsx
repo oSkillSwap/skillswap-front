@@ -1,14 +1,14 @@
-import { LogIn } from "lucide-react";
-import "./Homepage.scss";
-import {} from "react";
-import { useNavigate } from "react-router";
-import CategoryCarousel from "../components/CategoryCarousel";
-import Searchbar from "../components/Searchbar";
-import TestimonialCarousel from "../components/TestimonialCarousel";
-import UserCarousel from "../components/UserCarousel";
-import { useAuth } from "../contexts/AuthContext";
-import { useSearch } from "../hooks/useSearch";
-import PageTransition from "../utils/PageTransition";
+import { CirclePlus, LogIn } from 'lucide-react';
+import './Homepage.scss';
+import {} from 'react';
+import { useNavigate } from 'react-router';
+import CategoryCarousel from '../components/CategoryCarousel';
+import Searchbar from '../components/Searchbar';
+import TestimonialCarousel from '../components/TestimonialCarousel';
+import UserCarousel from '../components/UserCarousel';
+import { useAuth } from '../contexts/AuthContext';
+import { useSearch } from '../hooks/useSearch';
+import PageTransition from '../utils/PageTransition';
 
 function Homepage() {
   const { handleSearch } = useSearch();
@@ -45,13 +45,21 @@ function Homepage() {
             vous aimeriez apprendre. Chaque compétence est une monnaie
             d'échange.
           </p>
-          {!user && (
+          {!user ? (
             <button
               className="btn btn-default"
               type="button"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate('/login')}
             >
               <LogIn /> Je m'identifie
+            </button>
+          ) : (
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={() => navigate('/post')}
+            >
+              <CirclePlus /> Poster une annonce
             </button>
           )}
         </div>
@@ -67,14 +75,24 @@ function Homepage() {
         <TestimonialCarousel />
       </section>
 
-      {!user && (
+      {!user ? (
         <section className="content">
           <button
             className="btn btn-default btn-centered"
             type="button"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate('/login')}
           >
             <LogIn /> Je m'identifie
+          </button>
+        </section>
+      ) : (
+        <section className="content">
+          <button
+            className="btn btn-default btn-centered"
+            type="button"
+            onClick={() => navigate('/post')}
+          >
+            <CirclePlus /> Poster une annonce
           </button>
         </section>
       )}

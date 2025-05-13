@@ -16,7 +16,11 @@ function UserCard({ user }: { user: IUsers }) {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!connectedUser) return;
+      if (!connectedUser) {
+        setUserData(null);
+        setIsFollowing(false);
+        return;
+      }
       try {
         const userResponse = await api.get('/me/users');
         const followsResponse = await api.get('/me/follows');
@@ -79,7 +83,6 @@ function UserCard({ user }: { user: IUsers }) {
       console.error('Erreur lors du follow :', error);
     }
   };
-
   // Permet de ne plus suivre un utilisateur
   const unfollowUser = async () => {
     // Vérifie si l'utilisateur est connecté
@@ -126,9 +129,19 @@ function UserCard({ user }: { user: IUsers }) {
       console.error('Erreur lors du follow :', error);
     }
   };
+
   return (
     <article className="profile-card">
-      <Link to={`/profile/${user.id}`} className="profile-card-link">
+      <Link
+        to={
+          connectedUser
+            ? user.id !== connectedUser?.id
+              ? `/profile/${user.id}`
+              : '/profile'
+            : `/profile/${user.id}`
+        }
+        className="profile-card-link"
+      >
         <img className="profile-card-picture" src={user.avatar} alt="" />
       </Link>
       <div className="profile-card-content-wrapper">
@@ -165,20 +178,29 @@ function UserCard({ user }: { user: IUsers }) {
           </div>
         </div>
         <div className="profile-card-btns">
-          <Link className="btn btn-default" to={`/message/${user.id}`}>
-            <MessageSquare />
-            Contacter
-          </Link>
-          <button
-            className="btn btn-alt btn-icon"
-            type="button"
-            onClick={handleFollowAndUnfollow}
-          >
-            <Heart
-              color={isFollowing ? 'red' : 'black'}
-              fill={isFollowing ? 'red' : 'transparent'}
-            />
-          </button>
+          {user.id !== connectedUser?.id && (
+            <>
+              <Link
+                className="btn btn-default"
+                to={connectedUser ? `/message/${user.id}` : '/login'}
+              >
+                <MessageSquare />
+                Contacter
+              </Link>
+              {connectedUser && (
+                <button
+                  className="btn btn-alt btn-icon"
+                  type="button"
+                  onClick={handleFollowAndUnfollow}
+                >
+                  <Heart
+                    color={isFollowing ? 'red' : 'black'}
+                    fill={isFollowing ? 'red' : 'transparent'}
+                  />
+                </button>
+              )}
+            </>
+          )}
         </div>
       </div>
     </article>
