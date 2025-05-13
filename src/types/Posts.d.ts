@@ -1,4 +1,4 @@
-import type { ICategories } from "./Categories";
+import type { ICategories } from './Categories';
 
 export interface IPosts {
   id?: number;
@@ -13,13 +13,16 @@ export interface IPosts {
   SkillWanted?: {
     id: number;
     name: string;
-    createdAt: string;
-    updatedAt: string;
-    category_id: number;
-    Category: ICategories;
+    createdAt?: string;
+    updatedAt?: string;
+    category_id?: number;
+    Category?: ICategories;
   };
   Author?: {
     id: number;
     username: string;
+    avatar?: string;
+    averageGrade?: number;
+    nbOfReviews?: number;
   };
 }

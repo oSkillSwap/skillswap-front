@@ -83,6 +83,8 @@ function ProfilePosts() {
                 data={post}
                 variant="post"
                 origin="profile"
+                author={true}
+                setPosts={setPosts}
               >
                 {postPropositions.length > 0 ? (
                   postPropositions.map((prop) => (
