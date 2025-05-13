@@ -1,15 +1,13 @@
-
-import { Heart, MessageSquare } from "lucide-react";
-import "./UserCard.scss";
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
-import api from "../services/api";
-import type { ISkills } from "../types/Skills";
-import type User from "../types/User";
-import type { IUsers } from "../types/Users";
-import Grade from "./Grade";
-
+import { Heart, MessageSquare } from 'lucide-react';
+import './UserCard.scss';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
+import type { ISkills } from '../types/Skills';
+import type User from '../types/User';
+import type { IUsers } from '../types/Users';
+import Grade from './Grade';
 
 function UserCard({ user }: { user: IUsers }) {
   const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
@@ -20,8 +18,8 @@ function UserCard({ user }: { user: IUsers }) {
     const fetchUserData = async () => {
       if (!connectedUser) return;
       try {
-        const userResponse = await api.get(`/me/users`);
-        const followsResponse = await api.get(`/me/follows`);
+        const userResponse = await api.get('/me/users');
+        const followsResponse = await api.get('/me/follows');
         setUserData({
           ...userResponse.data,
           Follows: followsResponse.data.user.Follows,
@@ -29,22 +27,22 @@ function UserCard({ user }: { user: IUsers }) {
       } catch (error) {
         // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(
-          "Erreur lors de la récupération des données utilisateur :",
-          error
+          'Erreur lors de la récupération des données utilisateur :',
+          error,
         );
       }
     };
     fetchUserData();
-  }, []);
+  }, [connectedUser]);
 
   useEffect(() => {
     if (!userData) return;
     // Vérifie si l'utilisateur connecté suit déjà le profil
     const isFollowing = userData.Follows.some(
-      (follow) => follow.id === user.id
+      (follow) => follow.id === user.id,
     );
     setIsFollowing(isFollowing);
-  }, [userData, connectedUser]);
+  }, [userData, user.id]);
 
   // Permet de suivre un utilisateur
   const followUser = async () => {
@@ -78,7 +76,7 @@ function UserCard({ user }: { user: IUsers }) {
       setIsFollowing(true);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors du follow :", error);
+      console.error('Erreur lors du follow :', error);
     }
   };
 
@@ -98,7 +96,7 @@ function UserCard({ user }: { user: IUsers }) {
 
             // On retire l'utilisateur connecté de la liste des Follows
             Follows: prevUserData.Follows.filter(
-              (follow) => follow.id !== user.id // Supprime uniquement si l'id correspond
+              (follow) => follow.id !== user.id, // Supprime uniquement si l'id correspond
             ),
           };
         }
@@ -109,7 +107,7 @@ function UserCard({ user }: { user: IUsers }) {
       setIsFollowing(false);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors du unfollow :", error);
+      console.error('Erreur lors du unfollow :', error);
     }
   };
 
@@ -125,7 +123,7 @@ function UserCard({ user }: { user: IUsers }) {
       await unfollowUser();
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors du follow :", error);
+      console.error('Erreur lors du follow :', error);
     }
   };
   return (
@@ -170,15 +168,15 @@ function UserCard({ user }: { user: IUsers }) {
           <Link className="btn btn-default" to={`/message/${user.id}`}>
             <MessageSquare />
             Contacter
-          </button>
+          </Link>
           <button
             className="btn btn-alt btn-icon"
             type="button"
             onClick={handleFollowAndUnfollow}
           >
             <Heart
-              color={isFollowing ? "red" : "black"}
-              fill={isFollowing ? "red" : "transparent"}
+              color={isFollowing ? 'red' : 'black'}
+              fill={isFollowing ? 'red' : 'transparent'}
             />
           </button>
         </div>
