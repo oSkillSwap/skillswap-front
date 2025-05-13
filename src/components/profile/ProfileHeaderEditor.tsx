@@ -1,6 +1,6 @@
 import "./ProfileHeaderEditor.scss";
 import { Check, SquarePen, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import api from "../../services/api";
 import type User from "../../types/User";
 
@@ -24,8 +24,6 @@ function ProfileHeaderEditor({
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
   const [successMessage, setSuccessMessage] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSave = async () => {
     try {
@@ -71,15 +69,6 @@ function ProfileHeaderEditor({
     );
   }
 
-  useEffect(() => {
-    if (inputRef.current) {
-      return inputRef.current.focus();
-    }
-    if (textAreaRef.current) {
-      return textAreaRef.current.focus();
-    }
-  }, []);
-
   return (
     <div className={`inline-edit ${className ?? ""}`}>
       {isEditing ? (
@@ -90,7 +79,6 @@ function ProfileHeaderEditor({
               value={editedValue}
               onChange={(e) => setEditedValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              ref={textAreaRef}
             />
           ) : (
             <input
@@ -98,7 +86,6 @@ function ProfileHeaderEditor({
               value={editedValue}
               onChange={(e) => setEditedValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              ref={inputRef}
             />
           )}
           <button type="button" className="btn-icon" onClick={handleSave}>
