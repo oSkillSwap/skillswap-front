@@ -69,7 +69,6 @@ function Post({
   const [errorMessage, setErrorMessage] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  console.log(data);
   const handleDeletePost = async () => {
     try {
       await api.delete(`/me/posts/${data?.id}`);
@@ -133,10 +132,10 @@ function Post({
   };
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isEditing]);
+  }, []);
 
   return (
     <article className="post">

@@ -72,13 +72,13 @@ function ProfileHeaderEditor({
   }
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
+    if (inputRef.current) {
       return inputRef.current.focus();
     }
-    if (isEditing && textAreaRef.current) {
+    if (textAreaRef.current) {
       return textAreaRef.current.focus();
     }
-  }, [isEditing]);
+  }, []);
 
   return (
     <div className={`inline-edit ${className ?? ""}`}>
