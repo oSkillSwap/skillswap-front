@@ -31,6 +31,7 @@ function ProfilePosts() {
         setError('Erreur lors du chargement.');
       }
     };
+    //comment
 
     if (connectedUser?.id) {
       fetchData();
