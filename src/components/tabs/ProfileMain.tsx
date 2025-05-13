@@ -16,7 +16,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import type User from '../../types/User';
 
-function Profile() {
+function ProfilePage() {
   let { userId } = useParams();
   const navigate = useNavigate();
   const { user: connectedUser, logout, isAuthLoading } = useAuth();
@@ -374,4 +374,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default ProfilePage;
