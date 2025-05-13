@@ -18,20 +18,24 @@ function ProfileOffers() {
         setPropositions(res.data.propositions);
       } catch (err) {
         console.error(err);
-        setError('Erreur lors du chargement des offres.');
+        setError('');
       }
     };
 
     fetchPropositions();
   }, []);
 
+  const filteredPropositions = propositions.filter(
+    (prop) => prop.state === 'en attente',
+  );
+
   return (
     <section className="container posts-propositions">
       <h2>Mes offres</h2>
       {error && <p className="error">{error}</p>}
       <div className="posts-container">
-        {propositions.length > 0 ? (
-          propositions.map((prop) => (
+        {filteredPropositions.length > 0 ? (
+          filteredPropositions.map((prop) => (
             <Post
               key={prop.id}
               data={prop.Post}
@@ -86,7 +90,7 @@ function ProfileOffers() {
             </Post>
           ))
         ) : (
-          <p>Aucune offre envoyée pour le moment.</p>
+          <p>Aucune offre en attente pour le moment.</p>
         )}
       </div>
     </section>
