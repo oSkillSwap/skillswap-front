@@ -11,7 +11,7 @@ import {
   Trash2,
 } from "lucide-react";
 import "./Post.scss";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../services/api";
 import type User from "../types/User";
@@ -47,7 +47,7 @@ type PostProps = {
       nbOfReviews?: number;
     };
   };
-  setUserData: React.Dispatch<React.SetStateAction<User | null>>;
+  setUserData?: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 function Post({
@@ -67,19 +67,23 @@ function Post({
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  console.log(data);
   const handleDeletePost = async () => {
     try {
       await api.delete(`/me/posts/${data?.id}`);
-      setUserData((prevUserData) => {
-        if (prevUserData) {
-          return {
-            ...prevUserData,
-            Posts: prevUserData.Posts.filter((post) => post.id !== data?.id),
-          };
-        }
-        return prevUserData;
-      });
+      if (setUserData) {
+        setUserData((prevUserData) => {
+          if (prevUserData) {
+            return {
+              ...prevUserData,
+              Posts: prevUserData.Posts.filter((post) => post.id !== data?.id),
+            };
+          }
+          return prevUserData;
+        });
+      }
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("Erreur lors de la suppression du post :", error);
@@ -102,21 +106,23 @@ function Post({
       const response = await api.patch(`/me/posts/${data?.id}`, editedPost);
       console.log(response.data);
 
-      setUserData((prevUserData) => {
-        if (prevUserData) {
-          const updatedPosts = prevUserData.Posts.map((post) => {
-            if (post.id === data?.id) {
-              return { ...post, ...response.data.updatedPost };
-            }
-            return post;
-          });
-          return {
-            ...prevUserData,
-            Posts: updatedPosts,
-          };
-        }
-        return prevUserData;
-      });
+      if (setUserData) {
+        setUserData((prevUserData) => {
+          if (prevUserData) {
+            const updatedPosts = prevUserData.Posts.map((post) => {
+              if (post.id === data?.id) {
+                return { ...post, ...response.data.updatedPost };
+              }
+              return post;
+            });
+            return {
+              ...prevUserData,
+              Posts: updatedPosts,
+            };
+          }
+          return prevUserData;
+        });
+      }
       setSuccessMessage(response.data.message);
       setTimeout(() => setSuccessMessage(""), 2000);
       setIsEditing(false);
@@ -125,6 +131,12 @@ function Post({
       console.error("Erreur lors de la modification du post :", error);
     }
   };
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
   return (
     <article className="post">
@@ -143,6 +155,7 @@ function Post({
             defaultValue={data?.title}
             placeholder="Titre de l'annonce"
             className="post-edit-form-title"
+            ref={inputRef}
           />
           <textarea
             name="content"
@@ -152,9 +165,21 @@ function Post({
             rows={5}
           />
           <p style={{ color: "red" }}>{errorMessage}</p>
-          <button className="btn btn-alt" type="submit">
-            Enregistrer
-          </button>
+          <div className="update-post-buttons">
+            <button className="btn btn-default" type="submit">
+              Enregistrer
+            </button>
+            <button
+              className="btn btn-alt"
+              type="button"
+              onClick={() => {
+                setIsEditing(false);
+                setErrorMessage("");
+              }}
+            >
+              Annuler
+            </button>
+          </div>
         </form>
       ) : (
         <>
@@ -176,15 +201,21 @@ function Post({
                 <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
               </div>
               <p className="post-header-date">
-                Posté le{" "}
-                {new Date(data!.createdAt ?? Date.now()).toLocaleDateString(
-                  "fr-FR",
-                  {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  }
-                ) || "24 avril 2025"}
+                {data?.updatedAt !== data?.createdAt
+                  ? `Modifié le ${new Date(
+                      data.updatedAt || Date.now()
+                    ).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}`
+                  : `Posté le ${new Date(
+                      data.createdAt || Date.now()
+                    ).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}`}
               </p>
             </div>
           </div>

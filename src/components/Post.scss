@@ -110,6 +110,13 @@
     }
   }
 
+  .update-post-buttons {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: start;
+    margin-top: $spacing-md;
+  }
+
   @media screen and (min-width: $breakpoints-md) {
     &-offer,
     &-author {

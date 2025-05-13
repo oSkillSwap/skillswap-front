@@ -1,15 +1,15 @@
-import './ProfileHeaderEditor.scss';
-import { useState } from 'react';
-import { SquarePen, Check, X } from 'lucide-react';
-import api from '../../services/api';
-import type User from '../../types/User';
+import "./ProfileHeaderEditor.scss";
+import { Check, SquarePen, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import api from "../../services/api";
+import type User from "../../types/User";
 
 interface Props {
   value: string;
-  field: 'username' | 'description';
+  field: "username" | "description";
   setUserData: React.Dispatch<React.SetStateAction<User | null>>;
   className?: string;
-  type?: 'input' | 'textarea';
+  type?: "input" | "textarea";
   isOwner?: boolean;
 }
 
@@ -18,43 +18,45 @@ function ProfileHeaderEditor({
   field,
   setUserData,
   className,
-  type = 'input',
+  type = "input",
   isOwner = false,
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSave = async () => {
     try {
-      const res = await api.patch('/me', { [field]: editedValue });
+      const res = await api.patch("/me", { [field]: editedValue });
       setUserData((prev) =>
-        prev ? { ...prev, [field]: res.data.user[field] } : prev,
+        prev ? { ...prev, [field]: res.data.user[field] } : prev
       );
       setIsEditing(false);
-      setSuccessMessage('Modifié avec succès');
-      setTimeout(() => setSuccessMessage(''), 2000);
+      setSuccessMessage("Modifié avec succès");
+      setTimeout(() => setSuccessMessage(""), 2000);
     } catch (err) {
       console.error(`Erreur lors de la mise à jour du champ ${field} :`, err);
     }
   };
 
   const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       e.preventDefault();
       setEditedValue(value);
       setIsEditing(false);
     }
 
-    if (type === 'textarea') {
-      if (e.key === 'Enter' && e.ctrlKey) {
+    if (type === "textarea") {
+      if (e.key === "Enter" && e.ctrlKey) {
         e.preventDefault();
         handleSave();
       }
     } else {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         e.preventDefault();
         handleSave();
       }
@@ -62,23 +64,33 @@ function ProfileHeaderEditor({
   };
 
   if (!isOwner) {
-    return type === 'textarea' ? (
+    return type === "textarea" ? (
       <p className="inline-edit-value">{value}</p>
     ) : (
       <h1 className="inline-edit-value">{value}</h1>
     );
   }
 
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      return inputRef.current.focus();
+    }
+    if (isEditing && textAreaRef.current) {
+      return textAreaRef.current.focus();
+    }
+  }, [isEditing]);
+
   return (
-    <div className={`inline-edit ${className ?? ''}`}>
+    <div className={`inline-edit ${className ?? ""}`}>
       {isEditing ? (
         <>
-          {type === 'textarea' ? (
+          {type === "textarea" ? (
             <textarea
               className="edit-textarea"
               value={editedValue}
               onChange={(e) => setEditedValue(e.target.value)}
               onKeyDown={handleKeyDown}
+              ref={textAreaRef}
             />
           ) : (
             <input
@@ -86,6 +98,7 @@ function ProfileHeaderEditor({
               value={editedValue}
               onChange={(e) => setEditedValue(e.target.value)}
               onKeyDown={handleKeyDown}
+              ref={inputRef}
             />
           )}
           <button type="button" className="btn-icon" onClick={handleSave}>
@@ -104,7 +117,7 @@ function ProfileHeaderEditor({
         </>
       ) : (
         <>
-          {type === 'textarea' ? (
+          {type === "textarea" ? (
             <p className="inline-edit-value">{value}</p>
           ) : (
             <h1 className="inline-edit-value">{value}</h1>

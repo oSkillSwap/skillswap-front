@@ -115,15 +115,18 @@ function Header() {
                 {isMobile ? "Explorer" : <Search />}
               </Link>
             </li>
-            <li className="header-nav-element">
-              <Link
-                className="header-nav-element-link"
-                to="/post"
-                onClick={handleLinkClick}
-              >
-                {isMobile ? "Poster une annonce" : <CirclePlus />}
-              </Link>
-            </li>
+            {user && (
+              <li className="header-nav-element">
+                <Link
+                  className="header-nav-element-link"
+                  to="/post"
+                  onClick={handleLinkClick}
+                >
+                  {isMobile ? "Poster une annonce" : <CirclePlus />}
+                </Link>
+              </li>
+            )}
+
             {user ? (
               <>
                 <li className="header-nav-element">

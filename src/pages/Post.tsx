@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { API_URL } from "../config";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../services/api";
@@ -11,8 +12,15 @@ function Post() {
   const [skills, setSkills] = useState<ISkills[] | []>([]);
   const [error, setError] = useState<string>("");
   const { user } = useAuth();
-
+  const inputRef = useRef<HTMLInputElement>(null);
   const currentUserId = user?.id;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
 
   // Récupération des compétences
   useEffect(() => {
@@ -124,6 +132,10 @@ function Post() {
     }
   };
 
+  if (!user) {
+    navigate("/login");
+  }
+
   return (
     <main className="post container">
       <section className="content">
@@ -133,7 +145,12 @@ function Post() {
             handleSubmit(formData);
           }}
         >
-          <input type="text" name="title" placeholder="Titre de l'annonce" />
+          <input
+            type="text"
+            name="title"
+            placeholder="Titre de l'annonce"
+            ref={inputRef}
+          />
           <input
             type="text"
             name="content"
