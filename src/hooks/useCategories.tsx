@@ -1,7 +1,6 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { API_URL } from "../config";
-import type { ICategories } from "../types/Categories";
+import { useEffect, useState } from 'react';
+import api from '../services/api';
+import type { ICategories } from '../types/Categories';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<ICategories[] | []>([]);
@@ -9,11 +8,11 @@ export const useCategories = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const response = await axios.get(`${API_URL}/categories`);
+        const response = await api.get('/categories');
         setCategories(response.data.categories);
       } catch (error) {
         // biome-ignore lint/suspicious/noConsole: <explanation>
-        console.error("Error fetching users:", error);
+        console.error('Error fetching categories:', error);
       }
     };
     getCategories();
