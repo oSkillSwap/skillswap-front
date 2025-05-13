@@ -179,6 +179,7 @@ button {
   align-items: center;
   justify-content: center;
   width: max-content;
+  @include transition-button;
 
   &-centered {
     margin: 0 auto;

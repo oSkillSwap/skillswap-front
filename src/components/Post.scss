@@ -90,7 +90,8 @@
       align-items: center;
       margin-top: $spacing-md;
 
-      & button {
+      & button,
+      & a {
         width: 100%;
       }
     }
@@ -125,7 +126,8 @@
         flex-direction: row;
         justify-content: center;
 
-        & button {
+        & button,
+        & a {
           width: fit-content;
         }
       }
@@ -139,8 +141,8 @@
       justify-content: space-between;
       align-items: center;
 
-      & > div {
-        width: auto;
+      &-btns {
+        justify-content: flex-end;
       }
 
       &-userinfo {
