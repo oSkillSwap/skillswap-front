@@ -13,7 +13,7 @@
     border: 3px solid $color-gray;
     border-top: 0;
     border-radius: 0 0 1.6rem 1.6rem;
-    flex-grow:1;
+    flex-grow: 1;
   }
 
   &-picture {
@@ -45,7 +45,7 @@
     height: 100%;
     align-items: flex-end;
 
-    button:first-of-type {
+    & > :first-child {
       flex-grow: 1;
     }
   }
