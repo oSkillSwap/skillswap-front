@@ -4,14 +4,12 @@ import PageTransition from '../utils/PageTransition';
 import './Profile.scss';
 
 function Profile() {
-  const { user: profileIdParam } = useParams();
+  const { userId } = useParams();
   const { user: connectedUser } = useAuth();
   const location = useLocation();
 
-  const isOwnProfile =
-    profileIdParam === 'me' || connectedUser?.id?.toString() === profileIdParam;
-  const actualProfileId =
-    profileIdParam === 'me' ? connectedUser?.id?.toString() : profileIdParam;
+  const isOwnProfile = !userId || userId === connectedUser?.id?.toString();
+  const basePath = userId ? `/profile/${userId}` : '/profile';
 
   const tabs = [
     { key: '', label: 'Profil' },
@@ -25,7 +23,7 @@ function Profile() {
       {isOwnProfile && (
         <nav className="container nav profile-tabs">
           {tabs.map((tab) => {
-            const path = `/profile/${profileIdParam}${tab.key ? `/${tab.key}` : ''}`;
+            const path = `${basePath}${tab.key ? `/${tab.key}` : ''}`;
             const isActive = location.pathname === path;
 
             return (
@@ -41,7 +39,7 @@ function Profile() {
         </nav>
       )}
 
-      <Outlet context={{ profileId: actualProfileId }} />
+      <Outlet />
     </>
   );
 }
