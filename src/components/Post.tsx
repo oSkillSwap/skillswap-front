@@ -268,11 +268,13 @@ function Post({
         <div className="post-author">
           <div>
             <div className="post-author-userinfo">
-              <img
-                className="post-author-userinfo-picture"
-                src={data?.Author?.avatar || '/img/avatars/robot1.jpg'}
-                alt=""
-              />
+              <Link to={`/profile/${postAuthor.id}`}>
+                <img
+                  className="post-author-userinfo-picture"
+                  src={data?.Author?.avatar || '/img/avatars/robot1.jpg'}
+                  alt=""
+                />
+              </Link>
               <div>
                 <h3>{data?.Author?.username}</h3>
                 <Grade

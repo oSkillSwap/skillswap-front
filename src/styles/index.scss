@@ -68,7 +68,12 @@ a {
   &:hover {
     color: $color-secondary;
   }
+  &.active {
+    color: $color-primary;
+  }
 }
+
+
 
 label {
   font-size: $font-size-sm;
