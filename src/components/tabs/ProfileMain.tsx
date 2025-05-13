@@ -20,7 +20,8 @@ function Profile() {
   let { user: profileId } = useParams();
   const navigate = useNavigate();
   const { user: connectedUser, logout } = useAuth();
-
+  const actualProfileId =
+    profileId === 'me' ? connectedUser?.id?.toString() : profileId;
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -34,15 +35,18 @@ function Profile() {
   }
 
   const isOwnProfile = connectedUser?.id?.toString() === profileId;
+
   useEffect(() => {
+    if (!actualProfileId) return;
+
     setIsLoading(true);
     setError('');
 
     Promise.all([
-      api.get(`/users/${profileId}`),
-      api.get(`/users/follows/${profileId}`),
-      api.get(`/reviews/${profileId}`),
-      api.get(`/posts/${profileId}`),
+      api.get(`/users/${actualProfileId}`),
+      api.get(`/users/follows/${actualProfileId}`),
+      api.get(`/reviews/${actualProfileId}`),
+      api.get(`/posts/${actualProfileId}`),
     ])
       .then(
         ([userResponse, followsResponse, reviewsResponse, postsResponse]) => {
@@ -60,7 +64,7 @@ function Profile() {
         setError(error.message);
         setIsLoading(false);
       });
-  }, [profileId]);
+  }, [actualProfileId]);
 
   const handleDeleteAccount = async () => {
     try {
