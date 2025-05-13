@@ -5,7 +5,7 @@ export interface IPosts {
   isClosed?: boolean;
   title: string;
   content: string;
-  skill_id: number;
+  skill_id?: number;
   user_id?: number;
   createdAt?: string;
   updatedAt?: string;

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import api from '../../services/api';
-import Post from '../Post';
-import Grade from '../Grade';
 import { MessageSquare, SquareX } from 'lucide-react';
-import type { IEnrichedProposition } from '../../types/Proposition';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import api from '../../services/api';
+import type { IEnrichedProposition } from '../../types/Proposition';
+import Grade from '../Grade';
+import Post from '../Post';
 
 function ProfileOffers() {
   const [propositions, setPropositions] = useState<IEnrichedProposition[]>([]);
@@ -17,6 +17,7 @@ function ProfileOffers() {
         const res = await api.get('/me/propositions');
         setPropositions(res.data.propositions);
       } catch (err) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(err);
         setError('Erreur lors du chargement.');
       }

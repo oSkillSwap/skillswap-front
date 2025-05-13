@@ -11,11 +11,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
+import type { IPosts } from '../types/Posts';
 import type User from '../types/User';
 import Grade from './Grade';
 import ConfirmModal from './profile/ConfirmModal';
 import PropositionFormModal from './tabs/PropositionFormModal';
-import type { IPosts } from '../types/Posts';
 
 type PostProps = {
   variant: 'post' | 'offer' | 'trade';
@@ -53,7 +53,6 @@ function Post({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDeletePost = async () => {
-    console.log('Suppression déclenchée');
     try {
       await api.delete(`/me/posts/${data?.id}`);
 
@@ -77,6 +76,7 @@ function Post({
         });
       }
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du post :', error);
     }
   };
@@ -111,6 +111,7 @@ function Post({
       setTimeout(() => setSuccessMessage(''), 2000);
       setIsEditing(false);
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la modification du post :', error);
     }
   };

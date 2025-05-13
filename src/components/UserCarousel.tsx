@@ -1,10 +1,10 @@
-import { Autoplay } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/scss";
-import "./UserCarousel.scss";
-import { useUsers } from "../hooks/useUsers";
-import type { IUsers } from "../types/Users";
-import UserCard from "./UserCard";
+import { Autoplay } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/scss';
+import './UserCarousel.scss';
+import { useUsers } from '../hooks/useUsers';
+import type { IUsers } from '../types/Users';
+import UserCard from './UserCard';
 
 function UserCarousel() {
   const { users } = useUsers();

@@ -1,11 +1,11 @@
+import { MessageSquare, SquareCheckBig, SquareX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import type { IPosts } from '../../types/Posts';
 import type { IProposition } from '../../types/Proposition';
-import Post from '../Post';
 import Grade from '../Grade';
-import { MessageSquare, SquareX, SquareCheckBig } from 'lucide-react';
+import Post from '../Post';
 import './ProfilePosts.scss';
 import { useNavigate } from 'react-router';
 
@@ -27,6 +27,7 @@ function ProfilePosts() {
         setPosts(postsRes.data.posts);
         setPropositions(propositionsRes.data.propositions);
       } catch (err) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(err);
         setError('Erreur lors du chargement.');
       }
@@ -53,6 +54,7 @@ function ProfilePosts() {
       setPropositions(data.propositions);
       window.dispatchEvent(new Event('exchange-updated'));
     } catch (err) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("Erreur lors de l'acceptation :", err);
     }
   };

@@ -2,6 +2,9 @@ import { Heart, KeyRound, MessageSquare, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import '../../pages/Profile.scss';
 import { Link, useNavigate, useParams } from 'react-router';
+import { useAuth } from '../../contexts/AuthContext';
+import api from '../../services/api';
+import type User from '../../types/User';
 import Grade from '../Grade';
 import Post from '../Post';
 import Testimonial from '../Testimonial';
@@ -12,9 +15,6 @@ import PasswordModal from '../profile/PasswordModal';
 import ProfileHeaderEditor from '../profile/ProfileHeaderEditor';
 import SkillEditor from '../profile/SkillEditor';
 import SkillWantedEditor from '../profile/SkillWantedEditor';
-import { useAuth } from '../../contexts/AuthContext';
-import api from '../../services/api';
-import type User from '../../types/User';
 
 function ProfilePage() {
   let { userId } = useParams();
@@ -74,6 +74,7 @@ function ProfilePage() {
       logout();
       navigate('/login');
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du compte :', error);
       alert(
         `Erreur : ${
@@ -116,6 +117,7 @@ function ProfilePage() {
       });
       setIsFollowing(true);
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors du follow :', error);
     }
   };
@@ -137,6 +139,7 @@ function ProfilePage() {
       });
       setIsFollowing(false);
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors du unfollow :', error);
     }
   };
@@ -149,6 +152,7 @@ function ProfilePage() {
       }
       await unfollowUser();
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors du follow :', error);
     }
   };
