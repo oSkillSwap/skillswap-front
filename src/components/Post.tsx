@@ -239,7 +239,7 @@ function Post({
               </>
             )}
 
-            {variant === 'post' && !isEditing && !isAuthor && (
+            {variant === 'post' && !isEditing && !isAuthor && connectedUser && (
               <button
                 className="btn btn-default"
                 type="button"
@@ -282,20 +282,24 @@ function Post({
               </div>
             </div>
           </div>
-
           <div className="post-author-btns">
-            <Link className="btn btn-reversed" to={`/message/${data.user_id}`}>
+            <Link
+              className="btn btn-reversed"
+              to={connectedUser ? `/message/${data.user_id}` : '/login'}
+            >
               <MessageSquare />
               Contacter
             </Link>
-            <button
-              className="btn btn-default"
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <HandHelping />
-              Proposer
-            </button>
+            {!isAuthor && connectedUser && (
+              <button
+                className="btn btn-default"
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <HandHelping />
+                Proposer
+              </button>
+            )}
           </div>
 
           {isModalOpen && data.id && (
