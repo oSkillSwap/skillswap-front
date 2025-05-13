@@ -1,45 +1,58 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Onboarding.scss';
 import { AxiosError } from 'axios';
 import { Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
-import PageTransition from '../utils/PageTransition';
+
 
 function Login() {
-  const [error, setError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const { user: connectedUser } = useAuth();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setError('');
+    setError("");
   }, []);
 
   const handleSubmit = async () => {
-    setError('');
+    setError("");
 
     // Form check
     if (!email || !password) {
-      setError('Veuillez remplir tous les champs');
+      setError("Veuillez remplir tous les champs");
       return;
     }
 
     // Login request
     try {
       await login(email, password, remember);
-      navigate('/');
+      navigate("/");
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
-        setError('Une erreur est survenue');
+        setError("Une erreur est survenue");
       }
     }
   };
+
+  if (connectedUser) {
+    navigate("/profile");
+    return;
+  }
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   return (
     <main className="login container">
@@ -54,6 +67,7 @@ function Login() {
               name="email"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="exemple@email.com"
+              ref={inputRef}
             />
           </div>
 

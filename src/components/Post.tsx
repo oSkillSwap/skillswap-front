@@ -7,13 +7,14 @@ import {
   Trash2,
 } from 'lucide-react';
 import './Post.scss';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import type User from '../types/User';
 import Grade from './Grade';
 import ConfirmModal from './profile/ConfirmModal';
 import PropositionFormModal from './tabs/PropositionFormModal';
+
 
 type PostProps = {
   variant: 'post' | 'offer' | 'trade';
@@ -54,14 +55,15 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDeletePost = async () => {
     try {
       await api.delete(`/me/posts/${data?.id}`);
       if (setUserData) {
-        setUserData?.((prevUserData) => {
+        setUserData((prevUserData) => {
           if (prevUserData) {
             return {
               ...prevUserData,
@@ -92,21 +94,23 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
       const response = await api.patch(`/me/posts/${data?.id}`, editedPost);
       console.log(response.data);
 
-      setUserData?.((prevUserData) => {
-        if (prevUserData) {
-          const updatedPosts = prevUserData.Posts.map((post) => {
-            if (post.id === data?.id) {
-              return { ...post, ...response.data.updatedPost };
-            }
-            return post;
-          });
-          return {
-            ...prevUserData,
-            Posts: updatedPosts,
-          };
-        }
-        return prevUserData;
-      });
+      if (setUserData) {
+        setUserData((prevUserData) => {
+          if (prevUserData) {
+            const updatedPosts = prevUserData.Posts.map((post) => {
+              if (post.id === data?.id) {
+                return { ...post, ...response.data.updatedPost };
+              }
+              return post;
+            });
+            return {
+              ...prevUserData,
+              Posts: updatedPosts,
+            };
+          }
+          return prevUserData;
+        });
+      }
       setSuccessMessage(response.data.message);
       setTimeout(() => setSuccessMessage(''), 2000);
       setIsEditing(false);
@@ -116,6 +120,12 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
     }
   };
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+  
   const author = data.Author || {
     id: 0,
     username: 'Auteur inconnu',
@@ -139,6 +149,7 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
             defaultValue={data?.title}
             placeholder="Titre de l'annonce"
             className="post-edit-form-title"
+            ref={inputRef}
           />
           <textarea
             name="content"
@@ -147,10 +158,22 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
             className="post-edit-form-content"
             rows={5}
           />
-          <p style={{ color: 'red' }}>{errorMessage}</p>
-          <button className="btn btn-alt" type="submit">
-            Enregistrer
-          </button>
+          <p style={{ color: "red" }}>{errorMessage}</p>
+          <div className="update-post-buttons">
+            <button className="btn btn-default" type="submit">
+              Enregistrer
+            </button>
+            <button
+              className="btn btn-alt"
+              type="button"
+              onClick={() => {
+                setIsEditing(false);
+                setErrorMessage("");
+              }}
+            >
+              Annuler
+            </button>
+          </div>
         </form>
       ) : (
         <>
@@ -172,15 +195,21 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
                 <p className="tag">{data?.SkillWanted?.name || 'Next.js'}</p>
               </div>
               <p className="post-header-date">
-                Posté le{' '}
-                {new Date(data!.createdAt ?? Date.now()).toLocaleDateString(
-                  'fr-FR',
-                  {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  },
-                ) || '24 avril 2025'}
+                {data?.updatedAt !== data?.createdAt
+                  ? `Modifié le ${new Date(
+                      data.updatedAt || Date.now()
+                    ).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}`
+                  : `Posté le ${new Date(
+                      data.createdAt || Date.now()
+                    ).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}`}
               </p>
             </div>
           </div>

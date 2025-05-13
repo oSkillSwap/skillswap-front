@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import './PasswordModal.scss';
-import api from '../../services/api';
+import { useEffect, useRef, useState } from "react";
+import "./PasswordModal.scss";
+import api from "../../services/api";
 
 interface Props {
   onClose: () => void;
@@ -8,27 +8,34 @@ interface Props {
 }
 
 function PasswordModal({ onClose, onSuccess }: Props) {
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
 
   const handleSubmit = async () => {
     try {
-      await api.patch('/me/password', {
+      await api.patch("/me/password", {
         currentPassword,
         newPassword,
         confirmPassword,
       });
-      onSuccess('Mot de passe mis à jour avec succès.');
+      onSuccess("Mot de passe mis à jour avec succès.");
       onClose();
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error('Erreur lors du changement de mot de passe :', error);
+      console.error("Erreur lors du changement de mot de passe :", error);
       alert(
         `Erreur : ${
           (error as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message || 'Erreur inconnue'
-        }`,
+            ?.data?.message || "Erreur inconnue"
+        }`
       );
     }
   };
@@ -43,6 +50,7 @@ function PasswordModal({ onClose, onSuccess }: Props) {
             type="password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
+            ref={inputRef}
           />
         </label>
         <label>

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { API_URL } from '../config';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
@@ -7,15 +8,22 @@ import type { IPosts } from '../types/Posts';
 import type { ISkills } from '../types/Skills';
 import PageTransition from '../utils/PageTransition';
 import './Post.scss';
-//import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
 
 function Post() {
   const [posts, setPosts] = useState<[] | IPosts[]>([]);
   const [skills, setSkills] = useState<ISkills[] | []>([]);
   const [error, setError] = useState<string>('');
   const { user } = useAuth();
-
+  const inputRef = useRef<HTMLInputElement>(null);
   const currentUserId = user?.id;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
 
   // Récupération des compétences
   useEffect(() => {
@@ -127,6 +135,10 @@ function Post() {
     }
   };
 
+  if (!user) {
+    navigate("/login");
+  }
+
   return (
     <main className="container">
       <section className="content">
@@ -144,6 +156,7 @@ function Post() {
               type="text"
               name="title"
               placeholder="Titre de l'annonce"
+              ref={inputRef}
             />
           </div>
           <div className="add-post-form-input">

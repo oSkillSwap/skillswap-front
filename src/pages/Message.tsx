@@ -26,6 +26,7 @@ function Message() {
   const socketRef = useRef<Socket | null>(null);
   const { user } = useAuth();
   const { userId: paramId } = useParams();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
   const currentUserId = user?.id;
@@ -153,6 +154,12 @@ function Message() {
     setInput("");
   };
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
+
   return (
     <main className="messages container">
       <section className="content">
@@ -187,6 +194,7 @@ function Message() {
                 value={input}
                 placeholder={`Envoyer un message à ${otherUser?.username}`}
                 onChange={(e) => setInput(e.target.value)}
+                ref={inputRef}
               />
             </form>
           </div>
