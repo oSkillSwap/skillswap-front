@@ -124,6 +124,7 @@ function Post() {
       console.error('Error submitting form:', error);
     }
   };
+
   return (
     <main className="post container">
       <section className="content">

@@ -8,6 +8,7 @@ type AuthContextType = {
   accessToken: string | null;
   login: (email: string, password: string, remember: boolean) => Promise<void>;
   logout: () => void;
+  isAuthLoading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   // Set user and accessToken state if they exist in localStorage
   useEffect(() => {
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // storedUser is a stringified object and needs to be parsed before set to state
       setUser(JSON.parse(storedUser));
     }
+    setIsAuthLoading(false);
   }, []);
 
   // Login function
@@ -60,7 +63,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // <AuthProvider> ... </AuthProvider>
   return (
-    <AuthContext.Provider value={{ user, accessToken, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, accessToken, login, logout, isAuthLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );
