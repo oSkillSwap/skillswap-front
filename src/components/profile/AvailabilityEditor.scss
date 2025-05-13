@@ -1,27 +1,17 @@
 @use "../../styles/variables" as *;
 
-.save-availabilities{
-    margin-top: 2rem;
-}
-
-.profile-availability-check:hover{
-    cursor: pointer;
+.save-availabilities {
+  margin-top: 2rem;
 }
 
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  
-
-.btn-icon:hover svg{
-    color: $color-primary;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
-  

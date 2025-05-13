@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router';
+import { AnimatePresence } from 'motion/react';
+import { Route, Routes, useLocation } from 'react-router';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import { AuthProvider } from './contexts/AuthContext';
@@ -18,26 +19,30 @@ import ProfileOffers from './components/tabs/ProfileOffers';
 import ProfileExchanges from './components/tabs/ProfileExchanges';
 
 function App() {
+  const location = useLocation();
   return (
     <AuthProvider>
       <Header />
       <ScrollToTop />
-      <Routes>
-        <Route index element={<Homepage />} />
-        <Route path="explore" element={<Explore />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="message/:userId?" element={<Message />} />
-        <Route path="post" element={<Post />} />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route index element={<Homepage />} />
+          <Route path="explore" element={<Explore />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="message/:userId?" element={<Message />} />
+          <Route path="post" element={<Post />} />
 
-        <Route path="profile/:user" element={<Profile />}>
-          <Route index element={<ProfileMain />} />
-          <Route path="profile" element={<ProfileMain />} />
-          <Route path="posts" element={<ProfilePosts />} />
-          <Route path="offers" element={<ProfileOffers />} />
-          <Route path="exchanges" element={<ProfileExchanges />} />
-        </Route>
-      </Routes>
+          <Route path="profile/:user" element={<Profile />}>
+            <Route index element={<ProfileMain />} />
+            <Route path="profile" element={<ProfileMain />} />
+            <Route path="posts" element={<ProfilePosts />} />
+            <Route path="offers" element={<ProfileOffers />} />
+            <Route path="exchanges" element={<ProfileExchanges />} />
+          </Route>
+        </Routes>
+      </AnimatePresence>
+
       <Footer />
     </AuthProvider>
   );

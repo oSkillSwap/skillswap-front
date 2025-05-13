@@ -1,5 +1,8 @@
 import { useParams, Link, Outlet, useLocation } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
+import type User from '../types/User';
+import PageTransition from '../utils/PageTransition';
 import './Profile.scss';
 
 function Profile() {
@@ -42,4 +45,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default PageTransition(Profile);

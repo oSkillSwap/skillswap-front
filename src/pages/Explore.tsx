@@ -1,20 +1,21 @@
-import CategoryCarousel from "../components/CategoryCarousel";
-import Post from "../components/Post";
-import Searchbar from "../components/Searchbar";
-import UserCard from "../components/UserCard";
-import type { IUsers } from "../types/Users";
-import "./Explore.scss";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router";
-import { useSearch } from "../hooks/useSearch";
-import type { IPosts } from "../types/Posts";
+import CategoryCarousel from '../components/CategoryCarousel';
+import Post from '../components/Post';
+import Searchbar from '../components/Searchbar';
+import UserCard from '../components/UserCard';
+import type { IUsers } from '../types/Users';
+import './Explore.scss';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router';
+import { useSearch } from '../hooks/useSearch';
+import type { IPosts } from '../types/Posts';
+import PageTransition from '../utils/PageTransition';
 
 function Explore() {
   const { searchUsers, searchPosts, handleSearch } = useSearch();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const search = searchParams.get("search");
+    const search = searchParams.get('search');
     if (search) handleSearch(search);
   }, [searchParams, handleSearch]);
 
@@ -44,8 +45,8 @@ function Explore() {
           {searchPosts.map((post: IPosts) => {
             return (
               <Post
-                variant={"post"}
-                origin={"explore"}
+                variant={'post'}
+                origin={'explore'}
                 key={post.id}
                 data={post}
               />
@@ -57,4 +58,4 @@ function Explore() {
   );
 }
 
-export default Explore;
+export default PageTransition(Explore);

@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import "./Message.scss";
-import { ArrowLeft } from "lucide-react";
-import { Link, useParams } from "react-router";
-import { type Socket, io } from "socket.io-client";
-import MessagesList from "../components/MessagesList";
-import { useAuth } from "../contexts/AuthContext";
-import api from "../services/api";
-import type IMessage from "../types/Message";
-import type User from "../types/User";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import './Message.scss';
+import { ArrowLeft } from 'lucide-react';
+import { Link, useParams } from 'react-router';
+import { type Socket, io } from 'socket.io-client';
+import MessagesList from '../components/MessagesList';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
+import type IMessage from '../types/Message';
+import type User from '../types/User';
+import PageTransition from '../utils/PageTransition';
 
 interface Conversation {
   userId: number;
@@ -236,4 +237,4 @@ function Message() {
   );
 }
 
-export default Message;
+export default PageTransition(Message);
