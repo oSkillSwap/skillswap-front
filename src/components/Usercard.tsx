@@ -1,3 +1,4 @@
+
 import { Heart, MessageSquare } from "lucide-react";
 import "./UserCard.scss";
 import { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import type { ISkills } from "../types/Skills";
 import type User from "../types/User";
 import type { IUsers } from "../types/Users";
 import Grade from "./Grade";
+
 
 function UserCard({ user }: { user: IUsers }) {
   const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
@@ -165,7 +167,7 @@ function UserCard({ user }: { user: IUsers }) {
           </div>
         </div>
         <div className="profile-card-btns">
-          <button className="btn btn-default" type="button">
+          <Link className="btn btn-default" to={`/message/${user.id}`}>
             <MessageSquare />
             Contacter
           </button>

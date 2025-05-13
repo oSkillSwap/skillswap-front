@@ -93,7 +93,7 @@ function Header() {
                 {isMobile ? 'Explorer' : <Search />}
               </Link>
             </li>
-            
+
             {user && (
               <li className="header-nav-element">
                 <Link
@@ -101,11 +101,11 @@ function Header() {
                   to="/post"
                   onClick={handleLinkClick}
                 >
-                  {isMobile ? "Poster une annonce" : <CirclePlus />}
+                  {isMobile ? 'Poster une annonce' : <CirclePlus />}
                 </Link>
               </li>
             )}
-            
+
             {user ? (
               <>
                 <li className="header-nav-element">
