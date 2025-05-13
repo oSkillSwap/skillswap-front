@@ -33,9 +33,12 @@ function App() {
           <Route path="message/:userId?" element={<Message />} />
           <Route path="post" element={<Post />} />
 
-          <Route path="profile/:user" element={<Profile />}>
+          <Route path="profile" element={<Profile />}>
             <Route index element={<ProfileMain />} />
-            {/* <Route path="profile" element={<ProfileMain />} /> */}
+            <Route path=":user" element={<ProfileMain />} />
+            <Route path=":user/posts" element={<ProfilePosts />} />
+            <Route path=":user/offers" element={<ProfileOffers />} />
+            <Route path=":user/exchanges" element={<ProfileExchanges />} />
             <Route path="posts" element={<ProfilePosts />} />
             <Route path="offers" element={<ProfileOffers />} />
             <Route path="exchanges" element={<ProfileExchanges />} />

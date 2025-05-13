@@ -122,7 +122,7 @@ function Header() {
                     {!isMobile && (
                       <Link
                         className="header-nav-element-link header-nav-element-user-link"
-                        to={'/profile/me'}
+                        to={'/profile'}
                       >
                         <img src={user.avatar} alt={user.username} />
                         {user.username}
@@ -132,7 +132,7 @@ function Header() {
                       <div className="header-nav-element-user-dropdown-content">
                         <Link
                           className="header-nav-element-link"
-                          to={'/profile/me'}
+                          to={'/profile'}
                           onClick={handleLinkClick}
                         >
                           Mon profil

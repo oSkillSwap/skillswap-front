@@ -2,9 +2,6 @@ import { Heart, KeyRound, MessageSquare, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import '../../pages/Profile.scss';
 import { Link, useNavigate, useParams } from 'react-router';
-import { useAuth } from '../../contexts/AuthContext';
-import api from '../../services/api';
-import type User from '../../types/User';
 import Grade from '../Grade';
 import Post from '../Post';
 import Testimonial from '../Testimonial';
@@ -15,13 +12,15 @@ import PasswordModal from '../profile/PasswordModal';
 import ProfileHeaderEditor from '../profile/ProfileHeaderEditor';
 import SkillEditor from '../profile/SkillEditor';
 import SkillWantedEditor from '../profile/SkillWantedEditor';
+import { useAuth } from '../../contexts/AuthContext';
+import api from '../../services/api';
+import type User from '../../types/User';
 
 function Profile() {
-  let { user: profileId } = useParams();
+  let { userId } = useParams();
   const navigate = useNavigate();
-  const { user: connectedUser, logout } = useAuth();
-  const actualProfileId =
-    profileId === 'me' ? connectedUser?.id?.toString() : profileId;
+  const { user: connectedUser, logout, isAuthLoading } = useAuth();
+
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -30,41 +29,44 @@ function Profile() {
   const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
   const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
 
-  if (!profileId && connectedUser) {
-    profileId = connectedUser.id.toString();
+  if (!userId && connectedUser) {
+    userId = connectedUser.id.toString();
   }
 
-  const isOwnProfile = connectedUser?.id?.toString() === profileId;
+  const isOwnProfile = connectedUser?.id?.toString() === userId;
 
   useEffect(() => {
-    if (!actualProfileId) return;
+    const fetchData = async () => {
+      if (isAuthLoading) return;
 
-    setIsLoading(true);
-    setError('');
+      try {
+        setIsLoading(true);
+        setError('');
 
-    Promise.all([
-      api.get(`/users/${actualProfileId}`),
-      api.get(`/users/follows/${actualProfileId}`),
-      api.get(`/reviews/${actualProfileId}`),
-      api.get(`/posts/${actualProfileId}`),
-    ])
-      .then(
-        ([userResponse, followsResponse, reviewsResponse, postsResponse]) => {
-          setUserData({
-            ...userResponse.data.user,
-            Follows: followsResponse.data.user.Follows,
-            Followers: followsResponse.data.user.Followers,
-            Reviews: reviewsResponse.data.reviews,
-            Posts: postsResponse.data.posts,
-          });
-          setIsLoading(false);
-        },
-      )
-      .catch((error) => {
-        setError(error.message);
+        const [userResponse, followsResponse, reviewsResponse, postsResponse] =
+          await Promise.all([
+            api.get(`/users/${userId}`),
+            api.get(`/users/follows/${userId}`),
+            api.get(`/reviews/${userId}`),
+            api.get(`/posts/${userId}`),
+          ]);
+
+        setUserData({
+          ...userResponse.data.user,
+          Follows: followsResponse.data.user.Follows,
+          Followers: followsResponse.data.user.Followers,
+          Reviews: reviewsResponse.data.reviews,
+          Posts: postsResponse.data.posts,
+        });
+      } catch (error) {
+        setError((error as { message: string }).message);
+      } finally {
         setIsLoading(false);
-      });
-  }, [actualProfileId]);
+      }
+    };
+
+    fetchData();
+  }, [userId, isAuthLoading]);
 
   const handleDeleteAccount = async () => {
     try {
@@ -97,7 +99,7 @@ function Profile() {
   const followUser = async () => {
     if (!connectedUser) return;
     try {
-      await api.post(`/me/follow/${profileId}`);
+      await api.post(`/me/follow/${userId}`);
       // Met à jour localement l'état de l'utilisateur
       // en ajoutant l'utilisateur connecté dans la liste des Followers
       setUserData((prevUserData) => {
@@ -134,7 +136,7 @@ function Profile() {
     // Vérifie si l'utilisateur est connecté
     if (!connectedUser) return;
     try {
-      await api.delete(`/me/follow/${profileId}`);
+      await api.delete(`/me/follow/${userId}`);
       // Met à jour localement l'état de l'utilisateur
       // en supprimant l'utilisateur connecté de la liste des Followers
       setUserData((prevUserData) => {
@@ -259,12 +261,9 @@ function Profile() {
                 </>
               ) : (
                 <>
-                  <Link
-                    className="btn btn-default"
-                    to={`/message/${profileId}`}
-                  >
+                  <button className="btn btn-default" type="button">
                     <MessageSquare /> Contacter
-                  </Link>
+                  </button>
                   <button className="btn btn-alt btn-icon" type="button">
                     <Heart
                       onClick={handleFollowAndUnfollow}
