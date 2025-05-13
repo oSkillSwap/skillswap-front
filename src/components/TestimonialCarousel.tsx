@@ -4,7 +4,7 @@ import 'swiper/scss';
 import './TestimonialCarousel.scss';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_URL } from '../config';
+import api from '../services/api';
 import type Review from '../types/Review';
 import Testimonial from './Testimonial';
 
@@ -15,14 +15,20 @@ function TestimonialCarousel() {
   useEffect(() => {
     setError('');
 
-    axios
-      .get(`${API_URL}/reviews`)
-      .then((response) => {
+    const fetchReviews = async () => {
+      try {
+        const response = await api.get('/reviews');
         setReviews(response.data.reviews);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.message) {
+          setError(error.message);
+        } else {
+          setError('Une erreur inattendue s’est produite.');
+        }
+      }
+    };
+
+    fetchReviews();
   }, []);
 
   if (error !== '' || !reviews) {

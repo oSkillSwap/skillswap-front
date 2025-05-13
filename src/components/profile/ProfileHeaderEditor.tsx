@@ -6,10 +6,10 @@ import type User from '../../types/User';
 
 interface Props {
   value: string;
-  field: "username" | "description";
+  field: 'username' | 'description';
   setUserData: React.Dispatch<React.SetStateAction<User | null>>;
   className?: string;
-  type?: "input" | "textarea";
+  type?: 'input' | 'textarea';
   isOwner?: boolean;
 }
 
@@ -18,43 +18,44 @@ function ProfileHeaderEditor({
   field,
   setUserData,
   className,
-  type = "input",
+  type = 'input',
   isOwner = false,
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSave = async () => {
     try {
-      const res = await api.patch("/me", { [field]: editedValue });
+      const res = await api.patch('/me', { [field]: editedValue });
       setUserData((prev) =>
-        prev ? { ...prev, [field]: res.data.user[field] } : prev
+        prev ? { ...prev, [field]: res.data.user[field] } : prev,
       );
       setIsEditing(false);
-      setSuccessMessage("Modifié avec succès");
-      setTimeout(() => setSuccessMessage(""), 2000);
+      setSuccessMessage('Modifié avec succès');
+      setTimeout(() => setSuccessMessage(''), 2000);
     } catch (err) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(`Erreur lors de la mise à jour du champ ${field} :`, err);
     }
   };
 
   const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (e.key === "Escape") {
+    if (e.key === 'Escape') {
       e.preventDefault();
       setEditedValue(value);
       setIsEditing(false);
     }
 
-    if (type === "textarea") {
-      if (e.key === "Enter" && e.ctrlKey) {
+    if (type === 'textarea') {
+      if (e.key === 'Enter' && e.ctrlKey) {
         e.preventDefault();
         handleSave();
       }
     } else {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         e.preventDefault();
         handleSave();
       }
@@ -62,7 +63,7 @@ function ProfileHeaderEditor({
   };
 
   if (!isOwner) {
-    return type === "textarea" ? (
+    return type === 'textarea' ? (
       <p className="inline-edit-value">{value}</p>
     ) : (
       <h1 className="inline-edit-value">{value}</h1>
@@ -70,7 +71,7 @@ function ProfileHeaderEditor({
   }
 
   return (
-    <div className={`inline-edit ${className ?? ""}`}>
+    <div className={`inline-edit ${className ?? ''}`}>
       {isEditing ? (
         <div className="edit-wrapper">
           {type === 'textarea' ? (

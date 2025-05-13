@@ -181,6 +181,10 @@ button {
   width: max-content;
   @include transition-button;
 
+  & > svg {
+    max-width: fit-content;
+  }
+
   &-centered {
     margin: 0 auto;
   }

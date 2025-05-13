@@ -1,7 +1,5 @@
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { API_URL } from '../config';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import type { IPosts } from '../types/Posts';
@@ -28,7 +26,7 @@ function Post() {
   useEffect(() => {
     const getSkills = async () => {
       try {
-        const response = await axios.get(`${API_URL}/skills`);
+        const response = await api.get('/skills');
         // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(response.data);
         const data = response.data;

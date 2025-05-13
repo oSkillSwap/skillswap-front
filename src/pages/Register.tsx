@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-import "./Onboarding.scss";
-import axios from "axios";
-import { Info } from "lucide-react";
-import { Link, useNavigate } from "react-router";
-import { API_URL } from "../config";
-import { useAuth } from "../contexts/AuthContext";
+import { useEffect, useRef, useState } from 'react';
+import './Onboarding.scss';
+import axios from 'axios';
+import { Info } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
 
 function Register() {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [acceptedCgu, setAcceptedCgu] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const { user: connectedUser } = useAuth();
@@ -25,16 +25,16 @@ function Register() {
     const newErrors: string[] = [];
 
     if (!email || !password || !confirmPassword || !username) {
-      newErrors.push("Veuillez remplir tous les champs obligatoires");
+      newErrors.push('Veuillez remplir tous les champs obligatoires');
     }
 
     if (password !== confirmPassword) {
-      newErrors.push("Les mots de passe ne correspondent pas");
+      newErrors.push('Les mots de passe ne correspondent pas');
     }
 
     if (!acceptedCgu) {
       newErrors.push(
-        "Vous devez accepter les conditions générales d’utilisation"
+        'Vous devez accepter les conditions générales d’utilisation',
       );
     }
 
@@ -44,7 +44,7 @@ function Register() {
     }
 
     try {
-      await axios.post(`${API_URL}/register`, {
+      await api.post('/register', {
         email,
         password,
         username,
@@ -53,7 +53,7 @@ function Register() {
         description: undefined,
       });
 
-      navigate("/login");
+      navigate('/login');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const data = err.response?.data;
@@ -67,13 +67,13 @@ function Register() {
           setErrors(["Une erreur s'est produite pendant l'inscription."]);
         }
       } else {
-        setErrors(["Une erreur inconnue est survenue."]);
+        setErrors(['Une erreur inconnue est survenue.']);
       }
     }
   };
 
   if (connectedUser) {
-    navigate("/profile");
+    navigate('/profile');
     return;
   }
 
@@ -154,7 +154,7 @@ function Register() {
               required
             />
             <label htmlFor="cgu">
-              J'accepte les{" "}
+              J'accepte les{' '}
               <Link to="/cgu" target="_blank" rel="noopener noreferrer">
                 conditions générales d'utilisation
               </Link>
@@ -162,7 +162,7 @@ function Register() {
           </div>
 
           {errors.length > 0 && (
-            <ul style={{ display: "block" }} className="register-alert">
+            <ul style={{ display: 'block' }} className="register-alert">
               {errors.map((errMsg) => (
                 <li key={errMsg}>
                   <Info /> {errMsg}
