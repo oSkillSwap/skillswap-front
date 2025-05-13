@@ -5,20 +5,19 @@ import {
   MessageSquare,
   SquarePen,
   Trash2,
-} from 'lucide-react';
-import './Post.scss';
-import { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import api from '../services/api';
-import type User from '../types/User';
-import Grade from './Grade';
-import ConfirmModal from './profile/ConfirmModal';
-import PropositionFormModal from './tabs/PropositionFormModal';
-
+} from "lucide-react";
+import "./Post.scss";
+import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+import type User from "../types/User";
+import Grade from "./Grade";
+import ConfirmModal from "./profile/ConfirmModal";
+import PropositionFormModal from "./tabs/PropositionFormModal";
 
 type PostProps = {
-  variant: 'post' | 'offer' | 'trade';
-  origin: 'profile' | 'explore';
+  variant: "post" | "offer" | "trade";
+  origin: "profile" | "explore";
   author?: boolean;
   offers?: { username: string }[];
   isFinished?: boolean;
@@ -74,20 +73,20 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
         });
       }
     } catch (error) {
-      console.error('Erreur lors de la suppression du post :', error);
+      console.error("Erreur lors de la suppression du post :", error);
     }
   };
 
   const handleEditPost = async (formData: FormData) => {
     try {
-      const title = formData.get('title') as string;
-      const content = formData.get('content') as string;
+      const title = formData.get("title") as string;
+      const content = formData.get("content") as string;
       const editedPost = {
         title,
         content,
       };
       if (!title.trim() || !content.trim()) {
-        setErrorMessage('Veuillez remplir tous les champs');
+        setErrorMessage("Veuillez remplir tous les champs");
         return;
       }
 
@@ -112,24 +111,24 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
         });
       }
       setSuccessMessage(response.data.message);
-      setTimeout(() => setSuccessMessage(''), 2000);
+      setTimeout(() => setSuccessMessage(""), 2000);
       setIsEditing(false);
     } catch (error) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error('Erreur lors de la modification du post :', error);
+      console.error("Erreur lors de la modification du post :", error);
     }
   };
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (isEditing && inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
-  
+  }, [isEditing]);
+
   const author = data.Author || {
     id: 0,
-    username: 'Auteur inconnu',
-    avatar: '/img/avatars/robot1.jpg',
+    username: "Auteur inconnu",
+    avatar: "/img/avatars/robot1.jpg",
   };
 
   return (
@@ -178,9 +177,11 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
       ) : (
         <>
           <div className="post-header">
-            {variant === 'trade' && (
+            {variant === "trade" && (
               <p
-                className={`post-header-arrow ${author.id === connectedUser?.id ? '' : 'arrow-alt'}`}
+                className={`post-header-arrow ${
+                  author.id === connectedUser?.id ? "" : "arrow-alt"
+                }`}
               >
                 {author.id === connectedUser?.id ? (
                   <ArrowLeft />
@@ -192,7 +193,7 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
             <div>
               <div className="post-header-title">
                 <h3>{data?.title || "Titre de l'annonce"}</h3>
-                <p className="tag">{data?.SkillWanted?.name || 'Next.js'}</p>
+                <p className="tag">{data?.SkillWanted?.name || "Next.js"}</p>
               </div>
               <p className="post-header-date">
                 {data?.updatedAt !== data?.createdAt
@@ -215,16 +216,16 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
           </div>
           <p>
             {data?.content ||
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse.'}
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia molestias perferendis quisquam omnis quaerat cum harum ullam! Mollitia harum perspiciatis eius totam quaerat aliquid in, impedit quasi ipsam incidunt esse."}
           </p>
-          <p style={{ color: 'green' }}>{successMessage}</p>
+          <p style={{ color: "green" }}>{successMessage}</p>
         </>
       )}
 
-      {origin === 'profile' && (
+      {origin === "profile" && (
         <>
           <div className="post-btns">
-            {variant === 'post' &&
+            {variant === "post" &&
               (isAuthor ? (
                 !isEditing && (
                   <>
@@ -265,7 +266,7 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
               onClose={() => setIsModalOpen(false)}
               onSuccess={() => {
                 setIsModalOpen(false);
-                alert('Proposition envoyée !');
+                alert("Proposition envoyée !");
               }}
             />
           )}
@@ -394,13 +395,13 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
         );
       })} */}
 
-      {origin === 'explore' && (
+      {origin === "explore" && (
         <div className="post-author">
           <div>
             <div className="post-author-userinfo">
               <img
                 className="post-author-userinfo-picture"
-                src={data?.Author?.avatar || '/img/avatars/robot1.jpg'}
+                src={data?.Author?.avatar || "/img/avatars/robot1.jpg"}
                 alt=""
               />
               <div>
@@ -434,7 +435,7 @@ function Post({ variant, origin, data, setUserData, children }: PostProps) {
               onClose={() => setIsModalOpen(false)}
               onSuccess={() => {
                 setIsModalOpen(false);
-                alert('Proposition envoyée !');
+                alert("Proposition envoyée !");
               }}
             />
           )}

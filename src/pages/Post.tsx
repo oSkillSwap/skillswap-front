@@ -1,19 +1,18 @@
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { API_URL } from '../config';
-import { useAuth } from '../contexts/AuthContext';
-import api from '../services/api';
-import type { IPosts } from '../types/Posts';
-import type { ISkills } from '../types/Skills';
-import PageTransition from '../utils/PageTransition';
-import './Post.scss';
-import { useNavigate } from 'react-router';
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import { API_URL } from "../config";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+import type { IPosts } from "../types/Posts";
+import type { ISkills } from "../types/Skills";
+import PageTransition from "../utils/PageTransition";
+import "./Post.scss";
 
 function Post() {
   const [posts, setPosts] = useState<[] | IPosts[]>([]);
   const [skills, setSkills] = useState<ISkills[] | []>([]);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   const { user } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
   const currentUserId = user?.id;
@@ -34,7 +33,7 @@ function Post() {
         const data = response.data;
         setSkills(data.skills);
       } catch (error) {
-        console.error('Error fetching skills:', error);
+        console.error("Error fetching skills:", error);
       }
     };
     getSkills();
@@ -44,12 +43,12 @@ function Post() {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const response = await api.get('/me/posts');
+        const response = await api.get("/me/posts");
         console.log(response.data);
         const data = response.data;
         setPosts(data.posts);
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error("Error fetching posts:", error);
       }
     };
     getPosts();
@@ -58,10 +57,10 @@ function Post() {
   // Fonction de soumission du formulaire
   const handleSubmit = async (formData: FormData) => {
     try {
-      setError('');
-      const title = formData.get('title') as string;
-      const content = formData.get('content') as string;
-      const skill_id = Number(formData.get('skill_id') as string);
+      setError("");
+      const title = formData.get("title") as string;
+      const content = formData.get("content") as string;
+      const skill_id = Number(formData.get("skill_id") as string);
       const user_id = currentUserId;
       const newPost = {
         title,
@@ -72,66 +71,66 @@ function Post() {
 
       // Vérification des champs du formulaire
       if (!title.trim() || !content.trim()) {
-        setError('Veuillez remplir tous les champs.');
+        setError("Veuillez remplir tous les champs.");
         return;
       }
       if (!user_id) {
-        setError('Utilisateur non trouvé.');
+        setError("Utilisateur non trouvé.");
         return;
       }
 
       // Vérification de la compétence sélectionnée
       if (!skill_id) {
-        setError('Veuillez sélectionner une compétence.');
+        setError("Veuillez sélectionner une compétence.");
         return;
       }
 
       // Vérification de la longueur du titre
       if (title.length < 1 || title.length > 40) {
-        setError('Le titre doit faire entre 1 et 40 caractères.');
+        setError("Le titre doit faire entre 1 et 40 caractères.");
         return;
       }
 
       // Vérification de la longueur du contenu
       if (content.length < 1 || content.length > 500) {
-        setError('Le contenu doit faire entre 1 et 500 caractères.');
+        setError("Le contenu doit faire entre 1 et 500 caractères.");
         return;
       }
 
       // Vérification de l'existence de la compétence
       const findSkill = skills.find((skill) => skill.id === +skill_id);
       if (!findSkill) {
-        setError('Compétence non trouvée.');
+        setError("Compétence non trouvée.");
         return;
       }
 
       // Vérification du nombre de posts
       // Limite à 10 posts par utilisateur
       if (posts.length >= 10) {
-        setError('Vous avez atteint le nombre maximum de posts.');
+        setError("Vous avez atteint le nombre maximum de posts.");
         return;
       }
 
       // Vérification de l'existence de la compétence dans les posts
       // Limite à 1 post par compétence
       const findSkillInPosts = posts.find(
-        (post) => post.SkillWanted?.id === +skill_id,
+        (post) => post.SkillWanted?.id === +skill_id
       );
       if (findSkillInPosts) {
-        setError('Vous avez déjà posté une annonce pour cette compétence.');
+        setError("Vous avez déjà posté une annonce pour cette compétence.");
         return;
       }
 
       // Envoi du post à l'API
-      await api.post('/me/posts', newPost, {
+      await api.post("/me/posts", newPost, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
       setPosts([...posts, newPost]);
-      setError('');
+      setError("");
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
     }
   };
 
@@ -180,7 +179,7 @@ function Post() {
                       </option>
                     ))}
                 </optgroup>
-              ),
+              )
             )}
           </select>
 

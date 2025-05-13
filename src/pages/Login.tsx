@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import './Onboarding.scss';
-import { AxiosError } from 'axios';
-import { Info } from 'lucide-react';
-import { Link, useNavigate } from 'react-router';
-import { useAuth } from '../contexts/AuthContext';
-
+import { useEffect, useRef, useState } from "react";
+import "./Onboarding.scss";
+import { AxiosError } from "axios";
+import { Info } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
+import PageTransition from "../utils/PageTransition";
 
 function Login() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
-  const { user: connectedUser } = useAuth();
+  // const { user: connectedUser } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { login } = useAuth();
@@ -43,10 +43,10 @@ function Login() {
     }
   };
 
-  if (connectedUser) {
-    navigate("/profile");
-    return;
-  }
+  // if (connectedUser) {
+  //   navigate("/profile");
+  //   return;
+  // }
 
   useEffect(() => {
     if (inputRef.current) {

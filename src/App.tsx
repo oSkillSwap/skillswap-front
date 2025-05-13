@@ -1,22 +1,22 @@
-import { AnimatePresence } from 'motion/react';
-import { Route, Routes, useLocation } from 'react-router';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import { AuthProvider } from './contexts/AuthContext';
-import ScrollToTop from './utils/ScrollToTop';
+import { AnimatePresence } from "motion/react";
+import { Route, Routes, useLocation } from "react-router";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import { AuthProvider } from "./contexts/AuthContext";
+import ScrollToTop from "./utils/ScrollToTop";
 
-import Homepage from './pages/Homepage';
-import Explore from './pages/Explore';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Message from './pages/Message';
-import Post from './pages/Post';
+import Explore from "./pages/Explore";
+import Homepage from "./pages/Homepage";
+import Login from "./pages/Login";
+import Message from "./pages/Message";
+import Post from "./pages/Post";
+import Register from "./pages/Register";
 
-import Profile from './pages/Profile'; // layout avec les onglets
-import ProfileMain from './components/tabs/ProfileMain';
-import ProfilePosts from './components/tabs/ProfilePosts';
-import ProfileOffers from './components/tabs/ProfileOffers';
-import ProfileExchanges from './components/tabs/ProfileExchanges';
+import ProfileExchanges from "./components/tabs/ProfileExchanges";
+import ProfileMain from "./components/tabs/ProfileMain";
+import ProfileOffers from "./components/tabs/ProfileOffers";
+import ProfilePosts from "./components/tabs/ProfilePosts";
+import Profile from "./pages/Profile"; // layout avec les onglets
 
 function App() {
   const location = useLocation();

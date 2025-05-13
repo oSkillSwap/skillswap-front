@@ -1,8 +1,8 @@
-import { Check, SquarePen, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import './SkillEditor.scss';
-import api from '../../services/api';
-import type User from '../../types/User';
+import { Check, SquarePen, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import "./SkillEditor.scss";
+import api from "../../services/api";
+import type User from "../../types/User";
 
 interface Skill {
   id: number;
@@ -34,7 +34,7 @@ function SkillWantedEditor({ skills, isOwner, setUserData }: Props) {
     if (isEditing) {
       api.get("/skills").then((res) => setAllSkills(res.data.skills));
     }
-    if (isEditing && inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [isEditing]);
@@ -110,7 +110,7 @@ function SkillWantedEditor({ skills, isOwner, setUserData }: Props) {
                       type="button"
                       onClick={() => handleAddSkill(skill)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
+                        if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
                           handleAddSkill(skill);
                         }
