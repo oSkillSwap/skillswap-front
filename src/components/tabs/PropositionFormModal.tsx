@@ -45,7 +45,7 @@ function PropositionFormModal({ postId, onClose, onSuccess }: Props) {
         <div className="modal-actions">
           <button
             type="button"
-            className="btn btn-success"
+            className="btn btn-default"
             onClick={handleSubmit}
           >
             Envoyer
