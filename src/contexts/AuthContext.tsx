@@ -32,6 +32,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAuthLoading(false);
   }, []);
 
+  // Update localStorage whenever user state changes
+  useEffect(() => {
+    if (user && accessToken) {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+  }, [user, accessToken]);
+
   // Login function
   const login = async (email: string, password: string, remember: boolean) => {
     try {
@@ -62,7 +69,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem('accessToken');
   };
 
-  // <AuthProvider> ... </AuthProvider>
   return (
     <AuthContext.Provider
       value={{ user, accessToken, login, logout, isAuthLoading, setUser }}
