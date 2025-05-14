@@ -79,7 +79,6 @@ function Post({
         });
       }
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du post :', error);
     }
   };
@@ -114,7 +113,6 @@ function Post({
       setTimeout(() => setSuccessMessage(''), 2000);
       setIsEditing(false);
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la modification du post :', error);
     }
   };
@@ -131,6 +129,13 @@ function Post({
     avatar: '/img/avatars/robot1.jpg',
   };
 
+  const isMyPost = data.user_id === connectedUser?.id;
+  console.log(
+    'postAuthor.id:',
+    postAuthor.id,
+    'connectedUser.id:',
+    connectedUser?.id,
+  );
   return (
     <article className="post">
       {isEditing ? (
@@ -179,15 +184,9 @@ function Post({
           <div className="post-header">
             {variant === 'trade' && (
               <p
-                className={`post-header-arrow ${
-                  postAuthor.id === connectedUser?.id ? '' : 'arrow-alt'
-                }`}
+                className={`post-header-arrow ${isMyPost ? 'arrow' : 'arrow-alt'}`}
               >
-                {postAuthor.id === connectedUser?.id ? (
-                  <ArrowLeft />
-                ) : (
-                  <ArrowRight />
-                )}
+                {isMyPost ? <ArrowLeft /> : <ArrowRight />}
               </p>
             )}
             <div>

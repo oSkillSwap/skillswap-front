@@ -4,7 +4,13 @@
     margin: 3rem 0 1rem 0;
 }
 
-.btn.disable:hover{
+.btn-secondary.disable:hover{
     background-color: $color-black;
+    cursor: auto;
+}
+
+.btn-default.disable:hover{
+    background-color: $color-primary;
+    color: $color-black;
     cursor: auto;
 }

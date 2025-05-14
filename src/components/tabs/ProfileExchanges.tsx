@@ -183,24 +183,17 @@ function ProfileExchanges() {
             const isReviewAuthor =
               prop.Review?.Reviewer?.id === connectedUser?.id;
             const isReviewTarget = prop.sender_id === connectedUser?.id;
-            console.log('finished proposition:', {
-              id: prop.id,
-              hasReviewByOwner: prop.hasReviewByOwner,
-              Review: prop.Review,
-              isOwner,
-              isReviewAuthor,
-              isReviewTarget,
-            });
-            console.log({
-              id: prop.id,
-              isOwner,
-              isReviewAuthor,
-              isReviewTarget,
-              hasReviewByOwner: prop.hasReviewByOwner,
-              ReviewerId: prop.Review?.Reviewer?.id,
-              ConnectedUserId: connectedUser?.id,
-              PostOwnerId: prop.Post.user_id,
-            });
+
+            // console.log({
+            //   id: prop.id,
+            //   isOwner,
+            //   isReviewAuthor,
+            //   isReviewTarget,
+            //   hasReviewByOwner: prop.hasReviewByOwner,
+            //   ReviewerId: prop.Review?.Reviewer?.id,
+            //   ConnectedUserId: connectedUser?.id,
+            //   PostOwnerId: prop.Post.user_id,
+            // });
 
             return (
               <Post
@@ -238,7 +231,7 @@ function ProfileExchanges() {
                     {isReviewAuthor ? (
                       <button
                         type="button"
-                        className="btn btn-secondary"
+                        className="btn btn-default disable"
                         disabled
                       >
                         Avis envoyé
@@ -246,7 +239,7 @@ function ProfileExchanges() {
                     ) : isReviewTarget && prop.Review ? (
                       <button
                         type="button"
-                        className="btn btn-default"
+                        className="btn btn-secondary disable"
                         onClick={() =>
                           setActiveReviewView({
                             grade: prop.Review.grade,
