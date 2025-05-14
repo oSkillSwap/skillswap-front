@@ -5,6 +5,7 @@ import api from '../../services/api';
 import Post from '../Post';
 import Grade from '../Grade';
 import ReviewModal from './ReviewModal';
+import ReviewingModal from './ReviewingModal';
 import { MessageSquare, SquareX, SquareCheckBig, Star } from 'lucide-react';
 import type { IEnrichedProposition } from '../../types/Proposition';
 import './ProfileExchange.scss';
@@ -14,6 +15,10 @@ function ProfileExchanges() {
   const [exchanges, setExchanges] = useState<IEnrichedProposition[]>([]);
   const [activeReviewProp, setActiveReviewProp] =
     useState<IEnrichedProposition | null>(null);
+  const [activeReviewView, setActiveReviewView] = useState<{
+    grade: number;
+    comment: string;
+  } | null>(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -52,9 +57,10 @@ function ProfileExchanges() {
         comment,
         postId: activeReviewProp.Post.id,
         propositionId: activeReviewProp.id,
+        title: `Avis pour ${buildOtherUser(activeReviewProp).username}`,
       });
       setActiveReviewProp(null);
-      window.dispatchEvent(new Event('exchange-updated'));
+      await fetchExchanges();
     } catch (err) {
       console.error("Erreur lors de l'envoi de l'avis", err);
       alert("Une erreur s'est produite lors de l'envoi de l'avis.");
@@ -91,19 +97,10 @@ function ProfileExchanges() {
         {ongoing.length > 0 ? (
           ongoing.map((prop) => {
             const otherUser = buildOtherUser(prop);
-            const hasClickedFinish =
-              (connectedUser?.id === prop.sender_id &&
-                prop.isFinishedBySender) ||
-              (connectedUser?.id === prop.receiver_id &&
-                prop.isFinishedByReceiver);
-
             return (
               <Post
                 key={prop.id}
-                data={{
-                  ...prop.Post,
-                  Author: otherUser,
-                }}
+                data={{ ...prop.Post, Author: otherUser }}
                 variant="trade"
                 origin="profile"
               >
@@ -159,15 +156,13 @@ function ProfileExchanges() {
                         </button>
                       </>
                     ) : (
-                      <>
-                        <button
-                          className="btn btn-secondary"
-                          type="button"
-                          disabled
-                        >
-                          En attente de l'autre utilisateur
-                        </button>
-                      </>
+                      <button
+                        className="btn btn-secondary"
+                        type="button"
+                        disabled
+                      >
+                        En attente de l'autre utilisateur
+                      </button>
                     )}
                   </div>
                 </div>
@@ -184,13 +179,33 @@ function ProfileExchanges() {
         {finished.length > 0 ? (
           finished.map((prop) => {
             const otherUser = buildOtherUser(prop);
+            const isOwner = connectedUser?.id === prop.Post.user_id;
+            const isReviewAuthor =
+              prop.Review?.Reviewer?.id === connectedUser?.id;
+            const isReviewTarget = prop.sender_id === connectedUser?.id;
+            console.log('finished proposition:', {
+              id: prop.id,
+              hasReviewByOwner: prop.hasReviewByOwner,
+              Review: prop.Review,
+              isOwner,
+              isReviewAuthor,
+              isReviewTarget,
+            });
+            console.log({
+              id: prop.id,
+              isOwner,
+              isReviewAuthor,
+              isReviewTarget,
+              hasReviewByOwner: prop.hasReviewByOwner,
+              ReviewerId: prop.Review?.Reviewer?.id,
+              ConnectedUserId: connectedUser?.id,
+              PostOwnerId: prop.Post.user_id,
+            });
+
             return (
               <Post
                 key={prop.id}
-                data={{
-                  ...prop.Post,
-                  Author: otherUser,
-                }}
+                data={{ ...prop.Post, Author: otherUser }}
                 variant="trade"
                 origin="profile"
                 isFinished
@@ -220,31 +235,43 @@ function ProfileExchanges() {
                     <p className="post-offer-content">{prop.content}</p>
                   </div>
                   <div className="post-author-btns">
-                    {connectedUser?.id === prop.Post.user_id ? (
-                      prop.hasReviewByOwner ? (
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          disabled
-                        >
-                          Avis envoyé
-                        </button>
-                      ) : (
-                        <button
-                          className="btn btn-default"
-                          type="button"
-                          onClick={() => setActiveReviewProp(prop)}
-                        >
-                          <Star /> Donner un avis
-                        </button>
-                      )
+                    {isReviewAuthor ? (
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        disabled
+                      >
+                        Avis envoyé
+                      </button>
+                    ) : isReviewTarget && prop.Review ? (
+                      <button
+                        type="button"
+                        className="btn btn-default"
+                        onClick={() =>
+                          setActiveReviewView({
+                            grade: prop.Review.grade,
+                            comment: prop.Review.content,
+                          })
+                        }
+                      >
+                        Avis laissé par{' '}
+                        {prop.Review.Reviewer?.username || 'utilisateur'}
+                      </button>
+                    ) : isOwner ? (
+                      <button
+                        type="button"
+                        className="btn btn-default"
+                        onClick={() => setActiveReviewProp(prop)}
+                      >
+                        <Star /> Donner un avis
+                      </button>
                     ) : (
                       <button
                         type="button"
                         className="btn btn-secondary"
                         disabled
                       >
-                        En attente de l'avis
+                        En attente de l’avis
                       </button>
                     )}
                   </div>
@@ -262,6 +289,14 @@ function ProfileExchanges() {
           proposition={activeReviewProp}
           onClose={() => setActiveReviewProp(null)}
           onSuccess={handleReviewSubmit}
+        />
+      )}
+
+      {activeReviewView && (
+        <ReviewingModal
+          grade={activeReviewView.grade}
+          comment={activeReviewView.comment}
+          onClose={() => setActiveReviewView(null)}
         />
       )}
     </section>
