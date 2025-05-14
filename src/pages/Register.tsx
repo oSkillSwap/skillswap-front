@@ -173,11 +173,12 @@ function Register() {
 
           {errors.length > 0 && (
             <ul className="register-alert">
-              {errors.map((errMsg) => (
-                <li key={errMsg}>
-                  <Info /> {errMsg}
-                </li>
-              ))}
+              <Info />
+              <div className="register-alert-list">
+                {errors.map((errMsg) => (
+                  <li key={errMsg}>{errMsg}</li>
+                ))}
+              </div>
             </ul>
           )}
 
