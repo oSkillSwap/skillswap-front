@@ -34,34 +34,6 @@
     }
   }
 
-  &-alert {
-    color: rgb(255, 0, 0);
-    background-color: rgb(255, 218, 218);
-    border-radius: 0.8rem;
-    padding: $spacing-md;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-bold;
-    margin-top: $spacing-sm;
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    list-style: none;
-
-    & svg {
-      flex-shrink: 0;
-    }
-
-    &:is(ul) {
-      align-items: flex-start;
-    }
-
-    &-list {
-      display: flex;
-      flex-direction: column;
-      gap: $spacing-sm;
-    }
-  }
-
   &-footer {
     display: flex;
     justify-content: center;

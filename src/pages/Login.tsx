@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import './Onboarding.scss';
 import { AxiosError } from 'axios';
-import { Eye, EyeOff, Info } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
+import ErrorToast from '../components/ErrorToast';
 import { useAuth } from '../contexts/AuthContext';
 import PageTransition from '../utils/PageTransition';
 
@@ -90,11 +91,7 @@ function Login() {
             </div>
           </div>
 
-          {error && (
-            <p className="login-alert">
-              <Info /> {error}
-            </p>
-          )}
+          {error && <ErrorToast errors={error} />}
 
           <div className="login-form-field">
             <input
