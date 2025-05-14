@@ -1,6 +1,19 @@
-import { useEffect, useRef, useState } from "react";
-import "./PasswordModal.scss";
-import api from "../../services/api";
+import { useEffect, useRef, useState } from 'react';
+import './PasswordModal.scss';
+import axios, { type AxiosError } from 'axios';
+import api from '../../services/api';
+import ErrorToast from '../ErrorToast';
+
+interface ApiErrorResponse {
+  message?: string;
+  errors?: {
+    fieldErrors?: {
+      currentPassword?: string[];
+      newPassword?: string[];
+      confirmPassword?: string[];
+    };
+  };
+}
 
 interface Props {
   onClose: () => void;
@@ -8,35 +21,58 @@ interface Props {
 }
 
 function PasswordModal({ onClose, onSuccess }: Props) {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<string | string[] | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  });
+  }, []);
 
   const handleSubmit = async () => {
+    setErrors(null);
     try {
-      await api.patch("/me/password", {
+      await api.patch('/me/password', {
         currentPassword,
         newPassword,
         confirmPassword,
       });
-      onSuccess("Mot de passe mis à jour avec succès.");
+      onSuccess('Mot de passe mis à jour avec succès.');
       onClose();
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors du changement de mot de passe :", error);
-      alert(
-        `Erreur : ${
-          (error as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message || "Erreur inconnue"
-        }`
-      );
+      if (newPassword !== confirmPassword) {
+        return setErrors('Les mots de passe ne correspondent pas');
+      }
+
+      // Vérifier si l'erreur est une erreur Axios
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<ApiErrorResponse>;
+
+        if (axiosError.response?.data) {
+          const errorData = axiosError.response.data;
+
+          if (errorData.errors?.fieldErrors?.currentPassword) {
+            return setErrors('Mot de passe actuel incorrect');
+          }
+
+          if (errorData.errors?.fieldErrors?.newPassword) {
+            setErrors(errorData.errors.fieldErrors.newPassword);
+          } else if (errorData.message) {
+            setErrors([errorData.message]);
+          } else {
+            setErrors(['Une erreur est survenue']);
+          }
+        } else {
+          setErrors(['Erreur de connexion']);
+        }
+      } else {
+        // Gérer les erreurs non-Axios
+        setErrors(['Une erreur inattendue est survenue']);
+      }
     }
   };
 
@@ -69,6 +105,8 @@ function PasswordModal({ onClose, onSuccess }: Props) {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </label>
+
+        {errors && <ErrorToast errors={errors} />}
 
         <div className="modal-buttons">
           <button

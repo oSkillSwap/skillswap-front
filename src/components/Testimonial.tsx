@@ -19,7 +19,12 @@ function Testimonial({ data }: { data: User['Reviews'][0] }) {
       </div>
       <p className="testimonials-card-comment">{data.content}</p>
       <p className="testimonials-card-info">
-        {data.Reviewer.username}, {data.updatedAt}
+        {data.Reviewer.username},{' le '}
+        {new Date(data.createdAt as string).toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })}
       </p>
     </article>
   );

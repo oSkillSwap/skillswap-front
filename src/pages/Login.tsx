@@ -1,52 +1,53 @@
-import { useEffect, useRef, useState } from "react";
-import "./Onboarding.scss";
-import { AxiosError } from "axios";
-import { Info } from "lucide-react";
-import { Link, useNavigate } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
-import PageTransition from "../utils/PageTransition";
+import { useEffect, useRef, useState } from 'react';
+import './Onboarding.scss';
+import { AxiosError } from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
+import ErrorToast from '../components/ErrorToast';
+import { useAuth } from '../contexts/AuthContext';
+import PageTransition from '../utils/PageTransition';
 
 function Login() {
-  const [error, setError] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
-  // const { user: connectedUser } = useAuth();
+  const [isPwdHidden, setIsPwdHidden] = useState(true);
+  const { user: connectedUser } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setError("");
+    setError('');
   }, []);
 
   const handleSubmit = async () => {
-    setError("");
+    setError('');
 
     // Form check
     if (!email || !password) {
-      setError("Veuillez remplir tous les champs");
+      setError('Veuillez remplir tous les champs');
       return;
     }
 
     // Login request
     try {
       await login(email, password, remember);
-      navigate("/");
+      navigate('/');
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
-        setError("Une erreur est survenue");
+        setError('Une erreur est survenue');
       }
     }
   };
 
-  // if (connectedUser) {
-  //   navigate("/profile");
-  //   return;
-  // }
+  if (connectedUser) {
+    navigate('/profile');
+  }
 
   useEffect(() => {
     if (inputRef.current) {
@@ -73,20 +74,24 @@ function Login() {
 
           <div className="login-form-field">
             <label htmlFor="password">Mot de passe</label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
+            <div className="form-password">
+              <input
+                id="password"
+                type={isPwdHidden ? 'password' : 'text'}
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setIsPwdHidden(!isPwdHidden)}
+              >
+                {isPwdHidden ? <Eye /> : <EyeOff />}
+              </button>
+            </div>
           </div>
 
-          {error && (
-            <p className="login-alert">
-              <Info /> {error}
-            </p>
-          )}
+          {error && <ErrorToast errors={error} />}
 
           <div className="login-form-field">
             <input
