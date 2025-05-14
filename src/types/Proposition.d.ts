@@ -36,4 +36,5 @@ export interface IEnrichedProposition extends IProposition {
     averageGrade?: number;
     nbOfReviews?: number;
   };
+  hasReview?: boolean;
 }

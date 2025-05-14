@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
@@ -11,72 +11,41 @@ import './ProfileExchange.scss';
 
 function ProfileExchanges() {
   const { user: connectedUser } = useAuth();
-  const [ongoingExchanges, setOngoingExchanges] = useState<
-    IEnrichedProposition[]
-  >([]);
-  const [finishedExchanges, setFinishedExchanges] = useState<
-    IEnrichedProposition[]
-  >([]);
-  const [error, setError] = useState('');
+  const [exchanges, setExchanges] = useState<IEnrichedProposition[]>([]);
   const [activeReviewProp, setActiveReviewProp] =
     useState<IEnrichedProposition | null>(null);
-  const [reviewedIds, setReviewedIds] = useState<number[]>([]);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const LOCAL_KEY = 'finishedPropositions';
-  const REVIEWED_KEY = 'reviewedPropositions';
 
-  function hasGrades(
-    user: any,
-  ): user is { averageGrade: number; nbOfReviews: number } {
-    return 'averageGrade' in user && 'nbOfReviews' in user;
-  }
-
-  useEffect(() => {
-    const fetchAcceptedPropositions = async () => {
-      try {
-        const res = await api.get('/me/all-propositions');
-        const accepted: IEnrichedProposition[] = res.data.propositions.filter(
-          (p: IEnrichedProposition) => p.state === 'acceptée',
-        );
-
-        const finishedIds: number[] = JSON.parse(
-          localStorage.getItem(LOCAL_KEY) || '[]',
-        );
-        const reviewed: number[] = JSON.parse(
-          localStorage.getItem(REVIEWED_KEY) || '[]',
-        );
-
-        setReviewedIds(reviewed);
-        setOngoingExchanges(
-          accepted.filter((p) => !finishedIds.includes(p.id!)),
-        );
-        setFinishedExchanges(
-          accepted.filter((p) => finishedIds.includes(p.id!)),
-        );
-      } catch (err) {
-        // biome-ignore lint/suspicious/noConsole: <explanation>
-        console.error(err);
-        setError('');
-      }
-    };
-
-    fetchAcceptedPropositions();
+  const fetchExchanges = useCallback(async () => {
+    try {
+      const res = await api.get('/me/all-propositions');
+      setExchanges(res.data.propositions);
+    } catch (err) {
+      console.error(err);
+      setError('Une erreur est survenue');
+    }
   }, []);
 
-  const handleFinish = (prop: IEnrichedProposition) => {
-    const updatedFinishedIds = JSON.parse(
-      localStorage.getItem(LOCAL_KEY) || '[]',
-    );
-    updatedFinishedIds.push(prop.id);
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(updatedFinishedIds));
+  useEffect(() => {
+    fetchExchanges();
+    const handleUpdate = () => fetchExchanges();
+    window.addEventListener('exchange-updated', handleUpdate);
+    return () => window.removeEventListener('exchange-updated', handleUpdate);
+  }, [fetchExchanges]);
 
-    setOngoingExchanges((prev) => prev.filter((p) => p.id !== prop.id));
-    setFinishedExchanges((prev) => [...prev, prop]);
+  const handleFinish = async (prop: IEnrichedProposition) => {
+    try {
+      await api.patch(`/propositions/${prop.id}/finish`);
+      window.dispatchEvent(new Event('exchange-updated'));
+    } catch (err) {
+      console.error('Erreur lors de la finalisation de l’échange', err);
+      alert('Une erreur est survenue');
+    }
   };
 
   const handleReviewSubmit = async (grade: number, comment: string) => {
     if (!activeReviewProp) return;
-
     try {
       await api.post('/me/reviews', {
         grade,
@@ -84,14 +53,8 @@ function ProfileExchanges() {
         postId: activeReviewProp.Post.id,
         propositionId: activeReviewProp.id,
       });
-
-      const reviewed = JSON.parse(localStorage.getItem(REVIEWED_KEY) || '[]');
-      reviewed.push(activeReviewProp.id);
-      localStorage.setItem(REVIEWED_KEY, JSON.stringify(reviewed));
-      setReviewedIds(reviewed);
-
       setActiveReviewProp(null);
-      alert('Avis envoyé !');
+      window.dispatchEvent(new Event('exchange-updated'));
     } catch (err) {
       console.error("Erreur lors de l'envoi de l'avis", err);
       alert("Une erreur s'est produite lors de l'envoi de l'avis.");
@@ -105,19 +68,35 @@ function ProfileExchanges() {
       id: rawUser?.id ?? 0,
       username: rawUser?.username ?? 'Utilisateur inconnu',
       avatar: rawUser?.avatar ?? '/img/avatars/robot1.jpg',
-      averageGrade: hasGrades(rawUser) ? rawUser.averageGrade : 0,
-      nbOfReviews: hasGrades(rawUser) ? rawUser.nbOfReviews : 0,
+      averageGrade: rawUser?.averageGrade ?? 0,
+      nbOfReviews: rawUser?.nbOfReviews ?? 0,
     };
   };
+
+  const ongoing = exchanges.filter(
+    (p) =>
+      p.state === 'acceptée' &&
+      !(p.isFinishedBySender && p.isFinishedByReceiver),
+  );
+  const finished = exchanges.filter(
+    (p) =>
+      p.state === 'acceptée' && p.isFinishedBySender && p.isFinishedByReceiver,
+  );
 
   return (
     <section className="container posts-propositions">
       <h2 className="tabs-subtitle">Mes échanges en cours</h2>
       {error && <p className="error">{error}</p>}
       <div className="posts-container">
-        {ongoingExchanges.length > 0 ? (
-          ongoingExchanges.map((prop) => {
+        {ongoing.length > 0 ? (
+          ongoing.map((prop) => {
             const otherUser = buildOtherUser(prop);
+            const hasClickedFinish =
+              (connectedUser?.id === prop.sender_id &&
+                prop.isFinishedBySender) ||
+              (connectedUser?.id === prop.receiver_id &&
+                prop.isFinishedByReceiver);
+
             return (
               <Post
                 key={prop.id}
@@ -160,16 +139,36 @@ function ProfileExchanges() {
                     >
                       <MessageSquare /> Contacter
                     </button>
-                    <button
-                      className="btn btn-default"
-                      type="button"
-                      onClick={() => handleFinish(prop)}
-                    >
-                      <SquareCheckBig /> Terminer
-                    </button>
-                    <button className="btn btn-secondary" type="button">
-                      <SquareX /> Annuler
-                    </button>
+                    {(connectedUser?.id === prop.sender_id &&
+                      !prop.isFinishedBySender) ||
+                    (connectedUser?.id === prop.receiver_id &&
+                      !prop.isFinishedByReceiver) ? (
+                      <>
+                        <button
+                          className="btn btn-default"
+                          type="button"
+                          onClick={() => handleFinish(prop)}
+                        >
+                          <SquareCheckBig /> Terminer
+                        </button>
+                        <button
+                          className="btn btn-secondary btn-disable"
+                          type="button"
+                        >
+                          <SquareX /> Annuler
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="btn btn-secondary"
+                          type="button"
+                          disabled
+                        >
+                          En attente de l'autre utilisateur
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </Post>
@@ -182,8 +181,8 @@ function ProfileExchanges() {
 
       <h2 className="tabs-subtitle">Mes échanges terminés</h2>
       <div className="posts-container">
-        {finishedExchanges.length > 0 ? (
-          finishedExchanges.map((prop) => {
+        {finished.length > 0 ? (
+          finished.map((prop) => {
             const otherUser = buildOtherUser(prop);
             return (
               <Post
@@ -222,7 +221,7 @@ function ProfileExchanges() {
                   </div>
                   <div className="post-author-btns">
                     {connectedUser?.id === prop.Post.user_id ? (
-                      reviewedIds.includes(prop.id!) ? (
+                      prop.hasReviewByOwner ? (
                         <button
                           type="button"
                           className="btn btn-secondary"
@@ -239,16 +238,6 @@ function ProfileExchanges() {
                           <Star /> Donner un avis
                         </button>
                       )
-                    ) : reviewedIds.includes(prop.id!) ? (
-                      <button
-                        type="button"
-                        className="btn btn-default"
-                        onClick={() =>
-                          alert("Fonction Voir l'avis à implémenter")
-                        }
-                      >
-                        <Star /> Voir l'avis
-                      </button>
                     ) : (
                       <button
                         type="button"
