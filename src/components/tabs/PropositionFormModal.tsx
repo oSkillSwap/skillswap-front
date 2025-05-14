@@ -2,6 +2,7 @@ import { useState } from 'react';
 import api from '../../services/api';
 import './PropositionFormModal.scss';
 import axios from 'axios';
+import ErrorToast from '../ErrorToast';
 
 type Props = {
   postId: number;
@@ -41,7 +42,9 @@ function PropositionFormModal({ postId, onClose, onSuccess }: Props) {
           onChange={(e) => setContent(e.target.value)}
           placeholder="Votre message"
         />
-        {error && <p className="error">{error}</p>}
+
+        {error && <ErrorToast errors={error} />}
+
         <div className="modal-actions">
           <button
             type="button"
