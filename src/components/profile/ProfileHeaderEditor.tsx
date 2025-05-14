@@ -34,7 +34,13 @@ function ProfileHeaderEditor({
         prev ? { ...prev, [field]: res.data.user[field] } : prev,
       );
       if (user) {
-        setUser({ ...user, [field]: res.data.user[field] });
+        setUser((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            [field]: res.data.user[field],
+          };
+        });
       }
       setIsEditing(false);
       setSuccessMessage('Modifié avec succès');
