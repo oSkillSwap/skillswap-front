@@ -136,9 +136,9 @@ function UserCard({ user }: { user: IUsers }) {
         to={
           connectedUser
             ? user.id !== connectedUser?.id
-              ? `/profile/${user.id}`
+              ? `/profile/${user.username}`
               : '/profile'
-            : `/profile/${user.id}`
+            : `/profile/${user.username}`
         }
         className="profile-card-link"
       >
@@ -182,7 +182,7 @@ function UserCard({ user }: { user: IUsers }) {
             <>
               <Link
                 className="btn btn-default"
-                to={connectedUser ? `/message/${user.id}` : '/login'}
+                to={connectedUser ? `/message/${user.username}` : '/login'}
               >
                 <MessageSquare />
                 Contacter
