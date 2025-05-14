@@ -195,14 +195,14 @@ function Post({
               <p className="post-header-date">
                 {data?.updatedAt !== data?.createdAt
                   ? `Modifié le ${new Date(
-                      data.updatedAt || Date.now(),
+                      data?.updatedAt as string,
                     ).toLocaleDateString('fr-FR', {
                       day: 'numeric',
                       month: 'long',
                       year: 'numeric',
                     })}`
                   : `Posté le ${new Date(
-                      data.createdAt || Date.now(),
+                      data.createdAt as string,
                     ).toLocaleDateString('fr-FR', {
                       day: 'numeric',
                       month: 'long',

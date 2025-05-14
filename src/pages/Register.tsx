@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './Onboarding.scss';
 import axios from 'axios';
-import { Info } from 'lucide-react';
+import { Eye, EyeOff, Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
@@ -11,6 +11,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isPwdHidden, setIsPwdHidden] = useState(true);
   const [acceptedCgu, setAcceptedCgu] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const { user: connectedUser } = useAuth();
@@ -118,23 +119,32 @@ function Register() {
 
           <div className="register-form-field">
             <label htmlFor="password">Mot de passe</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="new-password"
-              placeholder="••••••••"
-              aria-required="true"
-              required
-            />
+
+            <div className="form-password">
+              <input
+                id="password"
+                type={isPwdHidden ? 'password' : 'text'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="new-password"
+                placeholder="••••••••"
+                aria-required="true"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setIsPwdHidden(!isPwdHidden)}
+              >
+                {isPwdHidden ? <Eye /> : <EyeOff />}
+              </button>
+            </div>
           </div>
 
           <div className="register-form-field">
             <label htmlFor="confirmPassword">Confirmation mot de passe</label>
             <input
               id="confirmPassword"
-              type="password"
+              type={isPwdHidden ? 'password' : 'text'}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               autoComplete="new-password"
@@ -162,7 +172,7 @@ function Register() {
           </div>
 
           {errors.length > 0 && (
-            <ul style={{ display: 'block' }} className="register-alert">
+            <ul className="register-alert">
               {errors.map((errMsg) => (
                 <li key={errMsg}>
                   <Info /> {errMsg}

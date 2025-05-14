@@ -1,6 +1,7 @@
 @use "../styles/variables" as *;
 
-.login, .register {
+.login,
+.register {
   width: 40rem;
 
   a {
@@ -44,6 +45,24 @@
     display: flex;
     align-items: center;
     gap: $spacing-sm;
+    list-style: none;
+
+    &:is(ul) {
+      flex-direction: column;
+      align-items: flex-start;
+
+      & li {
+        display: flex;
+        gap: $spacing-sm;
+
+        &:not(:first-child) {
+          padding-left: 3.2rem;
+          & svg {
+            display: none;
+          }
+        }
+      }
+    }
   }
 
   &-footer {
@@ -60,7 +79,7 @@
     flex-direction: column;
     gap: $spacing-md;
     margin: 0 auto;
-  
+
     &-field {
       display: flex;
       flex-direction: column;
@@ -69,6 +88,30 @@
       &:has(input[type="checkbox"]) {
         flex-direction: row;
         align-items: center;
+      }
+
+      & .form-password {
+        width: 100%;
+        display: flex;
+        gap: $spacing-xs;
+        border-radius: 0.8rem;
+        border: 3px solid $color-gray;
+        background-color: $color-gray;
+
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+        }
+
+        & input {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+        }
+
+        & button {
+          width: fit-content;
+        }
       }
     }
   }
