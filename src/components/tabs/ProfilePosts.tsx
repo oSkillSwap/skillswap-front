@@ -27,12 +27,10 @@ function ProfilePosts() {
         setPosts(postsRes.data.posts);
         setPropositions(propositionsRes.data.propositions);
       } catch (err) {
-        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(err);
-        setError('Erreur lors du chargement.');
+        setError('');
       }
     };
-    //comment
 
     if (connectedUser?.id) {
       fetchData();
@@ -54,7 +52,6 @@ function ProfilePosts() {
       setPropositions(data.propositions);
       window.dispatchEvent(new Event('exchange-updated'));
     } catch (err) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("Erreur lors de l'acceptation :", err);
     }
   };
@@ -79,6 +76,10 @@ function ProfilePosts() {
               groupedPropositions[post.id!] ?? []
             ).filter((p) => p.state !== 'acceptée');
 
+            const hasAlreadyProposed = postPropositions.some(
+              (p) => p.Sender?.id === connectedUser?.id,
+            );
+
             return (
               <Post
                 key={`post-${post.id}`}
@@ -87,6 +88,7 @@ function ProfilePosts() {
                 origin="profile"
                 author={true}
                 setPosts={setPosts}
+                hasAlreadyProposed={hasAlreadyProposed}
               >
                 {postPropositions.length > 0 ? (
                   postPropositions.map((prop) => (

@@ -1,4 +1,3 @@
-// ReviewModal.tsx
 import { useState } from 'react';
 import type { IEnrichedProposition } from '../../types/Proposition';
 import api from '../../services/api';
@@ -36,6 +35,7 @@ function ReviewModal({ proposition, onClose, onSuccess }: Props) {
 
       onSuccess(grade, comment);
     } catch (err: any) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(err);
       setError(
         err.response?.data?.message || "Erreur lors de l'envoi de l'avis",

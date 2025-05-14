@@ -54,8 +54,9 @@ function ProfileExchanges() {
           accepted.filter((p) => finishedIds.includes(p.id!)),
         );
       } catch (err) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(err);
-        setError('Erreur lors du chargement des échanges.');
+        setError('');
       }
     };
 

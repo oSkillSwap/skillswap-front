@@ -27,7 +27,9 @@ type PostProps = {
   data: IPosts;
   setUserData?: React.Dispatch<React.SetStateAction<User | null>>;
   setPosts?: React.Dispatch<React.SetStateAction<IPosts[]>>;
+  hasAlreadyProposed?: boolean;
   children?: React.ReactNode;
+  onPropositionSent?: (postId: number) => void;
 };
 
 function Post({
@@ -38,6 +40,8 @@ function Post({
   setUserData,
   children,
   setPosts,
+  onPropositionSent,
+  hasAlreadyProposed = false,
 }: PostProps) {
   const { user: connectedUser } = useAuth();
   const isAuthor =
@@ -51,19 +55,18 @@ function Post({
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const [hasProposed, setHasProposed] = useState(hasAlreadyProposed);
 
   const handleDeletePost = async () => {
     try {
       await api.delete(`/me/posts/${data?.id}`);
 
-      // Met à jour les posts si setPosts est fourni
       if (setPosts) {
         setPosts((prevPosts) =>
           prevPosts.filter((post) => post.id !== data?.id),
         );
       }
 
-      // Si on est dans le contexte profil utilisateur
       if (setUserData) {
         setUserData((prevUserData) => {
           if (prevUserData) {
@@ -241,12 +244,15 @@ function Post({
 
             {variant === 'post' && !isEditing && !isAuthor && connectedUser && (
               <button
-                className="btn btn-default"
+                className={`btn btn-default${hasProposed ? ' disabled btn-disabled' : ''}`}
                 type="button"
-                onClick={() => setIsModalOpen(true)}
+                disabled={hasProposed}
+                onClick={() => {
+                  if (!hasProposed) setIsModalOpen(true);
+                }}
               >
                 <HandHelping />
-                Proposer
+                {hasProposed ? 'Proposition envoyée' : 'Proposer'}
               </button>
             )}
           </div>
@@ -257,6 +263,10 @@ function Post({
               onClose={() => setIsModalOpen(false)}
               onSuccess={() => {
                 setIsModalOpen(false);
+                setHasProposed(true);
+                if (data.id !== undefined) {
+                  onPropositionSent?.(data.id);
+                }
                 alert('Proposition envoyée !');
               }}
             />
@@ -294,12 +304,15 @@ function Post({
             </Link>
             {!isAuthor && connectedUser && (
               <button
-                className="btn btn-default"
+                className={`btn btn-default${hasProposed ? ' disabled' : ''}`}
                 type="button"
-                onClick={() => setIsModalOpen(true)}
+                disabled={hasProposed}
+                onClick={() => {
+                  if (!hasProposed) setIsModalOpen(true);
+                }}
               >
                 <HandHelping />
-                Proposer
+                {hasProposed ? 'Proposition envoyée' : 'Proposer'}
               </button>
             )}
           </div>
@@ -310,6 +323,7 @@ function Post({
               onClose={() => setIsModalOpen(false)}
               onSuccess={() => {
                 setIsModalOpen(false);
+                setHasProposed(true);
                 alert('Proposition envoyée !');
               }}
             />
