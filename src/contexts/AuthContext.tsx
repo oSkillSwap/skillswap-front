@@ -1,6 +1,9 @@
 import type React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
-import api from '../services/api';
+import api, {
+  clearScheduledTokenRefresh,
+  scheduleTokenRefresh,
+} from '../services/api';
 import type User from '../types/User';
 
 type AuthContextType = {
@@ -26,9 +29,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (storedToken && storedUser) {
       setAccessToken(storedToken);
-      // storedUser is a stringified object and needs to be parsed before set to state
       setUser(JSON.parse(storedUser));
+      scheduleTokenRefresh(storedToken); // ✅ planifie le refresh dès que tu retrouves un token
     }
+
     setIsAuthLoading(false);
   }, []);
 
@@ -48,25 +52,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(user);
       setAccessToken(token);
 
-      // If user checked remember me we store token and user object into localStorage
       if (remember) {
         localStorage.setItem('accessToken', token);
-        // To store a js object in the localStorage it needs to be stringified
         localStorage.setItem('user', JSON.stringify(user));
       }
+
+      scheduleTokenRefresh(token); // ✅ planifie aussi ici après login
     } catch (error) {
-      setUser(null); // We clear both states if error
+      setUser(null);
       setAccessToken(null);
       throw error;
     }
   };
-
   // Logout function
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
     setAccessToken(null);
     localStorage.removeItem('accessToken');
+    clearScheduledTokenRefresh(); // ✅
   };
 
   return (
