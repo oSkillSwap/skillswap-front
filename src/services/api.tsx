@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { getExternalUpdateToken } from '../contexts/AuthContext';
 
 // Création de l'instance Axios
 const api = axios.create({
@@ -70,12 +71,15 @@ api.interceptors.response.use(
         const { token } = res.data;
 
         localStorage.setItem('accessToken', token);
+
+        const updateToken = getExternalUpdateToken();
+        updateToken(token);
+
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
         originalRequest.headers.Authorization = `Bearer ${token}`;
-
         scheduleTokenRefresh(token); // Replanifie le prochain refresh
-
         return api(originalRequest); // Rejoue la requête initiale
+
       } catch (err) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user');

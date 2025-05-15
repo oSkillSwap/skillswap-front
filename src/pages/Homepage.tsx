@@ -28,6 +28,23 @@ function Homepage() {
           <p>
             Trouvez des profils prêts à partager leur expertise… gratuitement !
           </p>
+          {!user ? (
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={() => navigate('/login')}
+            >
+              <LogIn /> Je m'identifie
+            </button>
+          ) : (
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={() => navigate('/post')}
+            >
+              <CirclePlus /> Poster une annonce
+            </button>
+          )}
         </div>
       </section>
 

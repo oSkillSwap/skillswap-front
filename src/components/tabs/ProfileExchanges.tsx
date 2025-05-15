@@ -1,14 +1,14 @@
-import { useEffect, useState, useCallback } from 'react';
+import { MessageSquare, SquareCheckBig, SquareX, Star } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
-import Post from '../Post';
-import Grade from '../Grade';
-import ReviewModal from './ReviewModal';
-import ReviewingModal from './ReviewingModal';
-import { MessageSquare, SquareX, SquareCheckBig, Star } from 'lucide-react';
 import type { IEnrichedProposition } from '../../types/Proposition';
 import type { UserWithReviewData } from '../../types/UserWithReviewData';
+import Grade from '../Grade';
+import Post from '../Post';
+import ReviewModal from './ReviewModal';
+import ReviewingModal from './ReviewingModal';
 import './ProfileExchange.scss';
 
 function ProfileExchanges() {
@@ -177,7 +177,7 @@ function ProfileExchanges() {
             );
           })
         ) : (
-          <p>Aucun échange en cours.</p>
+          <p className="no-data">Aucun échange en cours</p>
         )}
       </div>
 
@@ -277,7 +277,7 @@ function ProfileExchanges() {
             );
           })
         ) : (
-          <p>Aucun échange terminé.</p>
+          <p className="no-data">Aucun échange terminé</p>
         )}
       </div>
 

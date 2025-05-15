@@ -1,8 +1,8 @@
-import { Check, SquarePen, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import "./SkillEditor.scss";
-import api from "../../services/api";
-import type User from "../../types/User";
+import { Check, SquarePen, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import './SkillEditor.scss';
+import api from '../../services/api';
+import type User from '../../types/User';
 
 interface Skill {
   id: number;
@@ -17,22 +17,22 @@ interface Props {
 
 function normalizeString(str: string): string {
   return str
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
     .toLowerCase();
 }
 
 function SkillEditor({ skills, isOwner, setUserData }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [allSkills, setAllSkills] = useState<Skill[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [filteredSkills, setFilteredSkills] = useState<Skill[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<Skill[]>(skills);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isEditing) {
-      api.get("/skills").then((res) => setAllSkills(res.data.skills));
+      api.get('/skills').then((res) => setAllSkills(res.data.skills));
     }
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
@@ -45,14 +45,14 @@ function SkillEditor({ skills, isOwner, setUserData }: Props) {
       allSkills.filter(
         (skill) =>
           normalizeString(skill.name).includes(normalizedInput) &&
-          !selectedSkills.some((s) => s.id === skill.id)
-      )
+          !selectedSkills.some((s) => s.id === skill.id),
+      ),
     );
   }, [inputValue, allSkills, selectedSkills]);
 
   const handleAddSkill = (skill: Skill) => {
     setSelectedSkills((prev) => [...prev, skill]);
-    setInputValue("");
+    setInputValue('');
   };
 
   const handleRemoveSkill = (id: number) => {
@@ -61,21 +61,21 @@ function SkillEditor({ skills, isOwner, setUserData }: Props) {
 
   const handleSave = async () => {
     try {
-      await api.patch("/me/skills", {
+      await api.patch('/me/skills', {
         skills: selectedSkills.map((s) => s.id),
       });
       setUserData((prev) =>
-        prev ? { ...prev, Skills: selectedSkills } : prev
+        prev ? { ...prev, Skills: selectedSkills } : prev,
       );
       setIsEditing(false);
     } catch (err) {
       // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error("Erreur lors de la mise à jour des compétences :", err);
+      console.error('Erreur lors de la mise à jour des compétences :', err);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && filteredSkills.length > 0) {
+    if (e.key === 'Enter' && filteredSkills.length > 0) {
       e.preventDefault();
       handleAddSkill(filteredSkills[0]);
     }
@@ -103,7 +103,7 @@ function SkillEditor({ skills, isOwner, setUserData }: Props) {
                       type="button"
                       onClick={() => handleAddSkill(skill)}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
+                        if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
                           handleAddSkill(skill);
                         }
@@ -162,7 +162,7 @@ function SkillEditor({ skills, isOwner, setUserData }: Props) {
                   </p>
                 ))
               ) : (
-                <p>Aucune compétence renseignée</p>
+                <p className="no-data">Aucune compétence renseignée</p>
               )}
             </div>
           </>
@@ -176,7 +176,7 @@ function SkillEditor({ skills, isOwner, setUserData }: Props) {
               </p>
             ))
           ) : (
-            <p>Aucune compétence renseignée</p>
+            <p className="no-data">Aucune compétence renseignée</p>
           )}
         </div>
       )}
