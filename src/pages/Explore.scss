@@ -1,2 +1,11 @@
 @use "../styles/variables" as *;
 
+.btn.disabled{
+    background-color: $color-gray;
+    border: 1px solid $color-white;
+    cursor:auto;
+
+    &:hover{
+      color: inherit;
+    }
+  }

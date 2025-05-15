@@ -28,7 +28,9 @@ type PostProps = {
   data: IPosts;
   setUserData?: React.Dispatch<React.SetStateAction<User | null>>;
   setPosts?: React.Dispatch<React.SetStateAction<IPosts[]>>;
+  hasAlreadyProposed?: boolean;
   children?: React.ReactNode;
+  onPropositionSent?: (postId: number) => void;
 };
 
 function Post({
@@ -39,8 +41,15 @@ function Post({
   setUserData,
   children,
   setPosts,
+  onPropositionSent,
+  hasAlreadyProposed = false,
 }: PostProps) {
   const { user: connectedUser } = useAuth();
+
+  if (origin === 'explore' && data.isClosed) {
+    return null;
+  }
+
   const isAuthor =
     typeof author !== 'undefined'
       ? author
@@ -52,19 +61,18 @@ function Post({
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const [hasProposed, setHasProposed] = useState(hasAlreadyProposed);
 
   const handleDeletePost = async () => {
     try {
       await api.delete(`/me/posts/${data?.id}`);
 
-      // Met à jour les posts si setPosts est fourni
       if (setPosts) {
         setPosts((prevPosts) =>
           prevPosts.filter((post) => post.id !== data?.id),
         );
       }
 
-      // Si on est dans le contexte profil utilisateur
       if (setUserData) {
         setUserData((prevUserData) => {
           if (prevUserData) {
@@ -77,7 +85,6 @@ function Post({
         });
       }
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du post :', error);
     }
   };
@@ -112,7 +119,6 @@ function Post({
       setTimeout(() => setSuccessMessage(''), 2000);
       setIsEditing(false);
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la modification du post :', error);
     }
   };
@@ -129,6 +135,13 @@ function Post({
     avatar: '/img/avatars/robot1.jpg',
   };
 
+  const isMyPost = data.user_id === connectedUser?.id;
+  console.log(
+    'postAuthor.id:',
+    postAuthor.id,
+    'connectedUser.id:',
+    connectedUser?.id,
+  );
   return (
     <article className="post">
       {isEditing ? (
@@ -179,15 +192,9 @@ function Post({
           <div className="post-header">
             {variant === 'trade' && (
               <p
-                className={`post-header-arrow ${
-                  postAuthor.id === connectedUser?.id ? '' : 'arrow-alt'
-                }`}
+                className={`post-header-arrow ${isMyPost ? 'arrow' : 'arrow-alt'}`}
               >
-                {postAuthor.id === connectedUser?.id ? (
-                  <ArrowLeft />
-                ) : (
-                  <ArrowRight />
-                )}
+                {isMyPost ? <ArrowLeft /> : <ArrowRight />}
               </p>
             )}
             <div>
@@ -244,12 +251,15 @@ function Post({
 
             {variant === 'post' && !isEditing && !isAuthor && connectedUser && (
               <button
-                className="btn btn-default"
+                className={`btn btn-default${hasProposed ? ' disabled btn-disabled' : ''}`}
                 type="button"
-                onClick={() => setIsModalOpen(true)}
+                disabled={hasProposed}
+                onClick={() => {
+                  if (!hasProposed) setIsModalOpen(true);
+                }}
               >
                 <HandHelping />
-                Proposer
+                {hasProposed ? 'Proposition envoyée' : 'Proposer'}
               </button>
             )}
           </div>
@@ -260,7 +270,10 @@ function Post({
               onClose={() => setIsModalOpen(false)}
               onSuccess={() => {
                 setIsModalOpen(false);
-                alert('Proposition envoyée !');
+                setHasProposed(true);
+                if (data.id !== undefined) {
+                  onPropositionSent?.(data.id);
+                }
               }}
             />
           )}
@@ -297,12 +310,15 @@ function Post({
             </Link>
             {!isAuthor && connectedUser && (
               <button
-                className="btn btn-default"
+                className={`btn btn-default${hasProposed ? ' disabled' : ''}`}
                 type="button"
-                onClick={() => setIsModalOpen(true)}
+                disabled={hasProposed}
+                onClick={() => {
+                  if (!hasProposed) setIsModalOpen(true);
+                }}
               >
                 <HandHelping />
-                Proposer
+                {hasProposed ? 'Proposition envoyée' : 'Proposer'}
               </button>
             )}
           </div>
@@ -313,7 +329,7 @@ function Post({
               onClose={() => setIsModalOpen(false)}
               onSuccess={() => {
                 setIsModalOpen(false);
-                alert('Proposition envoyée !');
+                setHasProposed(true);
               }}
             />
           )}

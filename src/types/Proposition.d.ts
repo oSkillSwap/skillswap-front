@@ -1,3 +1,5 @@
+import type { Review } from './Review';
+
 export interface IProposition {
   id?: number;
   content: string;
@@ -36,4 +38,7 @@ export interface IEnrichedProposition extends IProposition {
     averageGrade?: number;
     nbOfReviews?: number;
   };
+  Review?: IReview;
+  hasReview?: boolean;
+  Review?: Review;
 }

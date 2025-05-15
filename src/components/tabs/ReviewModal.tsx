@@ -1,8 +1,5 @@
-// ReviewModal.tsx
 import { useState } from 'react';
 import type { IEnrichedProposition } from '../../types/Proposition';
-import api from '../../services/api';
-//import './ReviewModal.scss';
 
 type Props = {
   proposition: IEnrichedProposition;
@@ -17,29 +14,26 @@ function ReviewModal({ proposition, onClose, onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    if (loading) return;
     try {
       setLoading(true);
       setError('');
-      await api.post('/me/reviews', {
-        postId: proposition.Post.id,
-        propositionId: proposition.id,
-        grade,
-        comment,
-        title: `Avis pour ${proposition.Receiver.username}`,
-      });
 
-      const reviewedIds: number[] = JSON.parse(
-        localStorage.getItem('reviewedPropositions') || '[]',
-      );
-      reviewedIds.push(proposition.id!);
-      localStorage.setItem('reviewedPropositions', JSON.stringify(reviewedIds));
+      if (!proposition.Sender) {
+        setError("Impossible d'envoyer l'avis : utilisateur introuvable.");
+        return;
+      }
 
       onSuccess(grade, comment);
+
+      onClose();
     } catch (err: any) {
-      console.error(err);
-      setError(
-        err.response?.data?.message || "Erreur lors de l'envoi de l'avis",
-      );
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.error("Erreur lors de la préparation de l'avis", err);
+      const serverMsg =
+        err?.response?.data?.message ||
+        "Une erreur s'est produite lors de l'envoi de l'avis.";
+      setError(serverMsg);
     } finally {
       setLoading(false);
     }
@@ -57,6 +51,7 @@ function ReviewModal({ proposition, onClose, onSuccess }: Props) {
             max={5}
             value={grade}
             onChange={(e) => setGrade(Number(e.target.value))}
+            disabled={loading}
           />
         </label>
         <label>
@@ -65,6 +60,7 @@ function ReviewModal({ proposition, onClose, onSuccess }: Props) {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             rows={4}
+            disabled={loading}
           />
         </label>
         {error && <p className="error">{error}</p>}
@@ -83,7 +79,7 @@ function ReviewModal({ proposition, onClose, onSuccess }: Props) {
             onClick={handleSubmit}
             disabled={loading}
           >
-            Envoyer
+            {loading ? 'Envoi...' : 'Envoyer'}
           </button>
         </div>
       </div>

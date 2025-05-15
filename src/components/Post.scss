@@ -137,6 +137,15 @@
     }
   }
 
+  .btn.btn-disabled{
+    background-color: $color-gray;
+    cursor: auto;
+
+    &:hover{
+      color: inherit;
+    }
+  }
+
   @media screen and (min-width: $breakpoints-lg) {
     &-offer,
     &-author {
