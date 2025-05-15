@@ -1,6 +1,7 @@
 import './ProfileHeaderEditor.scss';
 import { Check, SquarePen, X } from 'lucide-react';
 import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import type User from '../../types/User';
 
@@ -24,6 +25,7 @@ function ProfileHeaderEditor({
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
   const [successMessage, setSuccessMessage] = useState('');
+  const { user, setUser } = useAuth();
 
   const handleSave = async () => {
     try {
@@ -31,6 +33,15 @@ function ProfileHeaderEditor({
       setUserData((prev) =>
         prev ? { ...prev, [field]: res.data.user[field] } : prev,
       );
+      if (user) {
+        setUser((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            [field]: res.data.user[field],
+          };
+        });
+      }
       setIsEditing(false);
       setSuccessMessage('Modifié avec succès');
       setTimeout(() => setSuccessMessage(''), 2000);

@@ -32,10 +32,12 @@ function ProfilePage() {
   const [propositionsSent, setPropositionsSent] = useState<IProposition[]>([]);
 
   if (!userId && connectedUser) {
-    userId = connectedUser.id.toString();
+    userId = connectedUser.id.toString() || connectedUser.username;
   }
 
-  const isOwnProfile = connectedUser?.id?.toString() === userId;
+  const isOwnProfile =
+    connectedUser?.id?.toString() === userId ||
+    connectedUser?.username === userId;
 
   useEffect(() => {
     const fetchData = async () => {

@@ -6,6 +6,7 @@ import type { IPosts } from '../types/Posts';
 import type { ISkills } from '../types/Skills';
 import PageTransition from '../utils/PageTransition';
 import './Post.scss';
+import ErrorToast from '../components/ErrorToast';
 
 function Post() {
   const [posts, setPosts] = useState<[] | IPosts[]>([]);
@@ -189,7 +190,8 @@ function Post() {
           <button type="submit" className="btn btn-default">
             Poster
           </button>
-          {error && <p className="error">{error}</p>}
+
+          {error && <ErrorToast errors={error} />}
         </form>
       </section>
     </main>

@@ -9,6 +9,7 @@ type AuthContextType = {
   login: (email: string, password: string, remember: boolean) => Promise<void>;
   logout: () => void;
   isAuthLoading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,6 +31,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setIsAuthLoading(false);
   }, []);
+
+  // Update localStorage whenever user state changes
+  useEffect(() => {
+    if (user && accessToken) {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+  }, [user, accessToken]);
 
   // Login function
   const login = async (email: string, password: string, remember: boolean) => {
@@ -61,10 +69,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem('accessToken');
   };
 
-  // <AuthProvider> ... </AuthProvider>
   return (
     <AuthContext.Provider
-      value={{ user, accessToken, login, logout, isAuthLoading }}
+      value={{ user, accessToken, login, logout, isAuthLoading, setUser }}
     >
       {children}
     </AuthContext.Provider>

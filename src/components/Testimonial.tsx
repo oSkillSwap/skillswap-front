@@ -34,6 +34,8 @@ function Testimonial({ data }: { data: User['Reviews'][0] }) {
       <p className="testimonials-card-info">
         {isDeleted ? 'Utilisateur supprimé' : data.Reviewer.username},{' le '}
         {new Date(data.createdAt).toLocaleDateString('fr-FR', {
+        //{data.Reviewer.username},{' le '}
+        //{new Date(data.createdAt as string).toLocaleDateString('fr-FR', 
           day: 'numeric',
           month: 'long',
           year: 'numeric',

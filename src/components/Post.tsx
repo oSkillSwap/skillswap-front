@@ -13,6 +13,7 @@ import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import type { IPosts } from '../types/Posts';
 import type User from '../types/User';
+import ErrorToast from './ErrorToast';
 import Grade from './Grade';
 import ConfirmModal from './profile/ConfirmModal';
 import PropositionFormModal from './tabs/PropositionFormModal';
@@ -167,8 +168,10 @@ function Post({
             className="post-edit-form-content"
             rows={5}
           />
-          <p style={{ color: 'red' }}>{errorMessage}</p>
-          <div className="update-post-buttons">
+
+          {errorMessage && <ErrorToast errors={errorMessage} />}
+
+          <div className="post-edit-buttons">
             <button className="btn btn-default" type="submit">
               Enregistrer
             </button>
@@ -202,14 +205,14 @@ function Post({
               <p className="post-header-date">
                 {data?.updatedAt !== data?.createdAt
                   ? `Modifié le ${new Date(
-                      data.updatedAt || Date.now(),
+                      data?.updatedAt as string,
                     ).toLocaleDateString('fr-FR', {
                       day: 'numeric',
                       month: 'long',
                       year: 'numeric',
                     })}`
                   : `Posté le ${new Date(
-                      data.createdAt || Date.now(),
+                      data.createdAt as string,
                     ).toLocaleDateString('fr-FR', {
                       day: 'numeric',
                       month: 'long',
