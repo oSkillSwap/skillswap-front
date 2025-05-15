@@ -5,7 +5,6 @@
   background-color: $color-black;
   color: $color-white;
   padding-top: $spacing-xl;
-  margin-top: $spacing-2xl;
 
   &-container {
     display: flex;
@@ -33,7 +32,7 @@
       list-style: none;
       gap: $spacing-lg;
       padding: 0;
-      
+
       &-element-link {
         color: $color-white;
         text-decoration: none;
@@ -66,7 +65,7 @@
       }
     }
   }
-  
+
   @media screen and (min-width: $breakpoints-xl) {
     &-container {
       flex-direction: row;

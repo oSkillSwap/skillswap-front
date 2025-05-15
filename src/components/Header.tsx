@@ -138,6 +138,27 @@ function Header() {
                           Mon profil
                         </Link>
                         <Link
+                          className="header-nav-element-link"
+                          to={'/profile/posts'}
+                          onClick={handleLinkClick}
+                        >
+                          Mes annonces
+                        </Link>
+                        <Link
+                          className="header-nav-element-link"
+                          to={'/profile/offers'}
+                          onClick={handleLinkClick}
+                        >
+                          Mes propositions
+                        </Link>
+                        <Link
+                          className="header-nav-element-link"
+                          to={'/profile/exchanges'}
+                          onClick={handleLinkClick}
+                        >
+                          Mes échanges
+                        </Link>
+                        <Link
                           className="btn btn-reversed"
                           onClick={() => {
                             logout();

@@ -10,9 +10,12 @@ type AuthContextType = {
   logout: () => void;
   isAuthLoading: boolean;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  updateToken: (newToken: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+let externalUpdateToken: (token: string) => void = () => {};
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -61,6 +64,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Refresh token function
+  const updateToken = (newToken: string) => {
+    setAccessToken(newToken);
+  };
+
+  externalUpdateToken = updateToken;
+
   // Logout function
   const logout = () => {
     setUser(null);
@@ -71,12 +81,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, accessToken, login, logout, isAuthLoading, setUser }}
+      value={{
+        user,
+        accessToken,
+        login,
+        logout,
+        isAuthLoading,
+        setUser,
+        updateToken,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const getExternalUpdateToken = () => externalUpdateToken;
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

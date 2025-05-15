@@ -1,11 +1,19 @@
 @use "../styles/variables" as *;
 
-.btn.disabled{
-    background-color: $color-gray;
-    border: 1px solid $color-white;
-    cursor:auto;
-
-    &:hover{
-      color: inherit;
-    }
+.explore {
+  &-btns {
+    width: 100%;
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: center;
   }
+}
+.btn.disabled {
+  background-color: $color-gray;
+  border: 1px solid $color-white;
+  cursor: auto;
+
+  &:hover {
+    color: inherit;
+  }
+}

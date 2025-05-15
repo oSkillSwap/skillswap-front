@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './Message.scss';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Search } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { type Socket, io } from 'socket.io-client';
 import MessagesList from '../components/MessagesList';
@@ -60,33 +60,35 @@ function Message() {
     const response = await api.get('/me/messages');
     const allMsgs = response.data.messages;
 
-    // Sort messages chronologically
-    const sortedMessages = [...allMsgs].sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
+    if (allMsgs) {
+      // Sort messages chronologically
+      const sortedMessages = [...allMsgs].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
 
-    const convMap = new Map();
+      const convMap = new Map();
 
-    for (const msg of sortedMessages) {
-      // Getting the other user of the message
-      const otherUser =
-        msg.sender_id === currentUserId ? msg.Receiver : msg.Sender;
-      if (!otherUser) continue;
+      for (const msg of sortedMessages) {
+        // Getting the other user of the message
+        const otherUser =
+          msg.sender_id === currentUserId ? msg.Receiver : msg.Sender;
+        if (!otherUser) continue;
 
-      // Setting the message if otherUser.id doesn't already exists (unique key)
-      // Messages are already chronologically ordered
-      !convMap.get(otherUser.id) &&
-        convMap.set(otherUser.id, { user: otherUser, message: msg });
+        // Setting the message if otherUser.id doesn't already exists (unique key)
+        // Messages are already chronologically ordered
+        !convMap.get(otherUser.id) &&
+          convMap.set(otherUser.id, { user: otherUser, message: msg });
+      }
+
+      const convList = Array.from(convMap.entries()).map(([key, value]) => ({
+        userId: key,
+        lastMessage: value,
+      }));
+
+      // Update state
+      setConversations(convList);
     }
-
-    const convList = Array.from(convMap.entries()).map(([key, value]) => ({
-      userId: key,
-      lastMessage: value,
-    }));
-
-    // Update state
-    setConversations(convList);
   }, [currentUserId]);
 
   // Init existing messages
@@ -244,7 +246,13 @@ function Message() {
                 </Link>
               ))
             ) : (
-              <p>Pas de conversations</p>
+              <div className="no-conversation">
+                <p className="no-data">Aucune conversation n'est en cours</p>
+                <Link className="btn btn-default" to={'/explore'}>
+                  <Search />
+                  Explorer
+                </Link>
+              </div>
             )}
           </>
         )}
