@@ -11,7 +11,8 @@ import Login from './pages/Login';
 import Message from './pages/Message';
 import Post from './pages/Post';
 import Register from './pages/Register';
-
+import ForgotPasswordForm from './components/ForgotPasswordForm';
+import ResetPasswordForm from './components/ResetPasswordForm';
 import ProfileExchanges from './components/tabs/ProfileExchanges';
 import ProfilePage from './components/tabs/ProfileMain';
 import ProfileOffers from './components/tabs/ProfileOffers';
@@ -20,6 +21,7 @@ import ProfileLayout from './pages/Profile';
 
 function App() {
   const location = useLocation();
+
   return (
     <AuthProvider>
       <Header />
@@ -33,6 +35,9 @@ function App() {
           <Route path="message/:userId?" element={<Message />} />
           <Route path="post" element={<Post />} />
 
+          <Route path="forgot-password" element={<ForgotPasswordForm />} />
+          <Route path="reset-password/:token" element={<ResetPasswordForm />} />
+
           <Route path="profile" element={<ProfileLayout />}>
             <Route index element={<ProfilePage />} />
             <Route path=":userId" element={<ProfilePage />} />
@@ -45,7 +50,6 @@ function App() {
           </Route>
         </Routes>
       </AnimatePresence>
-
       <Footer />
     </AuthProvider>
   );

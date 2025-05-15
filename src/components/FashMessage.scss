@@ -1,0 +1,26 @@
+@use "../styles/variables" as *;
+
+.flash-message{
+    border: 1px solid $color-gray;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: $color-gray;
+    color: $color-white;
+
+    &.flash-success{
+        background-color: $color-success;
+    }
+
+    &.flash-info{
+        background-color: $color-info;
+    }
+
+    &.flash-error{
+        background-color: $color-danger;
+    }
+}
+
+
+$color-info: hsl(188, 78%, 41%);
+$color-warning: hsl(45, 100%, 51%);
+$color-danger: hsl(354, 70%, 54%);
