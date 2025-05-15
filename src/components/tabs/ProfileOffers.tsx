@@ -27,7 +27,7 @@ function ProfileOffers() {
   }, []);
 
   const visiblePropositions = propositions.filter(
-    (p) => p.state !== 'acceptée',
+    (p) => p.state === 'en attente',
   );
 
   return (

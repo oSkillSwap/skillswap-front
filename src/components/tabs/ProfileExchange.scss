@@ -14,3 +14,11 @@
     color: $color-black;
     cursor: auto;
 }
+
+.exchanges-link-reviews{
+    color: $color-black;
+
+    &:hover{
+        color: $color-primary;
+    }
+}

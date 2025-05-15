@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import Post from '../Post';
@@ -8,6 +8,7 @@ import ReviewModal from './ReviewModal';
 import ReviewingModal from './ReviewingModal';
 import { MessageSquare, SquareX, SquareCheckBig, Star } from 'lucide-react';
 import type { IEnrichedProposition } from '../../types/Proposition';
+import type { UserWithReviewData } from '../../types/UserWithReviewData';
 import './ProfileExchange.scss';
 
 function ProfileExchanges() {
@@ -18,6 +19,7 @@ function ProfileExchanges() {
   const [activeReviewView, setActiveReviewView] = useState<{
     grade: number;
     comment: string;
+    title: string;
   } | null>(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ function ProfileExchanges() {
       const res = await api.get('/me/all-propositions');
       setExchanges(res.data.propositions);
     } catch (err) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(err);
       setError('Une erreur est survenue');
     }
@@ -44,6 +47,7 @@ function ProfileExchanges() {
       await api.patch(`/propositions/${prop.id}/finish`);
       window.dispatchEvent(new Event('exchange-updated'));
     } catch (err) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la finalisation de l’échange', err);
       alert('Une erreur est survenue');
     }
@@ -62,14 +66,17 @@ function ProfileExchanges() {
       setActiveReviewProp(null);
       await fetchExchanges();
     } catch (err) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error("Erreur lors de l'envoi de l'avis", err);
       alert("Une erreur s'est produite lors de l'envoi de l'avis.");
     }
   };
 
   const buildOtherUser = (prop: IEnrichedProposition) => {
-    const rawUser =
-      prop.Sender?.id === connectedUser?.id ? prop.Receiver : prop.Sender;
+    const rawUser = (
+      prop.Sender?.id === connectedUser?.id ? prop.Receiver : prop.Sender
+    ) as UserWithReviewData;
+
     return {
       id: rawUser?.id ?? 0,
       username: rawUser?.username ?? 'Utilisateur inconnu',
@@ -182,18 +189,8 @@ function ProfileExchanges() {
             const isOwner = connectedUser?.id === prop.Post.user_id;
             const isReviewAuthor =
               prop.Review?.Reviewer?.id === connectedUser?.id;
-            const isReviewTarget = prop.sender_id === connectedUser?.id;
-
-            // console.log({
-            //   id: prop.id,
-            //   isOwner,
-            //   isReviewAuthor,
-            //   isReviewTarget,
-            //   hasReviewByOwner: prop.hasReviewByOwner,
-            //   ReviewerId: prop.Review?.Reviewer?.id,
-            //   ConnectedUserId: connectedUser?.id,
-            //   PostOwnerId: prop.Post.user_id,
-            // });
+            const isReviewTarget =
+              prop.Review?.reviewed_id === connectedUser?.id;
 
             return (
               <Post
@@ -213,10 +210,15 @@ function ProfileExchanges() {
                       />
                       <div>
                         <h3>{otherUser.username}</h3>
-                        <Grade
-                          rating={otherUser.averageGrade}
-                          nbReviews={otherUser.nbOfReviews}
-                        />
+                        <Link
+                          className="exchanges-link-reviews"
+                          to={`/profile/${otherUser.id}#reviews`}
+                        >
+                          <Grade
+                            rating={otherUser.averageGrade}
+                            nbReviews={otherUser.nbOfReviews}
+                          />
+                        </Link>
                       </div>
                     </div>
                     <p className="post-offer-date">
@@ -227,6 +229,7 @@ function ProfileExchanges() {
                     </p>
                     <p className="post-offer-content">{prop.content}</p>
                   </div>
+
                   <div className="post-author-btns">
                     {isReviewAuthor ? (
                       <button
@@ -239,16 +242,17 @@ function ProfileExchanges() {
                     ) : isReviewTarget && prop.Review ? (
                       <button
                         type="button"
-                        className="btn btn-secondary disable"
+                        className="btn btn-secondary"
                         onClick={() =>
                           setActiveReviewView({
                             grade: prop.Review.grade,
                             comment: prop.Review.content,
+                            title: prop.Review.title,
                           })
                         }
                       >
                         Avis laissé par{' '}
-                        {prop.Review.Reviewer?.username || 'utilisateur'}
+                        {prop.Review?.Reviewer?.username || 'utilisateur'}
                       </button>
                     ) : isOwner ? (
                       <button

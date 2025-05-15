@@ -1,3 +1,6 @@
+import Grade from '../Grade';
+import './ReviewingModal.scss';
+
 type ReviewingModalProps = {
   grade: number;
   comment: string;
@@ -8,14 +11,10 @@ function ReviewingModal({ grade, comment, onClose }: ReviewingModalProps) {
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h3>Avis reçu</h3>
         <p>
-          <strong>Note :</strong> {grade}/5
+          <Grade rating={grade} />
         </p>
-        <p>
-          <strong>Commentaire :</strong>
-        </p>
-        <p>{comment}</p>
+        <p className="comment-modal-review">{comment}</p>
         <div className="modal-actions">
           <button type="button" className="btn btn-default" onClick={onClose}>
             Fermer

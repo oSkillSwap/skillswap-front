@@ -44,6 +44,11 @@ function Post({
   hasAlreadyProposed = false,
 }: PostProps) {
   const { user: connectedUser } = useAuth();
+
+  if (origin === 'explore' && data.isClosed) {
+    return null;
+  }
+
   const isAuthor =
     typeof author !== 'undefined'
       ? author
@@ -266,7 +271,6 @@ function Post({
                 if (data.id !== undefined) {
                   onPropositionSent?.(data.id);
                 }
-                alert('Proposition envoyée !');
               }}
             />
           )}
@@ -323,7 +327,6 @@ function Post({
               onSuccess={() => {
                 setIsModalOpen(false);
                 setHasProposed(true);
-                alert('Proposition envoyée !');
               }}
             />
           )}

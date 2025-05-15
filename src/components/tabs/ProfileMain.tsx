@@ -315,7 +315,7 @@ function ProfilePage() {
             </div>
           </section>
 
-          <section className="profile-testimonials">
+          <section className="profile-testimonials" id="reviews">
             <h2>Avis</h2>
             <div className="testimonials">
               {userData.Reviews?.length ? (
