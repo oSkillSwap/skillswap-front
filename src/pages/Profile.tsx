@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import PageTransition from '../utils/PageTransition';
 import './Profile.scss';
+import { ArrowLeftRight, FileInput, FileText, User } from 'lucide-react';
 
 function ProfileLayout() {
   const { userId } = useParams();
@@ -12,10 +13,20 @@ function ProfileLayout() {
   const basePath = userId ? `/profile/${userId}` : '/profile';
 
   const tabs = [
-    { key: '', label: 'Profil' },
-    { key: 'posts', label: 'Mes annonces' },
-    { key: 'offers', label: 'Mes offres' },
-    { key: 'exchanges', label: 'Mes échanges' },
+    { key: 'profile', path: '', label: 'Profil', icon: <User /> },
+    { key: 'posts', path: 'posts', label: 'Mes annonces', icon: <FileText /> },
+    {
+      key: 'offers',
+      path: 'offers',
+      label: 'Mes propositions',
+      icon: <FileInput />,
+    },
+    {
+      key: 'exchanges',
+      path: 'exchanges',
+      label: 'Mes échanges',
+      icon: <ArrowLeftRight />,
+    },
   ];
 
   return (
@@ -23,15 +34,16 @@ function ProfileLayout() {
       {isOwnProfile && (
         <nav className="container nav profile-tabs">
           {tabs.map((tab) => {
-            const path = `${basePath}${tab.key ? `/${tab.key}` : ''}`;
+            const path = `${basePath}${tab.path ? `/${tab.path}` : ''}`;
             const isActive = location.pathname === path;
 
             return (
               <Link
                 key={tab.key}
-                to={path}
+                to={tab.path}
                 className={`btn btn-alt tab-btn ${isActive ? 'active' : ''}`}
               >
+                {tab.icon}
                 {tab.label}
               </Link>
             );

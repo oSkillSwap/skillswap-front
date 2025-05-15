@@ -92,7 +92,7 @@ function ProfileOffers() {
             </Post>
           ))
         ) : (
-          <p>Aucune offre pour le moment.</p>
+          <p className="no-data">Aucune offre pour le moment</p>
         )}
       </div>
     </section>

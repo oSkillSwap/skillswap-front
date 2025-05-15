@@ -1,8 +1,6 @@
-// ReviewModal.tsx
 import { useState } from 'react';
-import type { IEnrichedProposition } from '../../types/Proposition';
 import api from '../../services/api';
-//import './ReviewModal.scss';
+import type { IEnrichedProposition } from '../../types/Proposition';
 
 type Props = {
   proposition: IEnrichedProposition;

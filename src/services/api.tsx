@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getExternalUpdateToken } from '../contexts/AuthContext';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -22,9 +23,12 @@ api.interceptors.response.use(
         const { token } = res.data;
 
         localStorage.setItem('accessToken', token);
+
+        const updateToken = getExternalUpdateToken();
+        updateToken(token);
+
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
         originalRequest.headers.Authorization = `Bearer ${token}`;
-
         return api(originalRequest);
       } catch (err) {
         localStorage.removeItem('accessToken');

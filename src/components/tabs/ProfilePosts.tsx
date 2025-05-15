@@ -1,13 +1,12 @@
 import { MessageSquare, SquareCheckBig, SquareX } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import type { IPosts } from '../../types/Posts';
 import type { IProposition } from '../../types/Proposition';
 import Grade from '../Grade';
 import Post from '../Post';
-import './ProfilePosts.scss';
-import { useNavigate } from 'react-router';
 
 function ProfilePosts() {
   const { user: connectedUser } = useAuth();
@@ -159,7 +158,7 @@ function ProfilePosts() {
             );
           })
         ) : (
-          <p>Aucune annonce pour le moment.</p>
+          <p className="no-data">Aucune annonce pour le moment</p>
         )}
       </div>
     </section>

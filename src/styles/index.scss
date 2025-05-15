@@ -237,22 +237,33 @@ button {
   }
 }
 
+.page-content {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin-top: $spacing-md;
+  padding: $spacing-xl 0;
+  gap: $spacing-xl;
+}
+
 .container {
   max-width: 119.4rem;
   margin: 0 auto;
   padding: 0 $spacing-xl;
-}
-
-.page-content {
-  flex-grow: 1;
-  margin-top: $spacing-md;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2xl;
 }
 
 .content {
-  margin: 10rem 0;
+  width: 100%;
+  height: min-content;
+  align-self: center;
   display: flex;
-  gap: 2rem;
   flex-wrap: wrap;
+  gap: $spacing-xl;
 
   & h1 {
     text-align: center;
@@ -294,6 +305,33 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.pour-le-lore {
+  $rainbow-colors: (
+    1: #4889f4,
+    2: #eb4132,
+    3: #fbbd00,
+    4: #4086f4,
+    5: #31aa52,
+    6: #eb4132,
+  );
+  font-size: 10rem;
+  letter-spacing: 0.4rem;
+
+  @each $i, $color in $rainbow-colors {
+    > *:nth-child(6n + #{$i}) {
+      color: #{$color};
+    }
+  }
+
+  @media screen and (max-width: $breakpoints-lg) {
+    font-size: 7rem;
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    font-size: 5rem;
+  }
 }
 
 @media screen and (max-width: $breakpoints-sm) {

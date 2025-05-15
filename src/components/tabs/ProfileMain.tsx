@@ -298,7 +298,7 @@ function ProfilePage() {
                 </Link>
               ))
             ) : (
-              <p>Aucun favori renseigné</p>
+              <p className="no-data">Aucun favori renseigné</p>
             )}
           </section>
         </div>
@@ -323,7 +323,7 @@ function ProfilePage() {
                   />
                 ))
               ) : (
-                <p>Aucune annonce active</p>
+                <p className="no-data">Aucune annonce active</p>
               )}
             </div>
           </section>
@@ -336,7 +336,7 @@ function ProfilePage() {
                   <Testimonial key={el.id} data={el} />
                 ))
               ) : (
-                <p>Aucun avis renseigné</p>
+                <p className="no-data">Aucun avis renseigné</p>
               )}
             </div>
           </section>
