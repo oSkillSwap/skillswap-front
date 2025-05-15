@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import type User from '../../types/User';
+import type { IProposition } from '../../types/Proposition';
 import Grade from '../Grade';
 import Post from '../Post';
 import Testimonial from '../Testimonial';
@@ -28,6 +29,7 @@ function ProfilePage() {
   const [error, setError] = useState('');
   const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
   const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
+  const [propositionsSent, setPropositionsSent] = useState<IProposition[]>([]);
 
   if (!userId && connectedUser) {
     userId = connectedUser.id.toString() || connectedUser.username;
@@ -60,6 +62,11 @@ function ProfilePage() {
           Reviews: reviewsResponse.data.reviews,
           Posts: postsResponse.data.posts,
         });
+
+        if (!isOwnProfile && connectedUser) {
+          const propRes = await api.get(`/propositions/${connectedUser.id}`);
+          setPropositionsSent(propRes.data.propositions);
+        }
       } catch (error) {
         setError((error as { message: string }).message);
       } finally {
@@ -68,7 +75,7 @@ function ProfilePage() {
     };
 
     fetchData();
-  }, [userId, isAuthLoading]);
+  }, [userId, isAuthLoading, connectedUser, isOwnProfile]);
 
   const handleDeleteAccount = async () => {
     try {
@@ -76,7 +83,6 @@ function ProfilePage() {
       logout();
       navigate('/login');
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du compte :', error);
       alert(
         `Erreur : ${
@@ -97,65 +103,45 @@ function ProfilePage() {
     }
   }, [userData, connectedUser]);
 
-  const followUser = async () => {
-    if (!connectedUser) return;
-    try {
-      await api.post(`/me/follow/${userId}`);
-      setUserData((prevUserData) => {
-        if (prevUserData) {
-          return {
-            ...prevUserData,
-            Followers: [
-              ...prevUserData.Followers,
-              {
-                id: connectedUser.id,
-                username: connectedUser.username,
-                avatar: connectedUser.avatar,
-              },
-            ],
-          };
-        }
-        return prevUserData;
-      });
-      setIsFollowing(true);
-    } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error('Erreur lors du follow :', error);
-    }
-  };
-
-  const unfollowUser = async () => {
-    if (!connectedUser) return;
-    try {
-      await api.delete(`/me/follow/${userId}`);
-      setUserData((prevUserData) => {
-        if (prevUserData) {
-          return {
-            ...prevUserData,
-            Followers: prevUserData.Followers.filter(
-              (follower) => follower.id !== connectedUser.id,
-            ),
-          };
-        }
-        return prevUserData;
-      });
-      setIsFollowing(false);
-    } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error('Erreur lors du unfollow :', error);
-    }
-  };
-
   const handleFollowAndUnfollow = async () => {
     if (!connectedUser) return;
     try {
       if (!isFollowing) {
-        return await followUser();
+        await api.post(`/me/follow/${userId}`);
+        setUserData((prevUserData) => {
+          if (prevUserData) {
+            return {
+              ...prevUserData,
+              Followers: [
+                ...prevUserData.Followers,
+                {
+                  id: connectedUser.id,
+                  username: connectedUser.username,
+                  avatar: connectedUser.avatar,
+                },
+              ],
+            };
+          }
+          return prevUserData;
+        });
+        setIsFollowing(true);
+      } else {
+        await api.delete(`/me/follow/${userId}`);
+        setUserData((prevUserData) => {
+          if (prevUserData) {
+            return {
+              ...prevUserData,
+              Followers: prevUserData.Followers.filter(
+                (follower) => follower.id !== connectedUser.id,
+              ),
+            };
+          }
+          return prevUserData;
+        });
+        setIsFollowing(false);
       }
-      await unfollowUser();
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
-      console.error('Erreur lors du follow :', error);
+      console.error('Erreur lors du follow/unfollow :', error);
     }
   };
 
@@ -320,6 +306,9 @@ function ProfilePage() {
                     variant="post"
                     origin="profile"
                     setUserData={setUserData}
+                    hasAlreadyProposed={propositionsSent.some(
+                      (p) => p.post_id === el.id,
+                    )}
                   />
                 ))
               ) : (
@@ -328,7 +317,7 @@ function ProfilePage() {
             </div>
           </section>
 
-          <section className="profile-testimonials">
+          <section className="profile-testimonials" id="reviews">
             <h2>Avis</h2>
             <div className="testimonials">
               {userData.Reviews?.length ? (

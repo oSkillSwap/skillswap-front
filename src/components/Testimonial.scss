@@ -22,3 +22,12 @@
     font-size: $font-size-xs;
   }
 }
+
+   .testimonial-avatar.deleted-user {
+     width: 8rem;
+     height: 8rem;
+     object-fit: cover;
+     border-radius: 50%;
+       opacity: 0.6;
+       filter: grayscale(100%); 
+   }

@@ -19,7 +19,7 @@ function ProfileOffers() {
       } catch (err) {
         // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error(err);
-        setError('Erreur lors du chargement.');
+        setError('');
       }
     };
 
@@ -27,7 +27,7 @@ function ProfileOffers() {
   }, []);
 
   const visiblePropositions = propositions.filter(
-    (p) => p.state !== 'acceptée',
+    (p) => p.state === 'en attente',
   );
 
   return (
