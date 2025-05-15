@@ -1,0 +1,45 @@
+@use "../../styles/variables" as *;
+
+.profile{
+  &-header{
+  position: relative;
+
+  &-picture {
+      width: 20rem;
+      height: 20rem;
+      border-radius: 50%;
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+
+   .edit-avatar-btn {
+    background: transparent;
+    position: absolute;
+    bottom: -2rem;
+    left: -1rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1.5rem;
+    z-index: 10;
+
+   
+  }
+ }
+}
+
+
+  
+@media screen and (min-width: $breakpoints-lg) {
+  .profile {
+    &-header {
+      &-picture {
+        width: 25.8rem;
+        height: 25.8rem;
+        object-fit: cover;
+        aspect-ratio: 1;
+      }
+    }
+  }
+}

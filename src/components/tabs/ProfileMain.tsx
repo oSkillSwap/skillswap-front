@@ -1,4 +1,10 @@
-import { Heart, KeyRound, MessageSquare, Trash2 } from 'lucide-react';
+import {
+  Heart,
+  KeyRound,
+  MessageSquare,
+  Trash2,
+  SquarePen,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import '../../pages/Profile.scss';
 import { Link, useNavigate, useParams } from 'react-router';
@@ -16,11 +22,14 @@ import PasswordModal from '../profile/PasswordModal';
 import ProfileHeaderEditor from '../profile/ProfileHeaderEditor';
 import SkillEditor from '../profile/SkillEditor';
 import SkillWantedEditor from '../profile/SkillWantedEditor';
+import AvatarUploader from '../profile/AvatarUploader';
+import './ProfileMain.scss';
 
 function ProfilePage() {
   let { userId } = useParams();
   const navigate = useNavigate();
   const { user: connectedUser, logout, isAuthLoading } = useAuth();
+  const [isEditingAvatar, setIsEditingAvatar] = useState(false);
 
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -83,6 +92,7 @@ function ProfilePage() {
       logout();
       navigate('/login');
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors de la suppression du compte :', error);
       alert(
         `Erreur : ${
@@ -141,6 +151,7 @@ function ProfilePage() {
         setIsFollowing(false);
       }
     } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Erreur lors du follow/unfollow :', error);
     }
   };
@@ -169,10 +180,39 @@ function ProfilePage() {
 
       <main className="profile container">
         <section className="profile-header">
-          <img
-            className="profile-header-picture"
-            src={userData.avatar}
-            alt={userData.username}
+          {!isEditingAvatar && (
+            <img
+              className="profile-header-picture"
+              src={
+                userData.avatar.startsWith('http')
+                  ? userData.avatar
+                  : `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}${userData.avatar}`
+              }
+              alt={userData.username}
+            />
+          )}
+          {isOwnProfile && (
+            <button
+              type="button"
+              className="btn btn-reversed btn-icon edit-avatar-btn"
+              onClick={() => {
+                if (isEditingAvatar) {
+                  const saveEvent = new Event('submit-avatar-upload');
+                  window.dispatchEvent(saveEvent);
+                } else {
+                  setIsEditingAvatar(true);
+                }
+              }}
+            >
+              <>
+                <SquarePen size={18} /> Editer
+              </>
+            </button>
+          )}
+          <AvatarUploader
+            isEditing={isEditingAvatar}
+            setUserData={setUserData}
+            onSuccess={() => setIsEditingAvatar(false)}
           />
           <div className="profile-header-content">
             <div>
