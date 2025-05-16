@@ -9,7 +9,6 @@ import Grade from '../Grade';
 import Post from '../Post';
 import ReviewModal from './ReviewModal';
 import ReviewingModal from './ReviewingModal';
-import './ProfileExchange.scss';
 
 function ProfileExchanges() {
   const { user: connectedUser } = useAuth();
