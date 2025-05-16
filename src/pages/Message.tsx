@@ -119,7 +119,8 @@ function Message() {
   // Socket.IO client init
   useEffect(() => {
     // Init socket with Socket.IO server
-    const socket = io('https://skillswap-hknk.onrender.com', {
+    const socket = io('https://skillswap.olivier-renard.com', {
+      path: '/api/socket.io',
       withCredentials: true, // check for CORS credentials (backend)
     });
 
