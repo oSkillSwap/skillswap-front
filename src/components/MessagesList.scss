@@ -6,14 +6,14 @@
     display: flex;
     flex-direction: column;
     gap: $spacing-md;
-    height: 45vh;
+    height: calc(100vh - 33rem);
     overflow-y: scroll;
     scrollbar-width: none;
   }
-  
-  &-msg{
+
+  &-msg {
     max-width: 80%;
-    
+
     &-content {
       width: fit-content;
       padding: $spacing-md;
@@ -25,9 +25,9 @@
       margin-top: $spacing-xs;
       font-size: $font-size-xs;
       font-weight: $font-weight-normal;
-      opacity: .7;
+      opacity: 0.7;
     }
-  
+
     &.msg-send {
       align-self: flex-end;
       display: flex;

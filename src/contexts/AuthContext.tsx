@@ -6,7 +6,11 @@ import {
   useState,
   useCallback,
 } from 'react';
-import api from '../services/api';
+import api, {
+  clearScheduledTokenRefresh,
+  scheduleTokenRefresh,
+} from '../services/api';
+
 import type User from '../types/User';
 
 type AuthContextType = {
@@ -16,16 +20,20 @@ type AuthContextType = {
   logout: () => void;
   isAuthLoading: boolean;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  updateToken: (newToken: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-function AuthProvider({ children }: { children: React.ReactNode }) {
+// Pour permettre l'appel externe de updateToken
+let externalUpdateToken: (token: string) => void = () => {};
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  // Init from localStorage
+  // Init depuis localStorage
   useEffect(() => {
     const storedToken = localStorage.getItem('accessToken');
     const storedUser = localStorage.getItem('user');
@@ -33,12 +41,13 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedToken && storedUser) {
       setAccessToken(storedToken);
       setUser(JSON.parse(storedUser));
+      scheduleTokenRefresh(storedToken); // Refresh auto
     }
 
     setIsAuthLoading(false);
   }, []);
 
-  // Sync user and token to localStorage
+  // Sync user et token vers localStorage
   useEffect(() => {
     if (user && accessToken) {
       localStorage.setItem('user', JSON.stringify(user));
@@ -49,7 +58,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user, accessToken]);
 
-  // Login function
+  // Login
   const login = useCallback(
     async (email: string, password: string, remember: boolean) => {
       try {
@@ -63,6 +72,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem('user', JSON.stringify(user));
           localStorage.setItem('accessToken', token);
         }
+
+        scheduleTokenRefresh(token); // auto refresh planner
       } catch (err) {
         setUser(null);
         setAccessToken(null);
@@ -72,30 +83,47 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
-  // Logout function
+  // Refresh accessToken
+  const updateToken = (newToken: string) => {
+    setAccessToken(newToken);
+  };
+
+  externalUpdateToken = updateToken;
+
+  // Logout
   const logout = useCallback(() => {
     setUser(null);
     setAccessToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('accessToken');
+    clearScheduledTokenRefresh(); // delete auto refresh
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ user, accessToken, login, logout, isAuthLoading, setUser }}
+      value={{
+        user,
+        accessToken,
+        login,
+        logout,
+        isAuthLoading,
+        setUser,
+        updateToken,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-// Hook
-function useAuth(): AuthContextType {
+// Hook standard
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}
+};
 
-export { AuthProvider, useAuth };
+// External access to updateToken
+export const getExternalUpdateToken = () => externalUpdateToken;

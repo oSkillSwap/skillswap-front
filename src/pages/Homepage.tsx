@@ -18,21 +18,36 @@ function Homepage() {
   const navigate = useNavigate();
 
   return (
-    <>
-      <main className="homepage container">
-        <section className="homepage-hero">
-          <img
-            src={heroImage}
-            alt="Astronaute assis interagissant par visioconférence avec une collègue à travers un robot flottant dans une station spatiale."
-          />
-          <div className="homepage-hero-text">
-            <h1>Échangez vos compétences, enrichissez vos savoirs.</h1>
-            <p>
-              Trouvez des profils prêts à partager leur expertise… gratuitement
-              !
-            </p>
-          </div>
-        </section>
+    <main className="homepage container">
+      <section className="homepage-hero">
+        <img
+          src={heroImage}
+          alt="Astronaute assis interagissant par visioconférence avec une collègue à travers un robot flottant dans une station spatiale."
+        />
+        <div className="homepage-hero-text">
+          <h1>Échangez vos compétences, enrichissez vos savoirs.</h1>
+          <p>
+            Trouvez des profils prêts à partager leur expertise… gratuitement !
+          </p>
+          {!user ? (
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={() => navigate('/login')}
+            >
+              <LogIn /> Je m'identifie
+            </button>
+          ) : (
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={() => navigate('/post')}
+            >
+              <CirclePlus /> Poster une annonce
+            </button>
+          )}
+        </div>
+      </section>
 
         <section className="content">
           <Searchbar handleSearch={handleSearch} />
