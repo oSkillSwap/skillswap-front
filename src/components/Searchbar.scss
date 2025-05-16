@@ -29,7 +29,7 @@
     width: 100%;
     padding: $spacing-md $spacing-xl;
     border-radius: 1.6rem 0 0 1.6rem;
-    
+
     &:focus {
       outline: 0;
     }
@@ -39,14 +39,24 @@
     height: fit-content;
     padding: $spacing-md;
     border-radius: 0 1.6rem 1.6rem 0;
-    
+
     &:focus {
       outline: 0;
+      box-shadow: none;
+
+      & svg {
+        opacity: 1;
+      }
     }
 
     & svg {
       width: 2.4rem;
       height: auto;
+      opacity: 0.5;
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }

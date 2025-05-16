@@ -1,4 +1,3 @@
-import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/scss';
 import './TestimonialCarousel.scss';
@@ -44,11 +43,11 @@ function TestimonialCarousel() {
       spaceBetween={32}
       slidesPerView={1}
       loop={true}
-      autoplay={{
-        delay: 2500,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      }}
+      // autoplay={{
+      //   delay: 2500,
+      //   disableOnInteraction: false,
+      //   pauseOnMouseEnter: true,
+      // }}
       breakpoints={{
         640: {
           slidesPerView: 2,
@@ -63,7 +62,7 @@ function TestimonialCarousel() {
           spaceBetween: 32,
         },
       }}
-      modules={[Autoplay]}
+      // modules={[Autoplay]}
     >
       {reviews.map((review) => (
         <SwiperSlide key={review.id}>

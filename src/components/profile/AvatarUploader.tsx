@@ -1,8 +1,9 @@
-import { useDropzone } from 'react-dropzone';
 import { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import api from '../../services/api';
 import type User from '../../types/User';
 import './AvatarUploader.scss';
+import { Upload } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface AvatarUploaderProps {
@@ -67,7 +68,12 @@ function AvatarUploader({
       ) : preview ? (
         <img src={preview} alt="Preview" className="avatar-preview" />
       ) : (
-        <p className="upload-text">Cliquez ici pour choisir une image</p>
+        <>
+          <Upload size={48} />
+          <p className="upload-text">
+            Cliquez ou déposez ici pour choisir votre image
+          </p>
+        </>
       )}
     </div>
   );
