@@ -2,7 +2,13 @@ import { Link, Outlet, useLocation, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import PageTransition from '../utils/PageTransition';
 import './Profile.scss';
-import { ArrowLeftRight, FileInput, FileText, User } from 'lucide-react';
+import {
+  ArrowLeftRight,
+  FileInput,
+  FileText,
+  User,
+  ShieldCheck,
+} from 'lucide-react';
 
 function ProfileLayout() {
   const { userId } = useParams();
@@ -28,6 +34,15 @@ function ProfileLayout() {
       icon: <ArrowLeftRight />,
     },
   ];
+
+  if (connectedUser?.role === 'admin') {
+    tabs.push({
+      key: 'admin',
+      path: 'admin',
+      label: 'Gérer',
+      icon: <ShieldCheck />,
+    });
+  }
 
   return (
     <>
