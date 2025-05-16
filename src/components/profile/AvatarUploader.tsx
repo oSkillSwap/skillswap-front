@@ -2,6 +2,8 @@ import { useDropzone } from 'react-dropzone';
 import { useState } from 'react';
 import api from '../../services/api';
 import type User from '../../types/User';
+import './AvatarUploader.scss';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface AvatarUploaderProps {
   isEditing: boolean;
@@ -17,6 +19,7 @@ function AvatarUploader({
 }: AvatarUploaderProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { setUser } = useAuth();
 
   const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -37,6 +40,7 @@ function AvatarUploader({
       setUserData((prev) =>
         prev ? { ...prev, avatar: res.data.avatar } : prev,
       );
+      setUser((prev) => (prev ? { ...prev, avatar: res.data.avatar } : prev));
       setPreview(null);
       onSuccess?.();
     } catch (err) {
@@ -63,7 +67,7 @@ function AvatarUploader({
       ) : preview ? (
         <img src={preview} alt="Preview" className="avatar-preview" />
       ) : (
-        <p>Cliquez sur l'image pour en choisir une</p>
+        <p className="upload-text">Cliquez ici pour choisir une image</p>
       )}
     </div>
   );
