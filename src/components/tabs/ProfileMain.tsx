@@ -2,27 +2,27 @@ import {
   Heart,
   KeyRound,
   MessageSquare,
-  Trash2,
   SquarePen,
+  Trash2,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import '../../pages/Profile.scss';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
-import type User from '../../types/User';
 import type { IProposition } from '../../types/Proposition';
+import type User from '../../types/User';
 import Grade from '../Grade';
 import Post from '../Post';
 import Testimonial from '../Testimonial';
 import AvailabilityEditor from '../profile/AvailabilityEditor';
+import AvatarUploader from '../profile/AvatarUploader';
 import ConfirmModal from '../profile/ConfirmModal';
 import IsAvailableToggle from '../profile/IsAvailableToggle';
 import PasswordModal from '../profile/PasswordModal';
 import ProfileHeaderEditor from '../profile/ProfileHeaderEditor';
 import SkillEditor from '../profile/SkillEditor';
 import SkillWantedEditor from '../profile/SkillWantedEditor';
-import AvatarUploader from '../profile/AvatarUploader';
 import './ProfileMain.scss';
 
 function ProfilePage() {
