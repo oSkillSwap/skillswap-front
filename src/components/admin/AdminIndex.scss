@@ -7,7 +7,7 @@
   width: 100%;
 
   h2 {
-    color: $color-primary;
+    color: $color-info;
     display: flex;
     align-items: center;
     gap: $spacing-md;
@@ -43,7 +43,6 @@
         display: flex;
         align-items: center;
         gap: $spacing-sm;
-        font-weight: $font-weight-bold;
       }
 
       .value {
@@ -65,11 +64,11 @@
       background-color: $color-white;
       border-radius: 1.2rem;
       padding: $spacing-xl;
-      box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.05);
+      box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.2);
 
       h3 {
         font-size: $font-size-lg;
-        font-weight: $font-weight-bold;
+        font-weight: 400;
         margin-bottom: $spacing-md;
         display: flex;
         align-items: center;
@@ -99,5 +98,17 @@
         }
       }
     }
+  }
+}
+
+.card {
+  cursor: pointer;
+  text-decoration: none;
+  color: $color-info;
+
+  &:hover {
+    background-color: $color-primary-light;
+    box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.1);
+    color: $color-info;
   }
 }

@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
+import { Link } from 'react-router';
+import { Outlet } from 'react-router';
 import './AdminIndex.scss';
-import { ShieldCheck, User, FileText, LayoutGrid } from 'lucide-react';
+import {
+  ShieldCheck,
+  User,
+  FileText,
+  LayoutGrid,
+  UserPlus,
+  Megaphone,
+} from 'lucide-react';
 
 type AdminDashboard = {
   message: string;
@@ -20,7 +29,7 @@ type AdminDashboard = {
       id: number;
       title: string;
       createdAt: string;
-      author?: {
+      Author?: {
         id: number;
         username: string;
       };
@@ -36,8 +45,6 @@ function AdminIndex() {
     const fetchDashboard = async () => {
       try {
         const res = await api.get('/admin/dashboard');
-        // biome-ignore lint/suspicious/noConsole: <explanation>
-        console.log('Dashboard reçu :', res.data);
         setDashboard(res.data);
       } catch (err: unknown) {
         if (err && typeof err === 'object' && 'response' in err) {
@@ -47,15 +54,14 @@ function AdminIndex() {
           };
           // biome-ignore lint/suspicious/noConsole: <explanation>
           console.error(
-            'Erreur complète :',
+            'Erreur admin :',
             error.response?.data || error.message || error,
           );
-          setError('Impossible de charger les données admin.');
         } else {
           // biome-ignore lint/suspicious/noConsole: <explanation>
           console.error('Erreur inconnue :', err);
-          setError('Une erreur est survenue.');
         }
+        setError('Impossible de charger les données admin.');
       }
     };
 
@@ -65,45 +71,54 @@ function AdminIndex() {
   if (error) return <div className="container">{error}</div>;
   if (!dashboard) return <div className="container">Chargement...</div>;
 
+  const { stats, recent } = dashboard;
+
   return (
     <div className="admin-dashboard container">
-      <h2 className="title-admin-pannel-dashboard">
-        <ShieldCheck /> Tableau de bord
+      <h2>
+        <ShieldCheck />
+        Tableau de bord
       </h2>
 
       <div className="admin-dashboard-cards">
-        <div className="card">
+        <Link to="users" className="card">
           <div className="label">
-            <User /> Gérer les utilisateurs
+            <User />
+            Gérer les utilisateurs
           </div>
-          <div className="value">{dashboard.stats.totalUsers} Membres</div>
-        </div>
-        <div className="card">
+          <div className="value">{stats.totalUsers} membres</div>
+        </Link>
+
+        <Link to="posts" className="card">
           <div className="label">
-            <FileText /> Gérer les annonces
+            <FileText />
+            Gérer les annonces
           </div>
-          <div className="value">{dashboard.stats.totalPosts} Annonces</div>
-        </div>
-        <div className="card">
+          <div className="value">{stats.totalPosts} annonces</div>
+        </Link>
+
+        <Link to="categories" className="card">
           <div className="label">
-            <LayoutGrid /> Gérer les catégories
+            <LayoutGrid />
+            Gérer les catégories
           </div>
-          <div className="value">
-            {dashboard.stats.totalCategories} Catégories
-          </div>
-        </div>
+          <div className="value">{stats.totalCategories} catégories</div>
+        </Link>
       </div>
 
       <div className="admin-dashboard-lists">
         <div className="list">
           <h3>
-            <User /> Derniers utilisateurs inscrits
+            <UserPlus />
+            Derniers utilisateurs inscrits
           </h3>
           <ul>
-            {dashboard.recent.users.map((u) => (
-              <li key={u.id}>
-                <span>{u.username}</span>
-                <span>{new Date(u.createdAt).toLocaleDateString()}</span>
+            {recent.users.map((user) => (
+              <li key={user.id}>
+                <span>{user.username}</span>
+                <time>
+                  {new Date(user.createdAt).toLocaleDateString('fr-FR')}
+                </time>
               </li>
             ))}
           </ul>
@@ -111,27 +126,32 @@ function AdminIndex() {
 
         <div className="list">
           <h3>
-            <FileText /> Dernières annonces postées
+            <Megaphone />
+            Dernières annonces postées
           </h3>
           <ul>
-            {dashboard.recent.posts.map((p) => (
-              <li key={p.id}>
-                <span>{p.title}</span>
-                <span className="author">
-                  {p.author?.username ? (
+            {recent.posts.map((post) => (
+              <li key={post.id}>
+                <span>{post.title}</span>
+                <small>
+                  {post.Author?.username ? (
                     <>
-                      par {p.author.username} —{' '}
-                      {new Date(p.createdAt).toLocaleDateString('fr-FR')}
+                      par {post.Author.username} le{' '}
+                      {new Date(post.createdAt).toLocaleDateString('fr-FR')}
                     </>
                   ) : (
-                    <>Annonce sans auteur</>
+                    <>
+                      Utilisateur inconnu —{' '}
+                      {new Date(post.createdAt).toLocaleDateString('fr-FR')}
+                    </>
                   )}
-                </span>
+                </small>
               </li>
             ))}
           </ul>
         </div>
       </div>
+      <Outlet />
     </div>
   );
 }

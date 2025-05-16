@@ -19,7 +19,10 @@ import ProfileOffers from './components/tabs/ProfileOffers';
 import ProfilePosts from './components/tabs/ProfilePosts';
 import ProfileLayout from './pages/Profile';
 
-import ProfileAdmin from './components/admin/AdminIndex';
+import AdminIndex from './components/admin/AdminIndex';
+import AdminUserIndex from './components/admin/adminUser/adminUserIndex';
+import AdminPostIndex from './components/admin/adminPost/AdminPostIndex';
+import AdminCategoriesIndex from './components/admin/adminCategories/AdminCategoriesIndex';
 
 function App() {
   const location = useLocation();
@@ -50,7 +53,12 @@ function App() {
             <Route path="offers" element={<ProfileOffers />} />
             <Route path="exchanges" element={<ProfileExchanges />} />
 
-            <Route path="admin" element={<ProfileAdmin />} />
+            <Route path="admin">
+              <Route index element={<AdminIndex />} />
+              <Route path="users" element={<AdminUserIndex />} />
+              <Route path="posts" element={<AdminPostIndex />} />
+              <Route path="categories" element={<AdminCategoriesIndex />} />
+            </Route>
           </Route>
         </Routes>
       </AnimatePresence>
