@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
+import './AdminIndex.scss';
+import { ShieldCheck, User, FileText, LayoutGrid } from 'lucide-react';
 
 type AdminDashboard = {
   message: string;
@@ -9,8 +11,20 @@ type AdminDashboard = {
     totalCategories: number;
   };
   recent: {
-    users: { id: number; username: string }[];
-    posts: { id: number; title: string }[];
+    users: {
+      id: number;
+      username: string;
+      createdAt: string;
+    }[];
+    posts: {
+      id: number;
+      title: string;
+      createdAt: string;
+      author?: {
+        id: number;
+        username: string;
+      };
+    }[];
   };
 };
 
@@ -52,33 +66,72 @@ function AdminIndex() {
   if (!dashboard) return <div className="container">Chargement...</div>;
 
   return (
-    <div className="container">
-      <h2>{dashboard.message}</h2>
-      <p>Total utilisateurs : {dashboard.stats.totalUsers}</p>
-      <p>Total annonces : {dashboard.stats.totalPosts}</p>
-      <p>Total catégories : {dashboard.stats.totalCategories}</p>
+    <div className="admin-dashboard container">
+      <h2 className="title-admin-pannel-dashboard">
+        <ShieldCheck /> Tableau de bord
+      </h2>
 
-      <h3>Derniers utilisateurs :</h3>
-      {dashboard.recent.users.length > 0 ? (
-        <ul>
-          {dashboard.recent.users.map((u) => (
-            <li key={u.id}>{u.username}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Aucun utilisateur récent.</p>
-      )}
+      <div className="admin-dashboard-cards">
+        <div className="card">
+          <div className="label">
+            <User /> Gérer les utilisateurs
+          </div>
+          <div className="value">{dashboard.stats.totalUsers} Membres</div>
+        </div>
+        <div className="card">
+          <div className="label">
+            <FileText /> Gérer les annonces
+          </div>
+          <div className="value">{dashboard.stats.totalPosts} Annonces</div>
+        </div>
+        <div className="card">
+          <div className="label">
+            <LayoutGrid /> Gérer les catégories
+          </div>
+          <div className="value">
+            {dashboard.stats.totalCategories} Catégories
+          </div>
+        </div>
+      </div>
 
-      <h3>Dernières annonces :</h3>
-      {dashboard.recent.posts.length > 0 ? (
-        <ul>
-          {dashboard.recent.posts.map((p) => (
-            <li key={p.id}>{p.title}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Aucune annonce récente.</p>
-      )}
+      <div className="admin-dashboard-lists">
+        <div className="list">
+          <h3>
+            <User /> Derniers utilisateurs inscrits
+          </h3>
+          <ul>
+            {dashboard.recent.users.map((u) => (
+              <li key={u.id}>
+                <span>{u.username}</span>
+                <span>{new Date(u.createdAt).toLocaleDateString()}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="list">
+          <h3>
+            <FileText /> Dernières annonces postées
+          </h3>
+          <ul>
+            {dashboard.recent.posts.map((p) => (
+              <li key={p.id}>
+                <span>{p.title}</span>
+                <span className="author">
+                  {p.author?.username ? (
+                    <>
+                      par {p.author.username} —{' '}
+                      {new Date(p.createdAt).toLocaleDateString('fr-FR')}
+                    </>
+                  ) : (
+                    <>Annonce sans auteur</>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
