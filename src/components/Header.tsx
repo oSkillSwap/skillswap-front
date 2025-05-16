@@ -118,7 +118,7 @@ function Header() {
                           src={
                             user.avatar.startsWith('http')
                               ? user.avatar
-                              : `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}${user.avatar}`
+                              : `${import.meta.env.VITE_API_URL}${user.avatar}`
                           }
                           alt={user.username}
                         />
