@@ -19,6 +19,8 @@ import ProfileOffers from './components/tabs/ProfileOffers';
 import ProfilePosts from './components/tabs/ProfilePosts';
 import ProfileLayout from './pages/Profile';
 
+import ProfileAdmin from './components/admin/AdminIndex';
+
 function App() {
   const location = useLocation();
 
@@ -47,6 +49,8 @@ function App() {
             <Route path="posts" element={<ProfilePosts />} />
             <Route path="offers" element={<ProfileOffers />} />
             <Route path="exchanges" element={<ProfileExchanges />} />
+
+            <Route path="admin" element={<ProfileAdmin />} />
           </Route>
         </Routes>
       </AnimatePresence>
