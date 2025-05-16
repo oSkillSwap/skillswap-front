@@ -36,10 +36,11 @@
 
   &-footer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: $spacing-md;
-    gap: $spacing-md;
+    gap: $spacing-xs;
   }
 
   &-form {
@@ -67,7 +68,7 @@
         border: 3px solid $color-gray;
         background-color: $color-gray;
 
-        &:focus {
+        &:focus-within {
           outline: none;
           border-color: $color-primary;
         }
@@ -80,6 +81,19 @@
 
         & button {
           width: fit-content;
+
+          & svg {
+            opacity: 0.5;
+            @include transition-opacity;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
         }
       }
     }

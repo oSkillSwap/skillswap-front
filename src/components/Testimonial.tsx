@@ -8,25 +8,27 @@ function Testimonial({ data }: { data: User['Reviews'][0] }) {
 
   return (
     <article className="testimonials-card">
-      {isDeleted ? (
-        <img
-          className="testimonials-card-picture deleted-user"
-          src="/img/avatars/robot1.jpg"
-          alt="Utilisateur supprimé"
-        />
-      ) : (
-        <Link to={`/profile/${data.Reviewer.id}`}>
+      <div className="testimonials-card-header">
+        {isDeleted ? (
           <img
-            className="testimonials-card-picture"
-            src={data.Reviewer.avatar}
-            alt={data.Reviewer.username}
+            className="testimonials-card-picture deleted-user"
+            src="/img/avatars/robot1.jpg"
+            alt="Utilisateur supprimé"
           />
-        </Link>
-      )}
+        ) : (
+          <Link to={`/profile/${data.Reviewer.id}`}>
+            <img
+              className="testimonials-card-picture"
+              src={data.Reviewer.avatar}
+              alt={data.Reviewer.username}
+            />
+          </Link>
+        )}
 
-      <div className="testimonials-card-title">
-        <h3>{data.title}</h3>
-        <Grade rating={data.grade} />
+        <div className="testimonials-card-title">
+          <h3>{data.title}</h3>
+          <Grade rating={data.grade} />
+        </div>
       </div>
 
       <p className="testimonials-card-comment">{data.content}</p>
@@ -34,8 +36,8 @@ function Testimonial({ data }: { data: User['Reviews'][0] }) {
       <p className="testimonials-card-info">
         {isDeleted ? 'Utilisateur supprimé' : data.Reviewer.username},{' le '}
         {new Date(data.createdAt).toLocaleDateString('fr-FR', {
-        //{data.Reviewer.username},{' le '}
-        //{new Date(data.createdAt as string).toLocaleDateString('fr-FR', 
+          //{data.Reviewer.username},{' le '}
+          //{new Date(data.createdAt as string).toLocaleDateString('fr-FR',
           day: 'numeric',
           month: 'long',
           year: 'numeric',
