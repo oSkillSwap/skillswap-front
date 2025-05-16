@@ -180,41 +180,36 @@ function ProfilePage() {
 
       <main className="profile container">
         <section className="profile-header">
-          <div className="profile-header-picture">
-            {!isEditingAvatar && (
-              <img
-                src={
-                  userData.avatar.startsWith('http')
-                    ? userData.avatar
-                    : `${import.meta.env.VITE_API_URL}${userData.avatar}`
-                }
-                alt={userData.username}
-              />
-            )}
-            {isOwnProfile && (
-              <button
-                type="button"
-                className={`btn btn-reversed btn-icon edit-avatar-btn ${isEditingAvatar ? 'is-editing' : ''}`}
-                onClick={() => {
-                  if (isEditingAvatar) {
-                    const saveEvent = new Event('submit-avatar-upload');
-                    window.dispatchEvent(saveEvent);
-                  } else {
-                    setIsEditingAvatar(true);
-                  }
-                }}
-              >
-                <>
-                  <SquarePen size={18} /> Editer
-                </>
-              </button>
-            )}
-            <AvatarUploader
-              isEditing={isEditingAvatar}
-              setUserData={setUserData}
-              onSuccess={() => setIsEditingAvatar(false)}
+          {!isEditingAvatar && (
+            <img
+              className="profile-header-picture"
+              src={userData.avatar}
+              alt={userData.username}
             />
-          </div>
+          )}
+          {isOwnProfile && (
+            <button
+              type="button"
+              className={`btn btn-reversed btn-icon edit-avatar-btn ${isEditingAvatar ? 'is-editing' : ''}`}
+              onClick={() => {
+                if (isEditingAvatar) {
+                  const saveEvent = new Event('submit-avatar-upload');
+                  window.dispatchEvent(saveEvent);
+                } else {
+                  setIsEditingAvatar(true);
+                }
+              }}
+            >
+              <>
+                <SquarePen size={18} /> Editer
+              </>
+            </button>
+          )}
+          <AvatarUploader
+            isEditing={isEditingAvatar}
+            setUserData={setUserData}
+            onSuccess={() => setIsEditingAvatar(false)}
+          />
           <div className="profile-header-content">
             <div>
               <div className="profile-header-content-title">
