@@ -194,7 +194,7 @@ function ProfilePage() {
           {isOwnProfile && (
             <button
               type="button"
-              className="btn btn-reversed btn-icon edit-avatar-btn"
+              className={`btn btn-reversed btn-icon edit-avatar-btn ${isEditingAvatar ? 'is-editing' : ''}`}
               onClick={() => {
                 if (isEditingAvatar) {
                   const saveEvent = new Event('submit-avatar-upload');

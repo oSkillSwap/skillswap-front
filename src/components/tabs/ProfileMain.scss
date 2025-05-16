@@ -13,21 +13,47 @@
     }
 
    .edit-avatar-btn {
-    background: transparent;
     position: absolute;
-    bottom: -2rem;
-    left: -1rem;
+    top: 0;
     padding: 1.5rem;
     display: flex;
     align-items: center;
     gap: 4px;
     font-size: 1.5rem;
     z-index: 10;
+    color: $color-white;
+    background-color: rgba($color-white, 0.2);
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    text-indent: -9999px;
+    overflow: hidden;
 
-   
+    &.is-editing{
+      width: 1px;
+      height: 1px;
+    }
+
+    svg{
+      width: 3rem;
+      height: 3rem;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover{
+       background-color: rgba($color-white, 0.4);
+
+       svg{
+        width: 4rem;
+        height: 4rem;
+       }
+    }
   }
  }
 }
+
+
+
 
 
   
