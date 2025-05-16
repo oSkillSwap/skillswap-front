@@ -114,14 +114,7 @@ function Header() {
                         to="/profile"
                         onClick={handleLinkClick}
                       >
-                        <img
-                          src={
-                            user.avatar.startsWith('http')
-                              ? user.avatar
-                              : `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}${user.avatar}`
-                          }
-                          alt={user.username}
-                        />
+                        <img src={user.avatar} alt={user.username} />
                         {user.username}
                       </NavLink>
                     )}

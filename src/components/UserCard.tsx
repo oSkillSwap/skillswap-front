@@ -144,11 +144,7 @@ function UserCard({ user }: { user: IUsers }) {
       >
         <img
           className="profile-card-picture"
-          src={
-            user.avatar.startsWith('http')
-              ? user.avatar
-              : `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}${user.avatar}`
-          }
+          src={user.avatar}
           alt={user.username}
         />
       </Link>

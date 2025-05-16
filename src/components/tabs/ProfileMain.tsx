@@ -183,11 +183,7 @@ function ProfilePage() {
           {!isEditingAvatar && (
             <img
               className="profile-header-picture"
-              src={
-                userData.avatar.startsWith('http')
-                  ? userData.avatar
-                  : `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}${userData.avatar}`
-              }
+              src={userData.avatar}
               alt={userData.username}
             />
           )}
