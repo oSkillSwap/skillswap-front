@@ -19,31 +19,20 @@ function Header() {
   const [isMobile, setIsMobile] = useState(false);
   const { user, logout } = useAuth();
 
-  // Check if the screen is mobile size
-  // and update the state accordingly
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    // Initial check
-    // to set the state based on the current screen size
     checkIfMobile();
-
-    // Update the state on resize
-    // to handle screen size changes
     window.addEventListener('resize', checkIfMobile);
-
-    return () => {
-      window.removeEventListener('resize', checkIfMobile);
-    };
+    return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Close the menu when a link is clicked on mobile
   const handleLinkClick = () => {
     if (isMobile && isMenuOpen) {
       toggleMenu();
@@ -122,9 +111,17 @@ function Header() {
                     {!isMobile && (
                       <NavLink
                         className="header-nav-element-link header-nav-element-user-link"
-                        to={'/profile'}
+                        to="/profile"
+                        onClick={handleLinkClick}
                       >
-                        <img src={user.avatar} alt={user.username} />
+                        <img
+                          src={
+                            user.avatar.startsWith('http')
+                              ? user.avatar
+                              : `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}${user.avatar}`
+                          }
+                          alt={user.username}
+                        />
                         {user.username}
                       </NavLink>
                     )}
@@ -132,7 +129,7 @@ function Header() {
                       <div className="header-nav-element-user-dropdown-content">
                         <Link
                           className="header-nav-element-link"
-                          to={'/profile'}
+                          to="/profile"
                           onClick={handleLinkClick}
                         >
                           Mon profil
@@ -164,7 +161,7 @@ function Header() {
                             logout();
                             handleLinkClick();
                           }}
-                          to={'/'}
+                          to="/"
                         >
                           Me déconnecter
                           <LogOut />

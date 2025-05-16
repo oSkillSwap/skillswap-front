@@ -103,7 +103,7 @@ function Login() {
             <label htmlFor="remember">Se souvenir de moi</label>
           </div>
 
-          <Link to="/">Mot de passe oublié ?</Link>
+          <Link to="/forgot-password">Mot de passe oublié ?</Link>
 
           <button type="submit" className="btn btn-default">
             Se connecter

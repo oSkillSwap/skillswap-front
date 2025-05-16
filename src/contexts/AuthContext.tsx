@@ -1,9 +1,16 @@
 import type React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import api, {
   clearScheduledTokenRefresh,
   scheduleTokenRefresh,
 } from '../services/api';
+
 import type User from '../types/User';
 
 type AuthContextType = {
@@ -18,6 +25,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Pour permettre l'appel externe de updateToken
 let externalUpdateToken: (token: string) => void = () => {};
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -25,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  // Set user and accessToken state if they exist in localStorage
+  // Init depuis localStorage
   useEffect(() => {
     const storedToken = localStorage.getItem('accessToken');
     const storedUser = localStorage.getItem('user');
@@ -33,56 +41,63 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (storedToken && storedUser) {
       setAccessToken(storedToken);
       setUser(JSON.parse(storedUser));
-      scheduleTokenRefresh(storedToken); // ✅ planifie le refresh dès que tu retrouves un token
+      scheduleTokenRefresh(storedToken); // Refresh auto
     }
 
     setIsAuthLoading(false);
   }, []);
 
-  // Update localStorage whenever user state changes
+  // Sync user et token vers localStorage
   useEffect(() => {
     if (user && accessToken) {
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('accessToken', accessToken);
+    } else {
+      localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
     }
   }, [user, accessToken]);
 
-  // Login function
-  const login = async (email: string, password: string, remember: boolean) => {
-    try {
-      const response = await api.post('/login', { email, password });
-      const { token, user } = response.data;
+  // Login
+  const login = useCallback(
+    async (email: string, password: string, remember: boolean) => {
+      try {
+        const response = await api.post('/login', { email, password });
+        const { token, user } = response.data;
 
-      setUser(user);
-      setAccessToken(token);
+        setUser(user);
+        setAccessToken(token);
 
-      if (remember) {
-        localStorage.setItem('accessToken', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        if (remember) {
+          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('accessToken', token);
+        }
+
+        scheduleTokenRefresh(token); // auto refresh planner
+      } catch (err) {
+        setUser(null);
+        setAccessToken(null);
+        throw err;
       }
+    },
+    [],
+  );
 
-      scheduleTokenRefresh(token); // ✅ planifie aussi ici après login
-    } catch (error) {
-      setUser(null);
-      setAccessToken(null);
-      throw error;
-    }
-  };
-
-  // Refresh token function
+  // Refresh accessToken
   const updateToken = (newToken: string) => {
     setAccessToken(newToken);
   };
 
   externalUpdateToken = updateToken;
 
-  // Logout function
-  const logout = () => {
+  // Logout
+  const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('user');
     setAccessToken(null);
+    localStorage.removeItem('user');
     localStorage.removeItem('accessToken');
-    clearScheduledTokenRefresh(); // ✅
-  };
+    clearScheduledTokenRefresh(); // delete auto refresh
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -101,12 +116,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const getExternalUpdateToken = () => externalUpdateToken;
-
-export const useAuth = () => {
+// Hook standard
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };
+
+// External access to updateToken
+export const getExternalUpdateToken = () => externalUpdateToken;
