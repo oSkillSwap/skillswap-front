@@ -4,6 +4,7 @@ import {
   MessageSquare,
   SquarePen,
   Trash2,
+  X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import '../../pages/Profile.scss';
@@ -180,36 +181,45 @@ function ProfilePage() {
 
       <main className="profile container">
         <section className="profile-header">
-          {!isEditingAvatar && (
-            <img
-              className="profile-header-picture"
-              src={userData.avatar}
-              alt={userData.username}
+          <div className="profile-header-picture">
+            {!isEditingAvatar && (
+              <img
+                className="profile-header-picture"
+                src={userData.avatar}
+                alt={userData.username}
+              />
+            )}
+            {isOwnProfile && (
+              <button
+                type="button"
+                className={`btn btn-icon edit-avatar-btn ${isEditingAvatar ? 'btn-secondary cancel-edit-avatar-btn' : 'btn-reversed'}`}
+                onClick={() => {
+                  if (isEditingAvatar) {
+                    const saveEvent = new Event('submit-avatar-upload');
+                    window.dispatchEvent(saveEvent);
+                    setIsEditingAvatar(false);
+                  } else {
+                    setIsEditingAvatar(true);
+                  }
+                }}
+              >
+                {isEditingAvatar ? (
+                  <>
+                    <X size={18} /> Annuler
+                  </>
+                ) : (
+                  <>
+                    <SquarePen size={18} /> Editer
+                  </>
+                )}
+              </button>
+            )}
+            <AvatarUploader
+              isEditing={isEditingAvatar}
+              setUserData={setUserData}
+              onSuccess={() => setIsEditingAvatar(false)}
             />
-          )}
-          {isOwnProfile && (
-            <button
-              type="button"
-              className={`btn btn-reversed btn-icon edit-avatar-btn ${isEditingAvatar ? 'is-editing' : ''}`}
-              onClick={() => {
-                if (isEditingAvatar) {
-                  const saveEvent = new Event('submit-avatar-upload');
-                  window.dispatchEvent(saveEvent);
-                } else {
-                  setIsEditingAvatar(true);
-                }
-              }}
-            >
-              <>
-                <SquarePen size={18} /> Editer
-              </>
-            </button>
-          )}
-          <AvatarUploader
-            isEditing={isEditingAvatar}
-            setUserData={setUserData}
-            onSuccess={() => setIsEditingAvatar(false)}
-          />
+          </div>
           <div className="profile-header-content">
             <div>
               <div className="profile-header-content-title">
