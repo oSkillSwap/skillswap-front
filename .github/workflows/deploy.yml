@@ -19,6 +19,10 @@ jobs:
           node-version: '22' # ou la version utilisée dans le projet
           cache: 'npm'
 
+      - name: 🔐 Generate .env file
+        run: |
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+          
       - name: 📦 Install dependencies & build
         run: |
           rm -rf node_modules package-lock.json
