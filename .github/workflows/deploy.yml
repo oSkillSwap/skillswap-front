@@ -22,7 +22,7 @@ jobs:
       - name: 📦 Install dependencies & build
         run: |
           rm -rf node_modules package-lock.json
-          npm ci
+          npm install
           npm run build
 
       - name: 🛡️ Setup SSH
