@@ -1,6 +1,5 @@
 import { CirclePlus, LogIn } from 'lucide-react';
 import './Homepage.scss';
-
 import { useNavigate } from 'react-router';
 import heroImage from '/src/assets/img/hero-image.webp';
 import homeImage from '/src/assets/img/home-image.webp';
