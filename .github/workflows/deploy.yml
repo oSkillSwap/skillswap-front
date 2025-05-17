@@ -13,6 +13,17 @@ jobs:
       - name: ✅ Checkout repo
         uses: actions/checkout@v3
 
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22' # ou la version utilisée dans le projet
+          cache: 'npm'
+
+      - name: 📦 Install dependencies & build
+        run: |
+          npm ci
+          npm run build
+
       - name: 🛡️ Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -20,20 +31,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: 🚀 Deploy code
+      - name: 📤 Sync build to EC2
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            nvm use node
-
-            cd ${{ secrets.DEPLOY_PATH }}
-            git fetch origin
-            git rebase
-            git switch feature/github-action
-            git pull origin feature/github-action
-            npm ci
-            npm run build
-            sudo rsync -r --delete ${{ secrets.DEPLOY_PATH }}/dist/ ${{ secrets.NGINX_TARGET_PATH }}
-          EOF
-          
+          rsync -avz --delete ./dist/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.NGINX_TARGET_PATH }}
