@@ -3,6 +3,7 @@ import 'swiper/scss';
 import './TestimonialCarousel.scss';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Autoplay } from 'swiper/modules';
 import api from '../services/api';
 import type Review from '../types/Review';
 import Loader from './Loader';
@@ -71,7 +72,7 @@ function TestimonialCarousel() {
               spaceBetween: 32,
             },
           }}
-          // modules={[Autoplay]}
+          modules={[Autoplay]}
         >
           {reviews.map((review) => (
             <SwiperSlide key={review.id}>
