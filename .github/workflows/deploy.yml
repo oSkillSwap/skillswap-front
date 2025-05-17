@@ -31,8 +31,7 @@ jobs:
             git stash
             git switch feature/github-action
             git pull origin feature/github-action
-            rm -rf node_modules package-lock.json
-            npm install
+            npm ci
             npm run build
             sudo rsync -r --delete ${{ secrets.DEPLOY_PATH }}/dist/ ${{ secrets.NGINX_TARGET_PATH }}
           EOF
