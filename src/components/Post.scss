@@ -1,5 +1,3 @@
-@use "../styles/variables" as *;
-
 .post {
   width: 100%;
   display: flex;
@@ -137,11 +135,11 @@
     }
   }
 
-  .btn.btn-disabled{
+  .btn.btn-disabled {
     background-color: $color-gray;
     cursor: auto;
 
-    &:hover{
+    &:hover {
       color: inherit;
     }
   }
