@@ -29,6 +29,7 @@ jobs:
 
             cd ${{ secrets.DEPLOY_PATH }}
             git stash
+            git switch feature/github-action
             git pull origin feature/github-action
             npm install
             npm run build
