@@ -10,7 +10,7 @@
   position: sticky;
   top: $spacing-md;
   z-index: 100;
-  
+
   &-wrapper {
     display: flex;
     justify-content: space-between;
@@ -18,23 +18,23 @@
     width: 100%;
     position: relative;
   }
-  
+
   &-logo {
     max-width: 14.9rem;
     color: inherit;
     z-index: 100;
     @include transition-color;
-    
+
     &:hover {
       color: $color-primary;
     }
-    
+
     svg {
       width: 100%;
       height: auto;
     }
   }
-  
+
   &-nav {
     display: flex;
     list-style: none;
@@ -50,12 +50,12 @@
       width: 100%;
       font-size: $font-size-xl;
       font-weight: $font-weight-bold;
-      
+
       &-link {
         color: $color-white;
         text-decoration: none;
         @include transition-color;
-        
+
         &:hover {
           color: $color-primary;
         }
@@ -106,7 +106,7 @@
   background-color: $color-black;
   transition: right 0.3s ease;
   z-index: 90;
-  
+
   &.open {
     right: 0;
   }
@@ -116,42 +116,43 @@
   .hamburger-btn {
     display: none;
   }
-  
+
   .mobile-nav {
     display: none;
   }
-  
+
   .header {
     &-nav {
       flex-direction: row;
       align-items: center;
-      
+
       &-element {
         width: auto;
         font-size: $font-size-md;
-        
+
         &-user {
           position: relative;
-          
+
           &-link {
             display: flex;
             align-items: center;
             gap: $spacing-sm;
-  
+
             & img {
               width: 4.8rem;
+              height: 4.8rem;
               border-radius: 50%;
               object-fit: cover;
               background-color: $color-white;
             }
           }
-  
+
           &-dropdown {
             position: absolute;
             display: none;
             top: 100%;
             right: 0;
-  
+
             &-content {
               gap: $spacing-md;
               margin-top: $spacing-xl;
@@ -161,7 +162,7 @@
               align-items: center;
             }
           }
-  
+
           &:hover &-dropdown {
             display: block;
           }

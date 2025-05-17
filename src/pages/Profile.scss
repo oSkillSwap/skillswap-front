@@ -201,6 +201,7 @@
   width: 100%;
   display: flex;
   gap: $spacing-sm;
+  margin-top: -$spacing-md;
 
   .active {
     background-color: $color-black;
@@ -212,7 +213,6 @@
     color: $color-white;
   }
 }
-
 
 .profile-header.profile-posts {
   align-items: flex-start;

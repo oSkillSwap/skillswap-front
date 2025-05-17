@@ -25,6 +25,7 @@ import ProfileHeaderEditor from '../profile/ProfileHeaderEditor';
 import SkillEditor from '../profile/SkillEditor';
 import SkillWantedEditor from '../profile/SkillWantedEditor';
 import './ProfileMain.scss';
+import Loader from '../Loader';
 
 function ProfilePage() {
   let { userId } = useParams();
@@ -50,9 +51,9 @@ function ProfilePage() {
     connectedUser?.username === userId;
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (isAuthLoading) return;
+    if (isAuthLoading) return;
 
+    const fetchData = async () => {
       try {
         setIsLoading(true);
         setError('');
@@ -157,245 +158,237 @@ function ProfilePage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <main className="container">
-        <h1>Chargement...</h1>
-      </main>
-    );
-  }
-
-  if (error !== '' || !userData) {
-    return (
-      <main className="container">
-        <h1>{error}</h1>
-      </main>
-    );
-  }
-
   return (
     <>
+      <Loader isVisible={isLoading} />
+
       {passwordChangeMessage && (
         <div className="success-message">{passwordChangeMessage}</div>
       )}
-
-      <main className="profile container">
-        <section className="profile-header">
-          <div className="profile-header-picture">
-            {!isEditingAvatar && (
-              <img
-                className="profile-header-picture"
-                src={userData.avatar}
-                alt={userData.username}
+      {!isLoading && userData && (
+        <main className="profile container">
+          <section className="profile-header">
+            <div className="profile-header-picture">
+              {!isEditingAvatar && (
+                <img
+                  className="profile-header-picture"
+                  src={userData.avatar}
+                  alt={userData.username}
+                />
+              )}
+              {isOwnProfile && (
+                <button
+                  type="button"
+                  className={`btn btn-icon edit-avatar-btn ${isEditingAvatar ? 'btn-secondary cancel-edit-avatar-btn' : 'btn-reversed'}`}
+                  onClick={() => {
+                    if (isEditingAvatar) {
+                      const saveEvent = new Event('submit-avatar-upload');
+                      window.dispatchEvent(saveEvent);
+                      setIsEditingAvatar(false);
+                    } else {
+                      setIsEditingAvatar(true);
+                    }
+                  }}
+                >
+                  {isEditingAvatar ? (
+                    <>
+                      <X size={18} /> Annuler
+                    </>
+                  ) : (
+                    <>
+                      <SquarePen size={18} /> Editer
+                    </>
+                  )}
+                </button>
+              )}
+              <AvatarUploader
+                isEditing={isEditingAvatar}
+                setUserData={setUserData}
+                onSuccess={() => setIsEditingAvatar(false)}
               />
-            )}
-            {isOwnProfile && (
-              <button
-                type="button"
-                className={`btn btn-icon edit-avatar-btn ${isEditingAvatar ? 'btn-secondary cancel-edit-avatar-btn' : 'btn-reversed'}`}
-                onClick={() => {
-                  if (isEditingAvatar) {
-                    const saveEvent = new Event('submit-avatar-upload');
-                    window.dispatchEvent(saveEvent);
-                    setIsEditingAvatar(false);
-                  } else {
-                    setIsEditingAvatar(true);
+            </div>
+            <div className="profile-header-content">
+              <div>
+                <div className="profile-header-content-title">
+                  <ProfileHeaderEditor
+                    value={userData.username}
+                    field="username"
+                    setUserData={setUserData}
+                    className="editable-username"
+                    type="input"
+                    isOwner={isOwnProfile}
+                  />
+                  <IsAvailableToggle
+                    isAvailable={userData.isAvailable}
+                    setUserData={setUserData}
+                    isOwner={isOwnProfile}
+                  />
+                </div>
+                <Grade
+                  rating={
+                    userData.Reviews.reduce((acc, el) => acc + el.grade, 0) /
+                    userData.Reviews.length
                   }
-                }}
-              >
-                {isEditingAvatar ? (
+                  nbReviews={userData.Reviews.length}
+                />
+              </div>
+
+              <ProfileHeaderEditor
+                value={userData.description}
+                field="description"
+                setUserData={setUserData}
+                type="textarea"
+                isOwner={isOwnProfile}
+              />
+
+              <div className="profile-header-content-btns">
+                {isOwnProfile ? (
                   <>
-                    <X size={18} /> Annuler
+                    <button
+                      className="btn btn-default"
+                      type="button"
+                      onClick={() => setIsPasswordModalOpen(true)}
+                    >
+                      <KeyRound /> Changer le mot de passe
+                    </button>
+                    <button
+                      className="btn btn-alt"
+                      type="button"
+                      onClick={() => setIsConfirmModalOpen(true)}
+                    >
+                      <Trash2 /> Supprimer mon compte
+                    </button>
                   </>
                 ) : (
                   <>
-                    <SquarePen size={18} /> Editer
+                    <button
+                      className="btn btn-default"
+                      type="button"
+                      onClick={() => {
+                        connectedUser
+                          ? navigate(`/message/${userId}`)
+                          : navigate('/login');
+                      }}
+                    >
+                      <MessageSquare /> Contacter
+                    </button>
+                    {connectedUser && (
+                      <button className="btn btn-alt btn-icon" type="button">
+                        <Heart
+                          onClick={handleFollowAndUnfollow}
+                          color={isFollowing ? 'red' : 'black'}
+                          fill={isFollowing ? 'red' : 'transparent'}
+                        />
+                      </button>
+                    )}
                   </>
                 )}
-              </button>
-            )}
-            <AvatarUploader
-              isEditing={isEditingAvatar}
-              setUserData={setUserData}
-              onSuccess={() => setIsEditingAvatar(false)}
-            />
-          </div>
-          <div className="profile-header-content">
-            <div>
-              <div className="profile-header-content-title">
-                <ProfileHeaderEditor
-                  value={userData.username}
-                  field="username"
-                  setUserData={setUserData}
-                  className="editable-username"
-                  type="input"
-                  isOwner={isOwnProfile}
-                />
-                <IsAvailableToggle
-                  isAvailable={userData.isAvailable}
-                  setUserData={setUserData}
-                  isOwner={isOwnProfile}
-                />
               </div>
-              <Grade
-                rating={
-                  userData.Reviews.reduce((acc, el) => acc + el.grade, 0) /
-                  userData.Reviews.length
-                }
-                nbReviews={userData.Reviews.length}
+            </div>
+          </section>
+
+          <div className="profile-col1">
+            <section className="profile-skills">
+              <h2>Compétences</h2>
+              <SkillEditor
+                skills={userData.Skills ?? []}
+                isOwner={isOwnProfile}
+                setUserData={setUserData}
               />
-            </div>
-
-            <ProfileHeaderEditor
-              value={userData.description}
-              field="description"
-              setUserData={setUserData}
-              type="textarea"
-              isOwner={isOwnProfile}
-            />
-
-            <div className="profile-header-content-btns">
-              {isOwnProfile ? (
-                <>
-                  <button
-                    className="btn btn-default"
-                    type="button"
-                    onClick={() => setIsPasswordModalOpen(true)}
-                  >
-                    <KeyRound /> Changer le mot de passe
-                  </button>
-                  <button
-                    className="btn btn-alt"
-                    type="button"
-                    onClick={() => setIsConfirmModalOpen(true)}
-                  >
-                    <Trash2 /> Supprimer mon compte
-                  </button>
-                </>
+            </section>
+            <section className="profile-interest">
+              <h2>Intérêts</h2>
+              <SkillWantedEditor
+                skills={userData.WantedSkills ?? []}
+                isOwner={isOwnProfile}
+                setUserData={setUserData}
+              />
+            </section>
+            <section className="profile-fav">
+              <h2>Favoris</h2>
+              {userData.Follows?.length ? (
+                userData.Follows.map((el) => (
+                  <Link to={`/profile/${el.id}`} key={el.username}>
+                    <img
+                      className="profile-fav-picture"
+                      src={el.avatar}
+                      alt={el.username}
+                    />
+                  </Link>
+                ))
               ) : (
-                <>
-                  <button
-                    className="btn btn-default"
-                    type="button"
-                    onClick={() => {
-                      connectedUser
-                        ? navigate(`/message/${userId}`)
-                        : navigate('/login');
-                    }}
-                  >
-                    <MessageSquare /> Contacter
-                  </button>
-                  {connectedUser && (
-                    <button className="btn btn-alt btn-icon" type="button">
-                      <Heart
-                        onClick={handleFollowAndUnfollow}
-                        color={isFollowing ? 'red' : 'black'}
-                        fill={isFollowing ? 'red' : 'transparent'}
-                      />
-                    </button>
-                  )}
-                </>
+                <p className="no-data">Aucun favori renseigné</p>
               )}
-            </div>
+            </section>
           </div>
-        </section>
 
-        <div className="profile-col1">
-          <section className="profile-skills">
-            <h2>Compétences</h2>
-            <SkillEditor
-              skills={userData.Skills ?? []}
+          <div className="profile-col2">
+            <AvailabilityEditor
+              userData={userData}
               isOwner={isOwnProfile}
               setUserData={setUserData}
             />
-          </section>
-          <section className="profile-interest">
-            <h2>Intérêts</h2>
-            <SkillWantedEditor
-              skills={userData.WantedSkills ?? []}
-              isOwner={isOwnProfile}
-              setUserData={setUserData}
+            <section className="profile-posts">
+              <h2>Annonces</h2>
+              <div className="posts-container">
+                {userData.Posts?.filter((el) => !el.isClosed).length ? (
+                  userData.Posts.filter((el) => !el.isClosed).map((el) => (
+                    <Post
+                      key={el.id}
+                      data={el}
+                      variant="post"
+                      origin="profile"
+                      setUserData={setUserData}
+                      hasAlreadyProposed={propositionsSent.some(
+                        (p) => p.post_id === el.id,
+                      )}
+                    />
+                  ))
+                ) : (
+                  <p className="no-data">Aucune annonce active</p>
+                )}
+              </div>
+            </section>
+
+            <section className="profile-testimonials" id="reviews">
+              <h2>Avis</h2>
+              <div className="testimonials">
+                {userData.Reviews?.length ? (
+                  userData.Reviews.map((el) => (
+                    <Testimonial key={el.id} data={el} />
+                  ))
+                ) : (
+                  <p className="no-data">Aucun avis renseigné</p>
+                )}
+              </div>
+            </section>
+          </div>
+
+          {isPasswordModalOpen && (
+            <PasswordModal
+              onClose={() => setIsPasswordModalOpen(false)}
+              onSuccess={(message) => {
+                setPasswordChangeMessage(message);
+                setIsPasswordModalOpen(false);
+                setTimeout(() => setPasswordChangeMessage(''), 3000);
+              }}
             />
-          </section>
-          <section className="profile-fav">
-            <h2>Favoris</h2>
-            {userData.Follows?.length ? (
-              userData.Follows.map((el) => (
-                <Link to={`/profile/${el.id}`} key={el.username}>
-                  <img
-                    className="profile-fav-picture"
-                    src={el.avatar}
-                    alt={el.username}
-                  />
-                </Link>
-              ))
-            ) : (
-              <p className="no-data">Aucun favori renseigné</p>
-            )}
-          </section>
-        </div>
+          )}
 
-        <div className="profile-col2">
-          <AvailabilityEditor
-            userData={userData}
-            isOwner={isOwnProfile}
-            setUserData={setUserData}
-          />
-          <section className="profile-posts">
-            <h2>Annonces</h2>
-            <div className="posts-container">
-              {userData.Posts?.filter((el) => !el.isClosed).length ? (
-                userData.Posts.filter((el) => !el.isClosed).map((el) => (
-                  <Post
-                    key={el.id}
-                    data={el}
-                    variant="post"
-                    origin="profile"
-                    setUserData={setUserData}
-                    hasAlreadyProposed={propositionsSent.some(
-                      (p) => p.post_id === el.id,
-                    )}
-                  />
-                ))
-              ) : (
-                <p className="no-data">Aucune annonce active</p>
-              )}
-            </div>
-          </section>
-
-          <section className="profile-testimonials" id="reviews">
-            <h2>Avis</h2>
-            <div className="testimonials">
-              {userData.Reviews?.length ? (
-                userData.Reviews.map((el) => (
-                  <Testimonial key={el.id} data={el} />
-                ))
-              ) : (
-                <p className="no-data">Aucun avis renseigné</p>
-              )}
-            </div>
-          </section>
-        </div>
-
-        {isPasswordModalOpen && (
-          <PasswordModal
-            onClose={() => setIsPasswordModalOpen(false)}
-            onSuccess={(message) => {
-              setPasswordChangeMessage(message);
-              setIsPasswordModalOpen(false);
-              setTimeout(() => setPasswordChangeMessage(''), 3000);
-            }}
-          />
-        )}
-
-        {isConfirmModalOpen && (
-          <ConfirmModal
-            message="Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible."
-            onCancel={() => setIsConfirmModalOpen(false)}
-            onConfirm={handleDeleteAccount}
-          />
-        )}
-      </main>
+          {isConfirmModalOpen && (
+            <ConfirmModal
+              message="Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible."
+              onCancel={() => setIsConfirmModalOpen(false)}
+              onConfirm={handleDeleteAccount}
+            />
+          )}
+        </main>
+      )}
+      {!isLoading && (error !== '' || !userData) && (
+        <main className="container">
+          <h1>{error}</h1>
+        </main>
+      )}
     </>
   );
 }
