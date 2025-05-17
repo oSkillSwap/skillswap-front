@@ -3,7 +3,7 @@ name: 🚀 Deploy to EC2
 on:
   push:
     branches:
-      - feature/github-action
+      - dev
 
 jobs:
   deploy:
@@ -22,7 +22,7 @@ jobs:
       - name: 🔐 Generate .env file
         run: |
           echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
-          
+
       - name: 📦 Install dependencies & build
         run: |
           rm -rf node_modules package-lock.json

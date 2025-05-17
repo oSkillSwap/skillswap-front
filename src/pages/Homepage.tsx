@@ -24,7 +24,7 @@ function Homepage() {
           alt="Astronaute assis interagissant par visioconférence avec une collègue à travers un robot flottant dans une station spatiale."
         />
         <div className="homepage-hero-text">
-          <h1>Test</h1>
+          <h1>Échangez vos compétences, enrichissez vos savoirs.</h1>
           <p>
             Trouvez des profils prêts à partager leur expertise… gratuitement !
           </p>
