@@ -22,6 +22,7 @@ function Message() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [otherUser, setOtherUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [input, setInput] = useState('');
   const socketRef = useRef<Socket | null>(null);
   const { user } = useAuth();
@@ -57,6 +58,8 @@ function Message() {
   }, [paramId]);
 
   const fetchConversations = useCallback(async () => {
+    setIsLoading(true);
+
     const response = await api.get('/me/messages');
     const allMsgs = response.data.messages;
 
@@ -89,6 +92,7 @@ function Message() {
       // Update state
       setConversations(convList);
     }
+    setIsLoading(false);
   }, [currentUserId]);
 
   // Init existing messages
@@ -171,6 +175,15 @@ function Message() {
     }
   });
 
+  if (isLoading)
+    return (
+      <main className="container">
+        <section className="content">
+          <h1>Chargement...</h1>
+        </section>
+      </main>
+    );
+
   return (
     <main className="messages container">
       <section className="content">
@@ -212,7 +225,6 @@ function Message() {
         ) : (
           <>
             <h1>Conversations</h1>
-
             {conversations.length > 0 ? (
               conversations?.map((el) => (
                 <Link
