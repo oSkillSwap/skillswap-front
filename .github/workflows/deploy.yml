@@ -28,7 +28,8 @@ jobs:
             nvm use node
 
             cd ${{ secrets.DEPLOY_PATH }}
-            git stash
+            git fetch origin
+            git reset --hard
             git switch feature/github-action
             git pull origin feature/github-action
             npm ci
