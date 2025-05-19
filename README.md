@@ -55,8 +55,8 @@ SkillSwap is a web platform that enables users to exchange skills and knowledge.
 Clone the repository and install dependencies:
 
 ```bash
-git clone git@github.com:O-clock-Samoussas/skill-swap-front.git
-cd skill-swap-front
+git clone git@github.com:oSkillSwap/skillswap-front.git
+cd skillswap-front
 npm install
 ```
 
