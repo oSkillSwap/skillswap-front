@@ -41,7 +41,7 @@ function ProfilePage() {
   const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
   const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
   const [propositionsSent, setPropositionsSent] = useState<IProposition[]>([]);
-
+  
   if (!userId && connectedUser) {
     userId = connectedUser.id.toString() || connectedUser.username;
   }
@@ -49,6 +49,7 @@ function ProfilePage() {
   const isOwnProfile =
     connectedUser?.id?.toString() === userId ||
     connectedUser?.username === userId;
+
 
   useEffect(() => {
     if (isAuthLoading) return;
@@ -266,7 +267,7 @@ function ProfilePage() {
                       type="button"
                       onClick={() => {
                         connectedUser
-                          ? navigate(`/message/${userId}`)
+                          ? navigate(`/message/${userData.id}`)
                           : navigate('/login');
                       }}
                     >
