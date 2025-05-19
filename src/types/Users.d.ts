@@ -1,4 +1,5 @@
 import type { ISkills } from './Skills';
+import type Review from './Review';
 
 export interface IUsers {
   id: number;
@@ -16,4 +17,5 @@ export interface IUsers {
   updatedAt: string;
   Skills: ISkills[];
   WantedSkills: ISkills[];
+  ReviewsReceived?: Review[];
 }
