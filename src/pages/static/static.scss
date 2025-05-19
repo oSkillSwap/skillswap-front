@@ -1,0 +1,14 @@
+.static {
+  & .content {
+    flex-direction: column;
+
+    & .updated-at {
+      font-size: $font-size-xs;
+      text-align: center;
+    }
+
+    & a {
+      font-weight: $font-weight-bold;
+    }
+  }
+}

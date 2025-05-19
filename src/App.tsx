@@ -20,9 +20,14 @@ import ProfileLayout from './pages/Profile';
 import Register from './pages/Register';
 
 import AdminIndex from './components/admin/AdminIndex';
-import AdminPostIndex from './components/admin/adminPost/AdminPostIndex';
 import AdminCategoriesIndex from './components/admin/adminCategories/AdminCategoriesIndex';
+import AdminPostIndex from './components/admin/adminPost/AdminPostIndex';
 import AdminUserIndex from './components/admin/adminUser/AdminUserIndex';
+import About from './pages/static/About';
+import ErrorPage404 from './pages/static/ErrorPage404';
+import Legals from './pages/static/Legals';
+import PrivacyPolicy from './pages/static/PrivacyPolicy';
+import Terms from './pages/static/Terms';
 
 function App() {
   const location = useLocation();
@@ -60,6 +65,12 @@ function App() {
               <Route path="categories" element={<AdminCategoriesIndex />} />
             </Route>
           </Route>
+
+          <Route path="about" element={<About />} />
+          <Route path="legals" element={<Legals />} />
+          <Route path="terms" element={<Terms />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
+          <Route path="/*" element={<ErrorPage404 />} />
         </Routes>
       </AnimatePresence>
       <Footer />
