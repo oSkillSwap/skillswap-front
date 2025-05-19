@@ -60,7 +60,6 @@ function Message() {
 
   const fetchConversations = useCallback(async () => {
     setIsLoading(true);
-    console.log('fetchConversations');
 
     const response = await api.get('/me/messages');
     const allMsgs = response.data.messages;
@@ -181,15 +180,6 @@ function Message() {
     }
   });
 
-  if (isLoading)
-    return (
-      <main className="container">
-        <section className="content">
-          <h1>Chargement...</h1>
-        </section>
-      </main>
-    );
-
   return (
     <main className="messages container">
       <section className="content">
@@ -231,7 +221,13 @@ function Message() {
         ) : (
           <>
             <h1>Conversations</h1>
-            {conversations.length > 0 ? (
+            {isLoading ? (
+              <main className="container">
+                <section className="content">
+                  <h1>Chargement...</h1>
+                </section>
+              </main>
+            ) : conversations.length > 0 ? (
               conversations?.map((el) => (
                 <Link
                   key={el.userId}
