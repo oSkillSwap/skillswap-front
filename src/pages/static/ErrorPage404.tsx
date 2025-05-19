@@ -8,11 +8,15 @@ function ErrorPage404() {
     <main className="error404 container">
       <section className="content">
         <div className="scene">
-          <img className="scene-bg" src="/src/assets/img/404-bg.png" alt="" />
+          <img
+            className="scene-bg"
+            src="/src/assets/img/404-bg.webp"
+            alt="L'espace avec quelques étoiles"
+          />
           <img
             className="scene-char"
-            src="/src/assets/img/404-character.png"
-            alt=""
+            src="/src/assets/img/404-character.webp"
+            alt="Cosmonaute perdu dans l'espace"
           />
         </div>
         <h1>404</h1>
