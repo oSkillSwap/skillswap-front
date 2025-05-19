@@ -4,8 +4,11 @@ import type { ICategories } from '../types/Categories';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<ICategories[] | []>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
+
     const getCategories = async () => {
       try {
         const response = await api.get('/categories');
@@ -13,10 +16,12 @@ export const useCategories = () => {
       } catch (error) {
         // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error('Error fetching categories:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getCategories();
   }, []);
 
-  return { categories };
+  return { categories, isLoading };
 };

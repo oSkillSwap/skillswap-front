@@ -85,6 +85,7 @@ function Login() {
               <button
                 type="button"
                 onClick={() => setIsPwdHidden(!isPwdHidden)}
+                tabIndex={-1}
               >
                 {isPwdHidden ? <Eye /> : <EyeOff />}
               </button>
@@ -103,12 +104,11 @@ function Login() {
             <label htmlFor="remember">Se souvenir de moi</label>
           </div>
 
-          <Link to="/forgot-password">Mot de passe oublié ?</Link>
-
           <button type="submit" className="btn btn-default">
             Se connecter
           </button>
           <div className="login-footer">
+            <Link to="/forgot-password">Mot de passe oublié ?</Link>
             <p>
               Pas encore de compte ? <Link to="/register">S'inscrire</Link>
             </p>

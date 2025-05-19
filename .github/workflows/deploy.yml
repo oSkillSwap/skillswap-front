@@ -1,0 +1,41 @@
+name: 🚀 Deploy to EC2
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22' # ou la version utilisée dans le projet
+          cache: 'npm'
+
+      - name: 🔐 Generate .env file
+        run: |
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+
+      - name: 📦 Install dependencies & build
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+          npm run build
+
+      - name: 🛡️ Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 📤 Sync build to EC2
+        run: |
+          rsync -avz --delete ./dist/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.NGINX_TARGET_PATH }}

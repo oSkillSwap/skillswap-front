@@ -22,19 +22,21 @@ function Message() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [otherUser, setOtherUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [input, setInput] = useState('');
   const socketRef = useRef<Socket | null>(null);
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const { userId: paramId } = useParams();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (isAuthLoading) return;
     if (!user) {
       navigate('/login');
       return;
     }
-  }, [user, navigate]);
+  }, [isAuthLoading, user, navigate]);
 
   // const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
   const currentUserId = user?.id;
@@ -57,6 +59,9 @@ function Message() {
   }, [paramId]);
 
   const fetchConversations = useCallback(async () => {
+    setIsLoading(true);
+    console.log('fetchConversations');
+
     const response = await api.get('/me/messages');
     const allMsgs = response.data.messages;
 
@@ -89,21 +94,26 @@ function Message() {
       // Update state
       setConversations(convList);
     }
+    setIsLoading(false);
   }, [currentUserId]);
 
   // Init existing messages
   useEffect(() => {
-    fetchMsgs();
+    if (!isAuthLoading && user) {
+      fetchMsgs();
+    }
     return () => {
       setMessages([]);
     };
-  }, [fetchMsgs]);
+  }, [fetchMsgs, isAuthLoading, user]);
 
   // Init existing conversations
   useEffect(() => {
-    fetchConversations();
+    if (!isAuthLoading && user) {
+      fetchConversations();
+    }
     return () => setConversations([]);
-  }, [fetchConversations]);
+  }, [fetchConversations, isAuthLoading, user]);
 
   useEffect(() => {
     const fetchOtherUser = async () => {
@@ -171,6 +181,15 @@ function Message() {
     }
   });
 
+  if (isLoading)
+    return (
+      <main className="container">
+        <section className="content">
+          <h1>Chargement...</h1>
+        </section>
+      </main>
+    );
+
   return (
     <main className="messages container">
       <section className="content">
@@ -212,7 +231,6 @@ function Message() {
         ) : (
           <>
             <h1>Conversations</h1>
-
             {conversations.length > 0 ? (
               conversations?.map((el) => (
                 <Link

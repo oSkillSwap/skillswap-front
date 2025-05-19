@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router';
 import ErrorToast from '../components/ErrorToast';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
+import PageTransition from '../utils/PageTransition';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -134,6 +135,7 @@ function Register() {
               />
               <button
                 type="button"
+                tabIndex={-1}
                 onClick={() => setIsPwdHidden(!isPwdHidden)}
               >
                 {isPwdHidden ? <Eye /> : <EyeOff />}
@@ -166,7 +168,12 @@ function Register() {
             />
             <label htmlFor="cgu">
               J'accepte les{' '}
-              <Link to="/cgu" target="_blank" rel="noopener noreferrer">
+              <Link
+                to="/cgu"
+                target="_blank"
+                rel="noopener noreferrer"
+                tabIndex={-1}
+              >
                 conditions générales d'utilisation
               </Link>
             </label>
@@ -189,4 +196,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default PageTransition(Register);

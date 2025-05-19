@@ -2,10 +2,9 @@ import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/scss';
 import './CategoryCarousel.scss';
-
 import { useCategories } from '../hooks/useCategories';
 import type { ICategories } from '../types/Categories';
-
+import Loader from './Loader';
 import * as LucideIcons from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -15,6 +14,9 @@ function CategoryCarousel() {
   const { categories } = useCategories();
 
   return (
+    <>
+      <Loader isVisible={isLoading} />
+      {!isLoading && (
     <Swiper
       className="categories"
       spaceBetween={32}
