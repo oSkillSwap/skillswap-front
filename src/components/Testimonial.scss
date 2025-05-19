@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   gap: $spacing-md;
   align-items: center;
+  flex: 1 1;
 
   &-header {
     display: flex;

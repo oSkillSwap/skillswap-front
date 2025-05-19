@@ -355,7 +355,7 @@ function ProfilePage() {
               <h2>Avis</h2>
               <div className="testimonials">
                 {userData.Reviews?.length ? (
-                  userData.Reviews.map((el) => (
+                  userData.Reviews.slice(0, 2).map((el) => (
                     <Testimonial key={el.id} data={el} />
                   ))
                 ) : (
