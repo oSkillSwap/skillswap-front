@@ -1,0 +1,40 @@
+.profile-skills,
+.profile-interest {
+  &-list {
+    width: 100%;
+  }
+
+  .selected-skill-list {
+    width: 100%;
+
+    & .tag {
+      background-color: $color-primary;
+    }
+  }
+
+  .autocomplete-list {
+    width: 100%;
+    padding: $spacing-sm;
+    background-color: $color-gray;
+    border-radius: 0.8rem;
+    list-style: none;
+    max-height: 14rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: $color-black $color-gray;
+
+    &-item {
+      padding: $spacing-sm 0;
+      border-radius: 0.8rem;
+
+      &:hover {
+        background-color: $color-primary;
+      }
+
+      & > button {
+        width: 100%;
+        text-align: left;
+      }
+    }
+  }
+}

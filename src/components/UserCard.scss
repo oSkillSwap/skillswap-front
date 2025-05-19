@@ -1,0 +1,58 @@
+.profile-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    padding: $spacing-md;
+    border: 3px solid $color-gray;
+    border-top: 0;
+    border-radius: 0 0 1.6rem 1.6rem;
+    flex-grow: 1;
+  }
+
+  &-picture {
+    height: 27.2rem;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1.6rem 1.6rem 0 0;
+  }
+
+  &-skills,
+  &-interests {
+    &-title {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg;
+      margin-bottom: $spacing-sm;
+    }
+
+    &-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacing-sm;
+    }
+  }
+
+  &-btns {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+    height: 100%;
+    align-items: flex-end;
+
+    & > :first-child {
+      flex-grow: 1;
+    }
+  }
+
+  @media screen and (min-width: $breakpoints-sm) {
+    width: calc((100% - 6.4rem) / 2);
+  }
+
+  @media screen and (min-width: $breakpoints-lg) {
+    width: calc((100% - 6.4rem) / 3);
+  }
+}

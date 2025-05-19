@@ -1,0 +1,12 @@
+.grade {
+  display: flex;
+  gap: $spacing-sm;
+
+  &-stars {
+    display: flex;
+  }
+
+  &-nbreviews {
+    font-weight: $font-weight-bold;
+  }
+}

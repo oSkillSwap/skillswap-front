@@ -1,94 +1,114 @@
-# SkillSwap Front
+# SkillSwap Frontend
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/oSkillSwap/skillswap-front?color=blue&label=version)](https://github.com/oSkillSwap/skillswap-front/releases)
+![Language](https://img.shields.io/github/languages/top/oSkillSwap/skillswap-front)
 
-Frontend application for the SkillSwap project developed with React, TypeScript, Sass, and Vite.
+SkillSwap is a web platform that enables users to exchange skills and knowledge. This repository contains the frontend application, built with React, TypeScript, Sass, and Vite.
+
+## Table of Contents
+
+- [SkillSwap Frontend](#skillswap-frontend)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Technologies Used](#technologies-used)
+  - [Installation](#installation)
+  - [Available Scripts](#available-scripts)
+  - [Project Structure](#project-structure)
+  - [Styling with Sass](#styling-with-sass)
+  - [Vite Configuration](#vite-configuration)
+  - [Deployment](#deployment)
+  - [License](#license)
+
+## Features
+
+- User authentication and profile management
+- Skill and availability management
+- Messaging and conversation system (real-time with Socket.IO)
+- Responsive UI with reusable components
+- Category carousel, search, and filtering
+- Avatar upload and inline profile editing
+- Toast notifications and modals
+- Modern, maintainable codebase with TypeScript and strict linting
 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (recommended version: 18.x or higher)
-- npm or yarn or pnpm
+- npm, yarn, or pnpm
 
 ## Technologies Used
 
 - [Vite](https://vitejs.dev/) - Ultra-fast build tool
-- [React 19](https://react.dev/) - JavaScript library for building user interfaces
-- [TypeScript](https://www.typescriptlang.org/) - Typed programming language based on JavaScript
+- [React 19](https://react.dev/) - UI library
+- [React Router](https://reactrouter.com/) - Routing
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Sass](https://sass-lang.com/) - CSS preprocessor
-- [Biome](https://biomejs.dev/) - Formatting and linting tool
+- [Biome](https://biomejs.dev/) - Linting and formatting
+- [Swiper](https://swiperjs.com/) - Carousel/slider
+- [Lucide React](https://lucide.dev/) - Icon library
+- [Axios](https://axios-http.com/) - HTTP client
+- [Socket.IO Client](https://socket.io/docs/v4/client-api/) - Real-time communication
 
 ## Installation
 
 Clone the repository and install dependencies:
 
 ```bash
-# Clone the repository
-git clone git@github.com:O-clock-Samoussas/skill-swap-front.git
-cd skill-swap-front
-
-# Install dependencies
+git clone git@github.com:oSkillSwap/skillswap-front.git
+cd skillswap-front
 npm install
 ```
 
 ## Available Scripts
 
-In the project directory, you can run the following commands:
+In the project directory, you can run:
 
-### `npm run dev`
+- **`npm run dev`**  
+  Runs the app in development mode at [http://localhost:5173](http://localhost:5173).
 
-Runs the application in development mode.  
-Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+- **`npm run build`**  
+  Builds the app for production to the `dist` folder.
 
-The page will automatically reload when you make changes to the code.
+- **`npm run preview`**  
+  Previews the production build locally.
 
-### `npm run build`
+- **`npm run check`**  
+  Runs Biome to check for code issues.
 
-Builds the application for production to the `dist` folder.  
-This command first runs TypeScript compilation then builds the application with Vite.
-
-### `npm run preview`
-
-Allows you to preview the production build locally before deployment.
+- **`npm run format`**  
+  Formats the codebase using Biome.
 
 ## Project Structure
 
 ```
 skillswap-front/
-├── public/             # Static files publicly accessible
+├── public/             # Static files
 ├── src/                # Application source code
 │   ├── assets/         # Images, fonts, etc.
-│   ├── components/     # Reusable React components
+│   ├── components/     # Reusable React components (UI, profile, tabs, etc.)
+│   ├── contexts/       # React context providers (e.g., AuthContext)
 │   ├── hooks/          # Custom React hooks
-│   ├── pages/          # Page components
-│   ├── styles/         # Global Sass files and variables
+│   ├── pages/          # Page-level components (e.g., Message, Profile)
+│   ├── services/       # API and utility services (e.g., axios, token refresh)
+│   ├── styles/         # Global styles, variables, and mixins (Sass)
 │   ├── types/          # TypeScript type definitions
 │   ├── utils/          # Utility functions
 │   ├── App.tsx         # Root application component
 │   ├── main.tsx        # Application entry point
-│   └── vite-env.d.ts   # Types for Vite environment
-├── .gitignore          # Files and folders ignored by Git
-├── biome.json          # Biome configuration
-├── index.html          # Main HTML file
-├── package.json        # Dependencies and npm scripts
-├── tsconfig.json       # TypeScript configuration
-└── vite.config.ts      # Vite configuration
+│   └── vite-env.d.ts   # Vite environment types
+├── .gitignore
+├── biome.json
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
-## Biome Configuration
+## Styling with Sass
 
-[Biome](https://biomejs.dev/) is used for code formatting and linting. You can configure Biome by modifying the `biome.json` file at the project root.
-
-Example commands for using Biome:
-
-```bash
-# Check code with Biome
-npm run check
-
-# Format code with Biome
-npm run format
-```
-
-## Using Sass
-
-This project uses Sass for styling. Sass files (`.scss`) can be directly imported into React components:
+- All global variables and mixins are defined in `src/styles/variables/`.
+- Thanks to Vite configuration, all SCSS files automatically have access to these variables and mixins.
+- Example usage in a component:
 
 ```tsx
 import './MyComponent.scss';
@@ -98,21 +118,25 @@ function MyComponent() {
 }
 ```
 
+## Vite Configuration
+
+Vite is set up to inject all SCSS variables and mixins from `src/styles/variables` into every style file automatically:
+
+```js
+// vite.config.ts
+css: {
+  preprocessorOptions: {
+    scss: {
+      additionalData: `@use "/src/styles/variables" as *;`,
+    },
+  },
+},
+```
+
 ## Deployment
 
-To deploy the application:
-
-1. Create a production build with `npm run build`
-2. The `dist` folder contains all the necessary files for deployment
-3. Deploy the contents of the `dist` folder to your preferred hosting provider
-
-## Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Build the app with `npm run build`.
+2. Deploy the contents of the `dist` folder to your preferred static hosting provider.
 
 ## License
 

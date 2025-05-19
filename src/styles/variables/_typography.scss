@@ -1,0 +1,100 @@
+/* nunito-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/src/assets/fonts/nunito-v26-latin-400.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-600 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/src/assets/fonts/nunito-v26-latin-600.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/src/assets/fonts/nunito-v26-latin-700.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* kanit-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Kanit";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/src/assets/fonts/kanit-v16-latin-400.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* kanit-600 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Kanit";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/src/assets/fonts/kanit-v16-latin-600.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* kanit-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Kanit";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/src/assets/fonts/kanit-v16-latin-700.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+// Font families
+$font-family-base: "Nunito", sans-serif;
+$font-family-heading: "Kanit", sans-serif;
+
+// Font sizes (in rem for better accessibility)
+$font-size-base: 1.6rem; // 16px by default
+$font-size-xs: 1.2rem; // 12px
+$font-size-sm: 1.4rem; // 14px
+$font-size-md: 1.6rem; // 16px
+$font-size-lg: 1.8rem; // 18px
+$font-size-xl: 2.4rem; // 24px
+$font-size-2xl: 3.2rem; // 32px
+$font-size-3xl: 4.8rem; // 48px
+
+// Line heights
+$line-height-tight: 1.25;
+$line-height-snug: 1.375;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.625;
+$line-height-loose: 2;
+
+// Font weights
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Letter spacing
+$letter-spacing-tighter: -0.05em;
+$letter-spacing-tight: -0.025em;
+$letter-spacing-normal: 0;
+$letter-spacing-wide: 0.025em;
+$letter-spacing-wider: 0.05em;
+$letter-spacing-widest: 0.1em;
+
+// Heading styles (combinations of above variables)
+$h1-font-size: $font-size-3xl;
+$h1-font-weight: $font-weight-bold;
+$h1-line-height: $line-height-tight;
+
+$h2-font-size: $font-size-2xl;
+$h2-font-weight: $font-weight-semibold;
+$h2-line-height: $line-height-normal;
+
+$h3-font-size: $font-size-xl;
+$h3-font-weight: $font-weight-semibold;
+$h3-line-height: $line-height-normal;

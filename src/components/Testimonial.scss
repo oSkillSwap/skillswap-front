@@ -1,0 +1,49 @@
+.testimonials-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+  align-items: center;
+  flex: 1 1;
+
+  &-header {
+    display: flex;
+    gap: $spacing-md;
+    align-items: center;
+  }
+
+  &-picture {
+    min-width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &-title {
+    & h3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: calc($h3-line-height * 2);
+    }
+  }
+
+  &-comment {
+    width: 100%;
+  }
+
+  &-info {
+    width: 100%;
+    font-size: $font-size-xs;
+  }
+}
+
+.testimonial-avatar.deleted-user {
+  min-width: 8rem;
+  height: 8rem;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0.6;
+  filter: grayscale(100%);
+}

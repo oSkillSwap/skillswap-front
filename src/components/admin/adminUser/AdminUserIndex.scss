@@ -1,0 +1,55 @@
+@use "../../../styles/variables" as *;
+
+.admin-users {
+  h2 {
+    margin: 2rem 0;
+    color: $color-info;
+  }
+
+  .admin-users-table {
+    width: 100%;
+    border-collapse: collapse;
+
+   tr{
+     height: 50px;
+   }
+    th,
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+      vertical-align: middle;
+      height: 50px;
+    }
+
+    th {
+      background-color: #f9f9f9;
+      font-weight: bold;
+    }
+
+    td button {
+      margin-right: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      &:hover svg{
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.avatar-username-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .avatar-mini {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ccc;
+  }
+}

@@ -1,0 +1,41 @@
+.messages {
+  &-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    height: calc(100vh - 33rem);
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+
+  &-msg {
+    max-width: 80%;
+
+    &-content {
+      width: fit-content;
+      padding: $spacing-md;
+      background-color: $color-gray;
+      border-radius: 1.6rem 1.6rem 1.6rem 0;
+    }
+
+    &-timestamp {
+      margin-top: $spacing-xs;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-normal;
+      opacity: 0.7;
+    }
+
+    &.msg-send {
+      align-self: flex-end;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      & :first-child {
+        border-radius: 1.6rem 1.6rem 0 1.6rem;
+        background-color: $color-primary;
+      }
+    }
+  }
+}

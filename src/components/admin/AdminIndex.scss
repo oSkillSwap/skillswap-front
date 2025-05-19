@@ -1,0 +1,112 @@
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2xl;
+  width: 100%;
+
+  h2 {
+    color: $color-info;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    font-size: 3rem;
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-lg;
+  }
+
+  &-cards {
+    display: flex;
+    gap: $spacing-xl;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .card {
+      background-color: $color-gray;
+      padding: $spacing-xl;
+      border-radius: 1.2rem;
+      flex: 1;
+      min-width: 24rem;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+      align-items: flex-start;
+      box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.05);
+      transition: background 0.3s;
+
+      &:hover {
+        background-color: $color-primary-light;
+      }
+
+      .label {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+      }
+
+      .value {
+        font-size: 2.8rem;
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
+
+  &-lists {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xl;
+    width: 100%;
+
+    .list {
+      flex: 1;
+      min-width: 32rem;
+      background-color: $color-white;
+      border-radius: 1.2rem;
+      padding: $spacing-xl;
+      box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.2);
+
+      h3 {
+        font-size: $font-size-lg;
+        font-weight: 400;
+        margin-bottom: $spacing-md;
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          display: flex;
+          justify-content: space-between;
+          padding: 0.8rem 0;
+          border-bottom: 1px solid $color-gray;
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+
+        .author {
+          font-style: italic;
+          color: $color-black;
+          font-size: $font-size-sm;
+        }
+      }
+    }
+  }
+}
+
+.card {
+  cursor: pointer;
+  text-decoration: none;
+  color: $color-info;
+
+  &:hover {
+    background-color: $color-primary-light;
+    box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.1);
+    color: $color-info;
+  }
+}

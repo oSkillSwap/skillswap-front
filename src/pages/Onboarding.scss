@@ -1,0 +1,103 @@
+.login,
+.register {
+  width: 40rem;
+
+  a {
+    font-weight: $font-weight-bold;
+  }
+
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 20rem;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md;
+  }
+
+  &-close-btn {
+    color: $color-white;
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    & svg {
+      width: 3.2rem;
+      height: auto;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: $spacing-md;
+    gap: $spacing-xs;
+  }
+
+  &-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin: 0 auto;
+
+    &-field {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      &:has(input[type="checkbox"]) {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      & .form-password {
+        width: 100%;
+        display: flex;
+        gap: $spacing-xs;
+        border-radius: 0.8rem;
+        border: 3px solid $color-gray;
+        background-color: $color-gray;
+
+        &:focus-within {
+          outline: none;
+          border-color: $color-primary;
+        }
+
+        & input {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+        }
+
+        & button {
+          width: fit-content;
+
+          & svg {
+            opacity: 0.5;
+            @include transition-opacity;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+
+  & button {
+    width: 100%;
+  }
+}

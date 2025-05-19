@@ -1,0 +1,168 @@
+.post {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: $spacing-xl;
+  border: 3px solid $color-gray;
+  border-radius: 1.6rem;
+  gap: $spacing-md;
+
+  &-header {
+    display: flex;
+    gap: $spacing-md;
+
+    &-arrow {
+      background-color: $color-primary;
+      border-radius: 0.8rem;
+      padding: 0.8rem 2rem;
+      align-content: center;
+
+      &.arrow-alt {
+        background-color: $color-black;
+        color: $color-white;
+      }
+    }
+
+    &-title {
+      display: flex;
+      gap: $spacing-md;
+      align-items: center;
+    }
+
+    &-date {
+      width: 100%;
+      font-size: $font-size-xs;
+    }
+  }
+
+  &-btns {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: flex-end;
+  }
+
+  &-offer,
+  &-author {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    background-color: $color-gray;
+    padding: $spacing-md $spacing-xl;
+    border-radius: 0.8rem;
+
+    & > div {
+      width: 100%;
+    }
+
+    &-userinfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: $spacing-md;
+
+      & .star:not(.star-active) {
+        fill: $color-white;
+      }
+
+      &-picture {
+        width: 8rem;
+        height: 8rem;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+
+    &-date {
+      margin-top: $spacing-sm;
+      font-size: $font-size-xs;
+      text-align: center;
+    }
+
+    &-btns {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+      align-items: center;
+      margin-top: $spacing-md;
+
+      & button,
+      & a {
+        width: 100%;
+      }
+    }
+  }
+
+  &-edit {
+    &-form {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+
+      &-content {
+        font-size: 1rem;
+        padding: 0.8rem 1.6rem;
+        min-height: 80px;
+        width: 100%;
+        border-radius: 0.8rem;
+        outline: none;
+        resize: vertical;
+        font-size: $font-size-md;
+      }
+    }
+
+    &-buttons {
+      display: flex;
+      gap: $spacing-sm;
+      justify-content: start;
+    }
+  }
+
+  @media screen and (min-width: $breakpoints-md) {
+    &-offer,
+    &-author {
+      &-btns {
+        flex-direction: row;
+        justify-content: center;
+
+        & button,
+        & a {
+          width: fit-content;
+        }
+      }
+    }
+  }
+
+  .btn.btn-disabled {
+    background-color: $color-gray;
+    cursor: auto;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+
+  @media screen and (min-width: $breakpoints-lg) {
+    &-offer,
+    &-author {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      &-btns {
+        justify-content: flex-end;
+      }
+
+      &-userinfo {
+        flex-direction: row;
+        text-align: left;
+      }
+
+      &-date {
+        text-align: left;
+      }
+    }
+  }
+}

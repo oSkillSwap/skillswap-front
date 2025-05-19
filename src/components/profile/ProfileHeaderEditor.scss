@@ -1,0 +1,43 @@
+.inline-edit {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  &-value {
+    overflow-wrap: anywhere;
+  }
+
+  .edit-wrapper {
+    display: flex;
+    width: 100%;
+    background-color: $color-gray;
+    border-radius: 0.8rem;
+    padding-left: $spacing-md;
+    margin-left: -$spacing-md;
+    width: calc(100% + $spacing-md);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  input {
+    font-size: $h1-font-size;
+    font-family: $font-family-heading;
+    font-weight: $h1-font-weight;
+    height: 6rem;
+  }
+
+  textarea {
+    padding: 1rem 0;
+  }
+
+  .edit-btns {
+    padding: 0 $spacing-md;
+  }
+}

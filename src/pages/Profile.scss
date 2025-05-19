@@ -1,0 +1,278 @@
+.profile {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: $spacing-xl;
+
+  &-header {
+    grid-column: 1/13;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xl;
+
+    &-picture {
+      width: 20rem;
+      height: 20rem;
+      border-radius: 50%;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+      align-self: flex-start;
+      width: 100%;
+
+      & p {
+        text-align: center;
+      }
+
+      &-title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+      }
+
+      &-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+        align-self: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  &-col1,
+  &-col2 {
+    grid-column: 1/13;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xl;
+
+    & h2 {
+      width: 100%;
+      margin-bottom: $spacing-md;
+    }
+  }
+
+  &-col2 {
+    margin-top: $spacing-xl;
+  }
+
+  &-skills,
+  &-skills-list,
+  &-interest,
+  &-interest-list,
+  .selected-skill-list,
+  &-fav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  &-fav {
+    gap: $spacing-md;
+
+    & a {
+      width: calc((100% - ($spacing-md * 5)) / 6);
+    }
+
+    &-picture {
+      border-radius: 50%;
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+  }
+
+  &-availability {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: $spacing-xs;
+    align-items: center;
+
+    &-day,
+    &-slot {
+      font-size: $font-size-xs;
+      background-color: $color-black;
+      color: $color-white;
+      border-radius: 1.6rem;
+      padding: $spacing-xs;
+      text-align: center;
+    }
+
+    &-check {
+      position: relative;
+      width: 2.4rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background-color: $color-gray;
+      margin: auto;
+
+      &.active {
+        position: relative;
+        background-color: $color-primary;
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: no-repeat center center url("/img/icons/check.svg");
+          background-size: 50%;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.edit-btns {
+  display: flex;
+  align-items: center;
+
+  & > :first-child {
+    border-radius: 0.8rem 0 0 0.8rem;
+  }
+
+  & > :last-child {
+    border-radius: 0 0.8rem 0.8rem 0;
+  }
+}
+
+.availability-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: $spacing-md;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.success-message {
+  margin: 2rem auto;
+  padding: 0.75rem;
+  background-color: #e6ffed;
+  color: $color-success;
+  border-radius: 4px;
+  text-align: center;
+  width: 57vw;
+  border-radius: 1rem;
+}
+
+.profile-skills,
+.profile-interest {
+  position: relative;
+}
+
+.availability-header h2 {
+  width: auto;
+  margin: 0;
+}
+
+.testimonials {
+  display: flex;
+  gap: $spacing-xl;
+}
+
+.posts-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.no-data {
+  background: $color-gray;
+  border-radius: 3.2rem;
+  padding: $spacing-sm $spacing-md;
+  width: max-content;
+  text-align: center;
+  font-size: $font-size-sm;
+}
+
+.nav {
+  width: 100%;
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: -$spacing-md;
+
+  .active {
+    background-color: $color-black;
+    color: $color-white;
+  }
+
+  & a:hover {
+    background-color: $color-black;
+    color: $color-white;
+  }
+}
+
+.profile-header.profile-posts {
+  align-items: flex-start;
+  display: block;
+}
+
+.posts-propositions {
+  width: 100%;
+  gap: $spacing-md;
+}
+
+@media screen and (min-width: $breakpoints-md) {
+  .profile {
+    &-header {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+
+      &-content {
+        & p {
+          text-align: left;
+        }
+
+        &-btns {
+          align-self: flex-start;
+          justify-content: flex-start;
+        }
+      }
+    }
+
+    &-col1 {
+      grid-column: 1/5;
+    }
+
+    &-col2 {
+      grid-column: 5/13;
+      margin-top: 0;
+    }
+
+    &-fav {
+      & a {
+        width: calc((100% - ($spacing-md * 2)) / 3);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $breakpoints-lg) {
+  .profile {
+    &-header {
+      &-picture {
+        width: 25.8rem;
+        height: 25.8rem;
+      }
+    }
+
+    &-col1 {
+      grid-column: 1/4;
+    }
+
+    &-col2 {
+      grid-column: 4/13;
+    }
+  }
+}
