@@ -1,0 +1,37 @@
+.error404 {
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .scene {
+    position: relative;
+    width: 60rem;
+    max-width: 100%;
+
+    &-char {
+      max-width: 35%;
+      position: absolute;
+      top: 15rem;
+      left: 10rem;
+      transform: rotate(15deg);
+      animation: float 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    }
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0px, 0px) rotate(15deg);
+  }
+  40% {
+    transform: translate(6px, -14px) rotate(18deg);
+  }
+  // 70% {
+  //   transform: translate(12px, 34px) rotate(17deg);
+  // }
+  100% {
+    transform: translate(0px, 0px) rotate(15deg);
+  }
+}
