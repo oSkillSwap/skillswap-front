@@ -202,7 +202,7 @@ function UserCard({ user }: { user: IUsers }) {
             <>
               <Link
                 className="btn btn-default"
-                to={connectedUser ? `/message/${user.username}` : '/login'}
+                to={connectedUser ? `/message/${user.id}` : '/login'}
               >
                 <MessageSquare />
                 Contacter
