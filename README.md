@@ -1,7 +1,10 @@
 # SkillSwap Frontend
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/oSkillSwap/skillswap-front?color=blue&label=version)](https://github.com/oSkillSwap/skillswap-front/releases)
-![Language](https://img.shields.io/github/languages/top/oSkillSwap/skillswap-front)
+![Node.js Version](https://img.shields.io/badge/Node.js-18+-brightgreen.svg)
+![React](https://img.shields.io/badge/React-19.x-blue?logo=react)
+![Sass](https://img.shields.io/badge/Sass-%23CC6699?style=flat&logo=sass&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 SkillSwap is a web platform that enables users to exchange skills and knowledge. This repository contains the frontend application, built with React, TypeScript, Sass, and Vite.
 

@@ -2,6 +2,8 @@ import { Link } from 'react-router';
 import PageTransition from '../../utils/PageTransition';
 import './ErrorPage404.scss';
 import { Undo2 } from 'lucide-react';
+import bg from '/src/assets/img/404-bg.webp';
+import char from '/src/assets/img/404-character.webp';
 
 function ErrorPage404() {
   return (
@@ -10,12 +12,12 @@ function ErrorPage404() {
         <div className="scene">
           <img
             className="scene-bg"
-            src="/src/assets/img/404-bg.webp"
+            src={bg}
             alt="L'espace avec quelques étoiles"
           />
           <img
             className="scene-char"
-            src="/src/assets/img/404-character.webp"
+            src={char}
             alt="Cosmonaute perdu dans l'espace"
           />
         </div>
