@@ -169,7 +169,7 @@ function Register() {
             <label htmlFor="cgu">
               J'accepte les{' '}
               <Link
-                to="/cgu"
+                to="/terms"
                 target="_blank"
                 rel="noopener noreferrer"
                 tabIndex={-1}

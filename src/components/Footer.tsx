@@ -13,7 +13,7 @@ function Footer() {
           <ul className="footer-container-nav">
             <li className="footer-container-nav-element">
               <Link className="footer-container-nav-element-link" to="/about">
-                Qui sommes-nous ?
+                L'équipe
               </Link>
             </li>
             <li className="footer-container-nav-element">
