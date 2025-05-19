@@ -1,0 +1,32 @@
+@use "../../../styles/variables" as *;
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba($color-black, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: $color-white;
+  padding: 3rem;
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 1rem 2rem rgba($color-black, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+}

@@ -28,12 +28,9 @@ function Post() {
     const getSkills = async () => {
       try {
         const response = await api.get('/skills');
-        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(response.data);
-        const data = response.data;
-        setSkills(data.skills);
+        setSkills(response.data.skills);
       } catch (error) {
-        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error('Error fetching skills:', error);
       }
     };
@@ -45,19 +42,15 @@ function Post() {
     const getPosts = async () => {
       try {
         const response = await api.get('/me/posts');
-        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.log(response.data);
-        const data = response.data;
-        setPosts(data.posts);
+        setPosts(response.data.posts);
       } catch (error) {
-        // biome-ignore lint/suspicious/noConsole: <explanation>
         console.error('Error fetching posts:', error);
       }
     };
     getPosts();
   }, []);
 
-  // Fonction de soumission du formulaire
   const handleSubmit = async (formData: FormData) => {
     try {
       setError('');
@@ -65,75 +58,60 @@ function Post() {
       const content = formData.get('content') as string;
       const skill_id = Number(formData.get('skill_id') as string);
       const user_id = currentUserId;
-      const newPost = {
-        title,
-        content,
-        skill_id,
-        user_id,
-      };
 
-      // Vérification des champs du formulaire
+      const newPost = { title, content, skill_id, user_id };
+
       if (!title.trim() || !content.trim()) {
         setError('Veuillez remplir tous les champs.');
         return;
       }
+
       if (!user_id) {
         setError('Utilisateur non trouvé.');
         return;
       }
 
-      // Vérification de la compétence sélectionnée
       if (!skill_id) {
         setError('Veuillez sélectionner une compétence.');
         return;
       }
 
-      // Vérification de la longueur du titre
       if (title.length < 1 || title.length > 40) {
         setError('Le titre doit faire entre 1 et 40 caractères.');
         return;
       }
 
-      // Vérification de la longueur du contenu
       if (content.length < 1 || content.length > 500) {
         setError('Le contenu doit faire entre 1 et 500 caractères.');
         return;
       }
 
-      // Vérification de l'existence de la compétence
-      const findSkill = skills.find((skill) => skill.id === +skill_id);
+      const findSkill = skills.find((skill) => skill.id === skill_id);
       if (!findSkill) {
         setError('Compétence non trouvée.');
         return;
       }
 
-      // Vérification du nombre de posts
-      // Limite à 10 posts par utilisateur
       if (posts.length >= 10) {
         setError('Vous avez atteint le nombre maximum de posts.');
         return;
       }
 
-      // Vérification de l'existence de la compétence dans les posts
-      // Limite à 1 post par compétence
       const findSkillInPosts = posts.find(
-        (post) => post.SkillWanted?.id === +skill_id,
+        (post) => post.SkillWanted?.id === skill_id,
       );
       if (findSkillInPosts) {
         setError('Vous avez déjà posté une annonce pour cette compétence.');
         return;
       }
 
-      // Envoi du post à l'API
       await api.post('/me/posts', newPost, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
       });
+
       setPosts([...posts, newPost]);
       setError('');
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error('Error submitting form:', error);
     }
   };
@@ -141,6 +119,12 @@ function Post() {
   if (!user) {
     navigate('/login');
   }
+
+  // 👇 Catégories uniques (et sécurisées)
+
+  const uniqueCategoryNames = [
+    ...new Set(skills.map((skill) => skill.Category?.name).filter(Boolean)),
+  ];
 
   return (
     <main className="container">
@@ -170,22 +154,26 @@ function Post() {
               placeholder="Contenu de l'annonce"
             />
           </div>
-          {/* Permet d'afficher chaque compétence dans le groupe (optgroup) correspondant à sa catégorie. */}
-          <select name="skill_id" id="skill_id">
-            {[...new Set(skills.map((skill) => skill.Category.name))].map(
-              (categoryName) => (
+
+          <div className="add-post-form-input">
+            <label htmlFor="skill_id">Compétence</label>
+            <select name="skill_id" id="skill_id">
+              {uniqueCategoryNames.map((categoryName) => (
                 <optgroup label={categoryName} key={categoryName}>
                   {skills
-                    .filter((skill) => skill.Category.name === categoryName)
+                    .filter(
+                      (skill) =>
+                        skill.Category && skill.Category.name === categoryName,
+                    )
                     .map((skill) => (
-                      <option value={skill.id} key={skill.name}>
+                      <option value={skill.id} key={skill.id}>
                         {skill.name}
                       </option>
                     ))}
                 </optgroup>
-              ),
-            )}
-          </select>
+              ))}
+            </select>
+          </div>
 
           <button type="submit" className="btn btn-default">
             Poster

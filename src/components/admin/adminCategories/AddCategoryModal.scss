@@ -1,0 +1,70 @@
+@use "../../../styles/variables" as *;
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba($color-black, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: $color-white;
+  padding: 3rem;
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 1rem 2rem rgba($color-black, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-sm;
+  }
+
+  input,
+  select {
+    margin-top: 0.4rem;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $color-gray;
+    border-radius: 0.6rem;
+    background-color: $color-gray;
+  }
+
+  .icon-preview-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .error {
+    color: $color-danger;
+    font-size: $font-size-sm;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}

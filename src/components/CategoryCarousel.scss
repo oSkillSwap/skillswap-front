@@ -11,9 +11,12 @@
     padding: $spacing-md;
     @include transition-border;
 
-    &-img {
+    &-icon{
       width: 3.8rem;
       stroke: 1px;
+      display: block;
+      margin: 0 auto 1rem;
+      color: $color-black;
     }
 
     &-title {
