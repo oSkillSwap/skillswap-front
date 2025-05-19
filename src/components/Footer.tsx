@@ -12,33 +12,23 @@ function Footer() {
         <nav>
           <ul className="footer-container-nav">
             <li className="footer-container-nav-element">
-              <Link className="footer-container-nav-element-link" to="/">
-                Qui sommes-nous ?
+              <Link className="footer-container-nav-element-link" to="/about">
+                L'équipe
               </Link>
             </li>
             <li className="footer-container-nav-element">
-              <Link className="footer-container-nav-element-link" to="/">
-                FAQ
+              <Link className="footer-container-nav-element-link" to="/privacy">
+                Politique de confidentialité
               </Link>
             </li>
             <li className="footer-container-nav-element">
-              <Link className="footer-container-nav-element-link" to="/">
-                Données personnelles
-              </Link>
-            </li>
-            <li className="footer-container-nav-element">
-              <Link className="footer-container-nav-element-link" to="/">
+              <Link className="footer-container-nav-element-link" to="/terms">
                 Conditions d'utilisations
               </Link>
             </li>
             <li className="footer-container-nav-element">
-              <Link className="footer-container-nav-element-link" to="/">
+              <Link className="footer-container-nav-element-link" to="/legals">
                 Mentions légales
-              </Link>
-            </li>
-            <li className="footer-container-nav-element">
-              <Link className="footer-container-nav-element-link" to="/">
-                Nous contacter
               </Link>
             </li>
           </ul>
