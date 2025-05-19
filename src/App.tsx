@@ -20,9 +20,9 @@ import ProfileLayout from './pages/Profile';
 import Register from './pages/Register';
 
 import AdminIndex from './components/admin/AdminIndex';
-import AdminUserIndex from './components/admin/adminUser/adminUserIndex';
 import AdminPostIndex from './components/admin/adminPost/AdminPostIndex';
 import AdminCategoriesIndex from './components/admin/adminCategories/AdminCategoriesIndex';
+import AdminUserIndex from './components/admin/adminUser/AdminUserIndex';
 
 function App() {
   const location = useLocation();
