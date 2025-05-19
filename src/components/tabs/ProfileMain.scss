@@ -54,3 +54,12 @@
     }
   }
 }
+
+
+.grade-nbreviews{
+  color: $color-black;
+
+  &:hover{
+    color: $color-primary;
+  }
+}

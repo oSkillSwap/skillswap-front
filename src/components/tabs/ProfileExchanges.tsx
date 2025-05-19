@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import type { IEnrichedProposition } from '../../types/Proposition';
-import type { UserWithReviewData } from '../../types/UserWithReviewData';
 import Grade from '../Grade';
 import Post from '../Post';
 import ReviewModal from './ReviewModal';
@@ -23,6 +22,19 @@ function ProfileExchanges() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const [otherUsers, setOtherUsers] = useState<
+    Record<
+      number,
+      {
+        id: number;
+        username: string;
+        avatar: string;
+        averageGrade: number;
+        nbOfReviews: number;
+      }
+    >
+  >({});
+
   const fetchExchanges = useCallback(async () => {
     try {
       const res = await api.get('/me/all-propositions');
@@ -40,6 +52,61 @@ function ProfileExchanges() {
     window.addEventListener('exchange-updated', handleUpdate);
     return () => window.removeEventListener('exchange-updated', handleUpdate);
   }, [fetchExchanges]);
+
+  const fetchOtherUserData = useCallback(
+    async (prop: IEnrichedProposition) => {
+      const rawUser =
+        prop.Sender?.id === connectedUser?.id ? prop.Receiver : prop.Sender;
+      if (!rawUser) return null;
+
+      try {
+        const res = await api.get(`/reviews/${rawUser.username}`);
+        const reviews = res.data.reviews || [];
+
+        const averageGrade: number =
+          reviews.length > 0
+            ? reviews.reduce(
+                (acc: number, r: { grade: number }) => acc + r.grade,
+                0,
+              ) / reviews.length
+            : 0;
+
+        return {
+          id: rawUser.id,
+          username: rawUser.username,
+          avatar: rawUser.avatar ?? '/img/avatars/robot1.jpg',
+          averageGrade,
+          nbOfReviews: reviews.length,
+        };
+      } catch (err) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.error('Erreur lors du chargement des avis reçus', err);
+        return {
+          id: rawUser.id,
+          username: rawUser.username,
+          avatar: rawUser.avatar ?? '/img/avatars/robot1.jpg',
+          averageGrade: 0,
+          nbOfReviews: 0,
+        };
+      }
+    },
+    [connectedUser],
+  );
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      const userMap: typeof otherUsers = {};
+      for (const prop of exchanges) {
+        const key = prop.id;
+        const user = await fetchOtherUserData(prop);
+        if (user && typeof key === 'number') {
+          userMap[key] = user;
+        }
+      }
+      setOtherUsers(userMap);
+    };
+    loadUsers();
+  }, [exchanges, fetchOtherUserData]);
 
   const handleFinish = async (prop: IEnrichedProposition) => {
     try {
@@ -60,7 +127,7 @@ function ProfileExchanges() {
         comment,
         postId: activeReviewProp.Post.id,
         propositionId: activeReviewProp.id,
-        title: `Avis pour ${buildOtherUser(activeReviewProp).username}`,
+        title: `Avis pour ${activeReviewProp.id !== undefined && otherUsers[activeReviewProp.id]?.username ? otherUsers[activeReviewProp.id].username : 'utilisateur'}`,
       });
       setActiveReviewProp(null);
       await fetchExchanges();
@@ -69,20 +136,6 @@ function ProfileExchanges() {
       console.error("Erreur lors de l'envoi de l'avis", err);
       alert("Une erreur s'est produite lors de l'envoi de l'avis.");
     }
-  };
-
-  const buildOtherUser = (prop: IEnrichedProposition) => {
-    const rawUser = (
-      prop.Sender?.id === connectedUser?.id ? prop.Receiver : prop.Sender
-    ) as UserWithReviewData;
-
-    return {
-      id: rawUser?.id ?? 0,
-      username: rawUser?.username ?? 'Utilisateur inconnu',
-      avatar: rawUser?.avatar ?? '/img/avatars/robot1.jpg',
-      averageGrade: rawUser?.averageGrade ?? 0,
-      nbOfReviews: rawUser?.nbOfReviews ?? 0,
-    };
   };
 
   const ongoing = exchanges.filter(
@@ -102,7 +155,10 @@ function ProfileExchanges() {
       <div className="posts-container">
         {ongoing.length > 0 ? (
           ongoing.map((prop) => {
-            const otherUser = buildOtherUser(prop);
+            const otherUser =
+              prop.id !== undefined ? otherUsers[prop.id as number] : undefined;
+            if (!otherUser) return null;
+
             return (
               <Post
                 key={prop.id}
@@ -114,9 +170,9 @@ function ProfileExchanges() {
                   <div>
                     <div className="post-author-userinfo">
                       <img
-                        className="post-author-userinfo-picture"
                         src={otherUser.avatar}
                         alt={otherUser.username}
+                        className="post-author-userinfo-picture"
                       />
                       <div>
                         <h3>{otherUser.username}</h3>
@@ -184,7 +240,10 @@ function ProfileExchanges() {
       <div className="posts-container">
         {finished.length > 0 ? (
           finished.map((prop) => {
-            const otherUser = buildOtherUser(prop);
+            if (typeof prop.id !== 'number') return null;
+            const otherUser = otherUsers[prop.id];
+            if (!otherUser) return null;
+
             const isOwner = connectedUser?.id === prop.Post.user_id;
             const isReviewAuthor =
               prop.Review?.Reviewer?.id === connectedUser?.id;
@@ -203,9 +262,9 @@ function ProfileExchanges() {
                   <div>
                     <div className="post-author-userinfo">
                       <img
-                        className="post-author-userinfo-picture"
                         src={otherUser.avatar}
                         alt={otherUser.username}
+                        className="post-author-userinfo-picture"
                       />
                       <div>
                         <h3>{otherUser.username}</h3>
@@ -228,7 +287,6 @@ function ProfileExchanges() {
                     </p>
                     <p className="post-offer-content">{prop.content}</p>
                   </div>
-
                   <div className="post-author-btns">
                     {isReviewAuthor ? (
                       <button
@@ -287,7 +345,6 @@ function ProfileExchanges() {
           onSuccess={handleReviewSubmit}
         />
       )}
-
       {activeReviewView && (
         <ReviewingModal
           grade={activeReviewView.grade}

@@ -13,6 +13,7 @@ function UserCard({ user }: { user: IUsers }) {
   const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
   const { user: connectedUser } = useAuth();
   const [userData, setUserData] = useState<User | null>(null);
+  const [nbReceivedReviews, setNbReceivedReviews] = useState<number>(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,6 +39,21 @@ function UserCard({ user }: { user: IUsers }) {
     };
     fetchUserData();
   }, [connectedUser]);
+
+  useEffect(() => {
+    const fetchReviewsReceived = async () => {
+      try {
+        const response = await api.get(`/reviews/${user.username}`);
+        console.log(`Avis reçus pour ${user.username}`, response.data.reviews);
+        setNbReceivedReviews(response.data.reviews.length);
+      } catch (err) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.error('Erreur en récupérant les reviews reçues', err);
+      }
+    };
+
+    fetchReviewsReceived();
+  }, [user.username]);
 
   useEffect(() => {
     if (!userData) return;
@@ -151,7 +167,7 @@ function UserCard({ user }: { user: IUsers }) {
       <div className="profile-card-content-wrapper">
         <div>
           <h3 className="profile-card-username">{user.username}</h3>
-          <Grade rating={user.averageGrade} nbReviews={user.nbOfReviews} />
+          <Grade rating={user.averageGrade} nbReviews={nbReceivedReviews} />
         </div>
         <p className="profile-card-bio">{user.description}</p>
 
