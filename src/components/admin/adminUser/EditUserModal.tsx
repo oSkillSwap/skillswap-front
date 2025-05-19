@@ -47,21 +47,27 @@ function EditUserModal({ userId, onClose, onSuccess }: Props) {
     setError(null);
 
     try {
-      const res = await api.patch(`/admin/users/${userId}`, {
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        avatar: user.avatar,
-        description: user.description,
+      const cleanString = (val: string | null | undefined) =>
+        val && val.trim() !== '' ? val.trim() : undefined;
+
+      const payload = {
+        username: cleanString(user.username),
+        firstName: cleanString(user.firstName),
+        lastName: cleanString(user.lastName),
+        email: cleanString(user.email),
+        avatar: cleanString(user.avatar),
+        description: cleanString(user.description),
         role: user.role,
         isAvailable: user.isAvailable,
         isBanned: user.isBanned,
-      });
+      };
+
+      const res = await api.patch(`/admin/users/${userId}`, payload);
 
       onSuccess(res.data.user);
       onClose();
     } catch (err) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
       console.error(err);
       setError('Erreur lors de la mise à jour.');
     } finally {
